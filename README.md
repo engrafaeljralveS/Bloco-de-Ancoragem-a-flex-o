@@ -54,4 +54,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V1.7 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V1.8 · outubro de 2026 · Eng. Rafael J. R. Alves

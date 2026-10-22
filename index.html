@@ -131,7 +131,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem com Dente</h1>
     <p class="sub">Curvas horizontais com junta elástica · bloco em L com dente de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V1.7 · out/2026</span>
+  <span class="pill neu">Versão V1.8 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -700,7 +700,20 @@ function calc(){
   last=o; draw(o); if(vista==='arm') renderDiag(o);
 }
 
-function dimH(x1,x2,y,t){return `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="var(--muted)"/><line x1="${x1}" y1="${y-5}" x2="${x1}" y2="${y+5}" stroke="var(--muted)"/><line x1="${x2}" y1="${y-5}" x2="${x2}" y2="${y+5}" stroke="var(--muted)"/><text x="${(x1+x2)/2}" y="${y+14}" text-anchor="middle">${t}</text>`}
+/* fundo opaco atrás das cotas e etiquetas (classe dl), medido no texto já desenhado */
+function fundoCotas(sv){
+  sv.querySelectorAll('text.dl').forEach(t=>{
+    t.setAttribute('style',(t.getAttribute('style')||'')+';font-size:11px;font-weight:500');
+    let b; try{b=t.getBBox()}catch(e){b=null}
+    if(!b||!b.width){const n=t.textContent.length,x=+t.getAttribute('x'),y=+t.getAttribute('y'),a=t.getAttribute('text-anchor')||'start',w=n*6.7;
+      b={x:a==='end'?x-w:a==='middle'?x-w/2:x,y:y-10,width:w,height:13}}
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',b.x-4);r.setAttribute('y',b.y-2);r.setAttribute('width',b.width+8);r.setAttribute('height',b.height+4);r.setAttribute('rx',3);
+    r.setAttribute('fill','var(--panel)');r.setAttribute('stroke','var(--line)');r.setAttribute('stroke-width','0.8');
+    t.parentNode.insertBefore(r,t);
+  });
+}
+function dimH(x1,x2,y,t){return `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="var(--muted)"/><line x1="${x1}" y1="${y-5}" x2="${x1}" y2="${y+5}" stroke="var(--muted)"/><line x1="${x2}" y1="${y-5}" x2="${x2}" y2="${y+5}" stroke="var(--muted)"/><text class="dl" x="${(x1+x2)/2}" y="${y+4}" text-anchor="middle">${t}</text>`}
 function draw(o){
   const {A,B,C,E,G,F,De,Hs,HK,TK,SK}=o, arm=vista==='arm', serv=caso==='serv';
   const W=780,H=440,padL=arm?150:190,padR=arm?150:190,top=46,bot=70;
@@ -712,7 +725,7 @@ function draw(o){
   const pmax=Math.max(o.EA2,serv?o.EP3:o.EP3t,1), k=110/pmax;
   const cv=Math.max(R.p.cob/100*s,3);
   const ST='fill="none" stroke="var(--steel)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"';
-  const tag=(x,y,txt,anc)=>`<text x="${x}" y="${y}" text-anchor="${anc||'start'}" style="fill:var(--steel);font-weight:500">${txt}</text>`;
+  const tag=(x,y,txt,anc)=>`<text class="dl" x="${x}" y="${y}" text-anchor="${anc||'start'}" style="fill:var(--steel)">${txt}</text>`;
   const lb=(n,S)=>`${n} ${S.R.err?'—':'φ'+fphi(S.R.phi)+'/'+fmt(S.R.s,1)}`;
   let g=`<defs><pattern id="hc" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="var(--concrete)"/><circle cx="2" cy="3" r="0.9" fill="var(--concrete-dot)"/><circle cx="6.5" cy="7" r="0.7" fill="var(--concrete-dot)"/></pattern>
   <pattern id="hs" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="var(--soil)"/><path d="M0 10L10 0" stroke="var(--soil-line)" stroke-width=".6"/></pattern>
@@ -805,11 +818,12 @@ function draw(o){
   // cotas
   const yd=Math.min(H-12,yA+28);
   g+=dimH(x0,xb,yd,`b ${fmt(B*100,0)}`)+dimH(xb,xr,yd,`c ${fmt(C*100,0)}`);
-  g+=`<text x="${xb-6}" y="${yTop+14}" text-anchor="end">f ${fmt(F*100,0)}</text><text x="${xb-6}" y="${(yStep+yb)/2+4}" text-anchor="end">e ${fmt(E*100,0)}</text>`;
-  g+=`<text x="${xr-6}" y="${yTop+14}" text-anchor="end">g ${fmt(G*100,0)}</text>`;
-  if(o.kon) g+=`<text x="${(xkL+xkR)/2}" y="${yk-6}" text-anchor="middle" style="font-size:10px">h${fmt(HK*100,0)}·t${fmt(TK*100,0)}</text>`;
-  if(!arm&&serv&&hs>0) g+=`<text x="${x0+6}" y="${ySoil+16}">Hsolo ${fmt(Hs)} m</text>`;
-  $('r_svg').innerHTML=g;
+  g+=`<text class="dl" x="${xb-8}" y="${yTop+16}" text-anchor="end">f ${fmt(F*100,0)}</text><text class="dl" x="${xb-8}" y="${(yStep+yb)/2+4}" text-anchor="end">e ${fmt(E*100,0)}</text>`;
+  g+=`<text class="dl" x="${xr-8}" y="${yTop+16}" text-anchor="end">g ${fmt(G*100,0)}</text>`;
+  const offK=arm?0:Math.max(serv?o.EA3:o.EA3t,0)*k+6;
+  if(o.kon) g+=`<text class="dl" x="${xkL-8-offK}" y="${(yb+yk)/2+4}" text-anchor="end">dente h ${fmt(HK*100,0)} · t ${fmt(TK*100,0)}</text>`;
+  if(!arm&&serv&&hs>0) g+=`<text class="dl" x="${x0+8}" y="${ySoil+16}">Hsolo ${fmt(Hs)} m</text>`;
+  $('r_svg').innerHTML=g; fundoCotas($('r_svg'));
   $('c_note').textContent=arm
     ?(o.modo==='simples'?'Bloco em concreto simples, sem armadura. As linhas tracejadas marcam as seções críticas onde os momentos e cortantes são máximos.':'Disposição das armaduras N1 a N5, com bitola e espaçamento adotados. As linhas tracejadas marcam as seções críticas (engastes).')
       +' Abaixo, os diagramas de momento fletor e cortante de cálculo de cada peça: envoltória dos casos de serviço e de teste, já majorados por γf.'
@@ -1066,7 +1080,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V1.7',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V1.8',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -1132,7 +1146,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.7',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.8',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });
