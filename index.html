@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloco de Ancoragem com Dente</title>
+<title>Bloco de Ancoragem</title>
 <meta name="description" content="Verificação de estabilidade e dimensionamento em concreto armado (NBR 6118) de bloco de ancoragem em L com dente de cisalhamento, para curvas horizontais de adutoras. Gera memorial de cálculo em Word.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -128,10 +128,10 @@ fieldset.unit{border-color:var(--ink)}
 <div class="wrap">
 <header>
   <div>
-    <h1>Bloco de Ancoragem com Dente</h1>
+    <h1>Bloco de Ancoragem</h1>
     <p class="sub">Curvas horizontais com junta elástica · bloco em L com dente de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V1.8 · out/2026</span>
+  <span class="pill neu">Versão V1.9 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -998,7 +998,7 @@ async function buildDocx(){
   const doc=new Document({styles:{default:{document:{run:{font:FN,size:16}},title:{run:{font:FN,size:FMAX}},heading1:{run:{font:FN,size:FMAX}},heading2:{run:{font:FN,size:22}},heading3:{run:{font:FN,size:20}},heading4:{run:{font:FN,size:18}},heading5:{run:{font:FN,size:18}},heading6:{run:{font:FN,size:18}}}},
     sections:[{properties:{page:{size:{width:cm(21),height:cm(29.7)},margin:{top:cm(2.5),left:cm(2.5),right:cm(1.5),bottom:cm(1.5),header:cm(1),footer:cm(0.8)}}},
     children:[
-      new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:$('v_nome').value.trim()?0:60},children:[t('MEMÓRIA DE CÁLCULO – BLOCO DE ANCORAGEM COM DENTE',{bold:true,size:24})]}),
+      new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:$('v_nome').value.trim()?0:60},children:[t('MEMÓRIA DE CÁLCULO – BLOCO DE ANCORAGEM',{bold:true,size:24})]}),
       ...($('v_nome').value.trim()?[new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:60},children:[t('Unidade: '+$('v_nome').value.trim(),{bold:true,size:18,color:'0F5F7A'})]})]:[]),
       H('1. Dados de entrada'),dados,
       H('2. Cortes e esforços'),figs,
@@ -1016,7 +1016,7 @@ $('v_mem').addEventListener('click',async()=>{
   btn.disabled=true; st.textContent='Gerando o memorial…';
   let blob; try{blob=await buildDocx()}catch(e){st.textContent='Não foi possível gerar o memorial: '+(e&&e.message||e)+'.';btn.disabled=false;return}
   const nm=$('v_nome').value.trim().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w.-]+/g,'_').replace(/^_+|_+$/g,'');
-  const filename='Memoria_de_Calculo_'+(nm||'Bloco_com_Dente')+'.docx';
+  const filename='Memoria_de_Calculo_'+(nm||'Bloco_de_Ancoragem')+'.docx';
   let dl=null; if(window.claude?.use){try{dl=await window.claude.use('downloads')}catch(e){}}
   if(dl){
     try{const res=await dl.save({filename,data:blob});st.textContent=res&&res.status==='saved'?'Memorial salvo (.docx, A4).':'Memorial enviado.'}
@@ -1080,7 +1080,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V1.8',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V1.9',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -1146,7 +1146,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.8',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.9',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });

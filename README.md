@@ -1,4 +1,4 @@
-# Bloco de Ancoragem com Dente
+# Bloco de Ancoragem
 
 Aplicativo web para verificação de estabilidade e dimensionamento em concreto simples ou armado de **bloco de ancoragem em L com dente de cisalhamento**, para curvas horizontais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
 
@@ -54,4 +54,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V1.8 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V1.9 · outubro de 2026 · Eng. Rafael J. R. Alves
