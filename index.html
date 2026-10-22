@@ -131,7 +131,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem</h1>
     <p class="sub">Curvas horizontais e verticais com junta elástica · bloco em L com dente de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V2.0 · out/2026</span>
+  <span class="pill neu">Versão V2.1 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -492,7 +492,7 @@ function compute(p){
     par:cs(PAR.MD,PAR.VD,D,C,fck),
     den:kon?cs(Math.max(KP.MD,KA.MD),Math.max(KP.VD,KA.VD),D,TK,fck):null, denFace:kon?(KP.MD>=KA.MD?'face do passivo':'face do ativo'):''};
   return {modo:p.modo==='simples'?'simples':'armado',SIMP,DG,A,B,C,D,E,F,G,HK,TK,SK,kon,De,Hs,Kp,Ka,EA1,EA2,EA3,EAf,EA2t,EA3t,EP1,EP2,EP3,EP1t,EP2t,EP3t,cgcm,CGm,V0,VK,V,Wb,Wk,xk,Ws,Wt,W,
-    vert,up,sgn,FT1,FT2,FV1,FV2,xV,aV,NB1,NB2,MT1h,MT2h,FSL1,FSL2,Tcin,AsCin,
+    alfa,vert,up,sgn,FT1,FT2,FV1,FV2,xV,aV,NB1,NB2,MT1h,MT2h,FSL1,FSL2,Tcin,AsCin,
     PAS_S,RP_S,PAS_T,RP_T,RPk_S,RPk_T,RAk_S,RAk_T,RA,yEcm,FH1,FH2,MT1,MT2,Me1,Me2,FD1,FD2,FDe1,FDe2,FDe1_0,FD1_0,FST1,FSD1,FST2,FSD2,
     xS,xT,a3,okXS,okXT,S1,S2,tracS:S1.s2<0,tracT:S2.s2<0,Ww,Wtb,Wst,Wsd,rS,rT,MaW,EaW,cfg,
     N1:DSUP,N5:DINF,N3:PAR,N2:KP,N4:KA};
@@ -851,17 +851,41 @@ function draw(o){
   }
   }
   // tubo e força hidráulica
-  g+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--water)" fill-opacity=".35" stroke="var(--water)" stroke-width="2"/>`;
-  if(o.up){ const yl=yStep+Math.min(E*0.65,0.8)*s;
-    g+=`<path d="M${cx-r-4} ${yl}V${cy}A${r+4} ${r+4} 0 0 1 ${cx+r+4} ${cy}V${yl}" fill="none" stroke="var(--steel)" stroke-width="2.4" stroke-linecap="round"/>`;
-    if(arm) g+=`<text class="dl" x="${cx}" y="${cy-r-12}" text-anchor="middle" style="fill:var(--steel)">cintas As ≥ ${fmt(o.AsCin,2)} cm²</text>`;}
-  if(!arm&&o.vert){ const V_=serv?o.FV1:o.FV2, yA0=cy-r-4, yA1=cy-r-74;
-    g+=o.up?`<line x1="${cx}" y1="${yA0}" x2="${cx}" y2="${yA1}" stroke="var(--accent)" stroke-width="2.6" marker-end="url(#ar)"/>`
-           :`<line x1="${cx}" y1="${yA1}" x2="${cx}" y2="${yA0}" stroke="var(--accent)" stroke-width="2.6" marker-end="url(#ar)"/>`;
-    g+=`<text class="dl" x="${cx}" y="${yA1-8}" text-anchor="middle" style="fill:var(--accent)">V = ${fmt(V_)} kN ${o.up?'↑':'↓'}</text>`;}
+  if(!o.vert){
+    /* curva horizontal: tubo em seção transversal */
+    g+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--water)" fill-opacity=".35" stroke="var(--water)" stroke-width="2"/>`;
+  } else {
+    /* curva vertical: o corte passa pelo eixo do tubo, que aparece em corte longitudinal.
+       Perna horizontal para a esquerda; perna inclinada de α para cima (empuxo para baixo) ou para baixo (empuxo para cima) */
+    const al=rad(o.alfa), Lp=Math.max(2.6*r,70), xL=Math.min(x0-26,cx-Lp);
+    const ex=cx+Math.cos(al)*Lp, ey=cy+(o.up?1:-1)*Math.sin(al)*Lp;
+    const dP=`M${xL} ${cy}L${cx} ${cy}L${ex} ${ey}`;
+    g+=`<path d="${dP}" fill="none" stroke="var(--water)" stroke-width="${2*r}" stroke-linejoin="round"/>`
+      +`<path d="${dP}" fill="none" stroke="var(--panel)" stroke-width="${Math.max(2*r-4,2)}" stroke-linejoin="round"/>`
+      +`<path d="${dP}" fill="none" stroke="var(--water)" stroke-opacity=".35" stroke-width="${Math.max(2*r-4,2)}" stroke-linejoin="round"/>`
+      +`<path d="${dP}" fill="none" stroke="var(--water)" stroke-width="1" stroke-dasharray="10 3 2 3"/>`;
+    if(o.up){ const yl=yStep+Math.min(E*0.65,0.8)*s;
+      const xs1=Math.max(x0+6,cx-0.9*r);
+      [xs1,xs1-0.9*r].filter(xs=>xs>=x0+6).forEach(xs=>{
+        g+=`<path d="M${xs} ${yl}V${cy-r-3}" fill="none" stroke="var(--steel)" stroke-width="3" stroke-linecap="round"/><path d="M${xs-6} ${cy-r-3}H${xs+6}" stroke="var(--steel)" stroke-width="3" stroke-linecap="round"/>`});
+      if(arm) g+=`<text class="dl" x="${x0-10}" y="${cy-r-14}" text-anchor="end" style="fill:var(--steel)">cintas As ≥ ${fmt(o.AsCin,2)} cm²</text>`;}
+    if(!arm){
+      /* empuxo F na curva, no sentido de fora da curva: faz α/2 com a vertical */
+      const F_=serv?o.FT1:o.FT2, H_=serv?o.FH1:o.FH2, V_=serv?o.FV1:o.FV2;
+      const dx=Math.sin(al/2), dy=(o.up?-1:1)*Math.cos(al/2), x1=cx+dx*(r*0.55), y1=cy+dy*(r*0.55), x2=x1+dx*70, y2=y1+dy*70;
+      g+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--accent)" stroke-width="2.8" marker-end="url(#ar)"/>`;
+      g+=`<text class="dl" x="${x2+dx*12}" y="${y2+dy*12+4}" text-anchor="middle" style="fill:var(--accent)">F</text>`;
+      const xt=x0-34, yt0=Math.max(cy-r-48,yTop+26);
+      g+=`<text class="dl" x="${xt}" y="${yt0}" text-anchor="end" style="fill:var(--water)">corte longitudinal · curva ${fmt(o.alfa,o.alfa%1?2:0)}°</text>`;
+      g+=`<text class="dl" x="${xt}" y="${yt0+18}" text-anchor="end" style="fill:var(--accent)">F = ${fmt(F_)} kN</text>`;
+      g+=`<text class="dl" x="${xt}" y="${yt0+36}" text-anchor="end" style="fill:var(--accent)">H ${fmt(H_)} · V ${fmt(V_)} ${o.up?'↑':'↓'}</text>`;
+    }
+  }
   if(!arm){
+  if(!o.vert){
   g+=`<line x1="${x0-150}" y1="${cy}" x2="${cx-r-4}" y2="${cy}" stroke="var(--accent)" stroke-width="2.6" marker-end="url(#ar)"/>`;
-  g+=`<text x="${x0-150}" y="${cy-8}" style="fill:var(--accent);font-weight:500">${o.vert?'H':'FH'} = ${fmt(serv?o.FH1:o.FH2)} kN</text>`;
+  g+=`<text x="${x0-150}" y="${cy-8}" style="fill:var(--accent);font-weight:500">FH = ${fmt(serv?o.FH1:o.FH2)} kN</text>`;
+  }
   g+=`<circle cx="${xr}" cy="${yb}" r="4" fill="var(--bad)"/>`;
   }
   // ACI
@@ -1142,7 +1166,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V2.0',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V2.1',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -1208,7 +1232,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.0',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.1',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });
