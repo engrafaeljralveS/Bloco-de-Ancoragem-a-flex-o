@@ -23,6 +23,7 @@ No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90
 - Empuxos de Rankine: ativo e passivo acompanham o dente até o seu fundo.
 - **Bloco acima do solo:** a cota do terreno pode ficar abaixo do topo do bloco, até o nível da base. Nesse caso não há solo sobre o bloco, e os empuxos atuam só na altura enterrada e no dente. Com a base no nível do terreno, o deslizamento é resistido pelo atrito na base (peso do bloco e do tubo) somado ao passivo do dente.
 - O peso próprio do tubo entra na normal da base e no momento estabilizante.
+- **Saliência da laje (j):** a laje da base pode avançar além da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. O ponto de tombamento e o passivo ficam na ponta da saliência, e o solo sobre ela é desprezado. Com j = 0, o bloco é o L original.
 
 **Flexão e cortante nas peças (NBR 6118)**
 
@@ -36,6 +37,7 @@ No painel **Concreto**, escolha o tipo de dimensionamento:
 |---|---|---|
 | N1 | Degrau, face superior | Peso do tubo, água, solo sobre o degrau e peso próprio |
 | N5 | Degrau, face inferior | Reação do solo sob o degrau |
+| N6 | Saliência da laje, face inferior (se j > 0) | Reação do solo sob a saliência |
 | N3 | Parede de apoio do tubo | Força hidráulica e empuxo ativo |
 | N2 | Dente, face do passivo | Empuxo passivo |
 | N4 | Dente, face do ativo | Empuxo ativo |
@@ -65,4 +67,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.2 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.3 · outubro de 2026 · Eng. Rafael J. R. Alves
