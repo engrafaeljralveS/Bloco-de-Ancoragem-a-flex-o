@@ -1,6 +1,6 @@
 # Bloco de Ancoragem
 
-Aplicativo web para verificação de estabilidade e dimensionamento em concreto simples ou armado de **bloco de ancoragem em L com dente de cisalhamento**, para curvas horizontais e verticais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
+Aplicativo web para verificação de estabilidade e dimensionamento em concreto simples ou armado de **bloco de ancoragem em L com chaveta de cisalhamento**, para curvas horizontais e verticais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
 
 **Acesse:** https://engrafaeljralves.github.io/Bloco-de-Ancoragem-a-flex-o/
 
@@ -20,8 +20,8 @@ No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90
 **Estabilidade, nos casos de serviço e de teste**
 - Tombamento e deslizamento, com os fatores de segurança mínimos informados.
 - Tensões na base e posição da resultante (critério ACI quando há tração na base).
-- Empuxos de Rankine: ativo e passivo acompanham o dente até o seu fundo.
-- **Bloco acima do solo:** a cota do terreno pode ficar abaixo do topo do bloco, até o nível da base. Nesse caso não há solo sobre o bloco, e os empuxos atuam só na altura enterrada e no dente. Com a base no nível do terreno, o deslizamento é resistido pelo atrito na base (peso do bloco e do tubo) somado ao passivo do dente.
+- Empuxos de Rankine: ativo e passivo acompanham a chaveta até o seu fundo.
+- **Bloco acima do solo:** a cota do terreno pode ficar abaixo do topo do bloco, até o nível da base. Nesse caso não há solo sobre o bloco, e os empuxos atuam só na altura enterrada e na chaveta. Com a base no nível do terreno, o deslizamento é resistido pelo atrito na base (peso do bloco e do tubo) somado ao passivo da chaveta.
 - O peso próprio do tubo entra na normal da base e no momento estabilizante.
 - **Saliência da laje (j):** a laje da base pode avançar além da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. O ponto de tombamento e o passivo ficam na ponta da saliência, e o solo sobre ela é desprezado. Com j = 0, o bloco é o L original.
 
@@ -39,8 +39,8 @@ No painel **Concreto**, escolha o tipo de dimensionamento:
 | N5 | Degrau, face inferior | Reação do solo sob o degrau |
 | N6 | Saliência da laje, face inferior (se j > 0) | Reação do solo sob a saliência |
 | N3 | Parede de apoio do tubo | Força hidráulica e empuxo ativo |
-| N2 | Dente, face do passivo | Empuxo passivo |
-| N4 | Dente, face do ativo | Empuxo ativo |
+| N2 | Chaveta, face do passivo | Empuxo passivo |
+| N4 | Chaveta, face do ativo | Empuxo ativo |
 
 No concreto armado, para cada posição: armadura calculada e mínima, bitola e espaçamento adotados, armadura de distribuição, cortante sem estribos (VRd1) e abertura de fissuras (ELS-W, item 17.3.3) com o momento de serviço, contra o limite wk,lim escolhido (0,3 mm por padrão).
 
@@ -48,7 +48,7 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 ## Como usar
 
-1. Preencha os dados da tubulação, cotas, solo, bloco, dente e concreto, e escolha concreto simples ou armado. Os resultados atualizam a cada alteração.
+1. Preencha os dados da tubulação, cotas, solo, bloco, chaveta e concreto, e escolha concreto simples ou armado. Os resultados atualizam a cada alteração.
 2. No topo, confira a estabilidade (tombamento, deslizamento e tensões na base). No corte A-A, a aba **Geometria e cargas** mostra os esforços de serviço e de teste, e a aba **Armaduras e esforços** mostra a disposição das armaduras e os diagramas de momento fletor e cortante de cada peça. Mais abaixo, o **Quadro de armaduras** traz o resultado das peças e as verificações de flexão e cortante.
 3. Clique em **Gerar memorial** para baixar a memória de cálculo em Word.
 
@@ -67,4 +67,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.3 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.4 · outubro de 2026 · Eng. Rafael J. R. Alves
