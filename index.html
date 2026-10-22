@@ -12,7 +12,7 @@
 :root{
   --bg:#f3f4f2; --panel:#ffffff; --ink:#1d2326; --muted:#5d686d; --line:#d8dcda; --soft:#e9ecea;
   --accent:#0f5f7a; --accent-soft:#dcebf0; --concrete:#c9ccc8; --concrete-dot:#8e9491; --water:#3c8fb8;
-  --soil:#d8c49c; --soil-line:#8a6d3b; --act:#b5651d; --steel:#a3243b; --ok:#21794a; --ok-bg:#e1f1e7; --bad:#b3261e; --bad-bg:#f8e2df; --warn:#9a6400; --warn-bg:#f8eed6;
+  --soil:#d8c49c; --soil-line:#8a6d3b; --act:#b5651d; --steel:#a3243b; --d1:#1d6fa8; --d2:#b5651d; --ok:#21794a; --ok-bg:#e1f1e7; --bad:#b3261e; --bad-bg:#f8e2df; --warn:#9a6400; --warn-bg:#f8eed6;
   --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
   --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
@@ -20,11 +20,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#141819; --panel:#1c2224; --ink:#e4e8e6; --muted:#9aa5a9; --line:#323b3e; --soft:#252c2f;
   --accent:#5cb3d1; --accent-soft:#1d3640; --concrete:#4a5052; --concrete-dot:#6f7678; --water:#4fa3cc;
-  --soil:#4d3f2a; --soil-line:#c8a46a; --act:#e39a55; --steel:#ef7a8e; --ok:#6cc792; --ok-bg:#1b3326; --bad:#f08a80; --bad-bg:#3d1f1c; --warn:#e3b45c; --warn-bg:#3a2e14; color-scheme:dark}}
+  --soil:#4d3f2a; --soil-line:#c8a46a; --act:#e39a55; --steel:#ef7a8e; --d1:#3f9ad4; --d2:#c9773a; --ok:#6cc792; --ok-bg:#1b3326; --bad:#f08a80; --bad-bg:#3d1f1c; --warn:#e3b45c; --warn-bg:#3a2e14; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141819; --panel:#1c2224; --ink:#e4e8e6; --muted:#9aa5a9; --line:#323b3e; --soft:#252c2f;
   --accent:#5cb3d1; --accent-soft:#1d3640; --concrete:#4a5052; --concrete-dot:#6f7678; --water:#4fa3cc;
-  --soil:#4d3f2a; --soil-line:#c8a46a; --act:#e39a55; --steel:#ef7a8e; --ok:#6cc792; --ok-bg:#1b3326; --bad:#f08a80; --bad-bg:#3d1f1c; --warn:#e3b45c; --warn-bg:#3a2e14; color-scheme:dark}
+  --soil:#4d3f2a; --soil-line:#c8a46a; --act:#e39a55; --steel:#ef7a8e; --d1:#3f9ad4; --d2:#c9773a; --ok:#6cc792; --ok-bg:#1b3326; --bad:#f08a80; --bad-bg:#3d1f1c; --warn:#e3b45c; --warn-bg:#3a2e14; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
@@ -90,6 +90,14 @@ details p,details li{max-width:80ch;color:var(--ink)}
 details li{margin-bottom:4px}
 details h4{font:600 12px var(--f-body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin:14px 0 4px}
 .muted{color:var(--muted)}
+.cutctl{display:flex;gap:8px;flex-wrap:wrap}
+.cutctl .seg{min-width:0}
+.vtabs button{padding-inline:12px}
+.diag{margin-top:10px;position:relative}
+.diag svg{width:100%;height:auto;display:block}
+.diag text{font-family:var(--f-mono);font-size:11px;fill:var(--ink)}
+.diag .tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font:12px var(--f-mono);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12);white-space:nowrap;display:none;z-index:2}
+.diag .tip i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 .cutbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}.cutbar h2{margin:0}.cutbar .seg{min-width:220px}
 .flab{font-size:12px;color:var(--muted);line-height:1.25;display:block;margin-bottom:3px}
 .memrow{display:flex;flex-direction:column;gap:6px}.memrow .btn{width:100%}
@@ -123,7 +131,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem com Dente</h1>
     <p class="sub">Curvas horizontais com junta elástica · bloco em L com dente de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V1.6 · out/2026</span>
+  <span class="pill neu">Versão V1.7 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -186,6 +194,7 @@ fieldset.unit{border-color:var(--ink)}
       <div class="f"><label for="v_fik">φ dente · N2, N4</label><div class="in"><select id="v_fik"><option>8</option><option selected>10</option><option>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
       <div class="f"><label for="v_rmode">Armadura mínima</label><div class="in"><select id="v_rmode"><option value="nbr" selected>NBR Tab. 17.3</option><option value="inf">Taxa informada</option></select></div></div>
       <div class="f"><label for="v_rho">Taxa mínima informada</label><div class="in"><input id="v_rho" type="number" step="0.01" value="0.10" disabled><span>%</span></div></div>
+      <div class="f full"><label for="v_wlim">Abertura máxima de fissura wk,lim</label><div class="in"><select id="v_wlim"><option value="0.1">0,1</option><option value="0.2">0,2</option><option value="0.3" selected>0,3 · NBR 6118, CAA II e III</option><option value="0.4">0,4 · CAA I</option></select><span>mm</span></div></div>
       <p class="hint">γc = 1,4 e γs = 1,15. A taxa informada vale para todas as peças e serve para seções maciças, como a parede.</p>
     </fieldset>
     <fieldset><legend>Fatores de segurança mínimos</legend>
@@ -219,9 +228,13 @@ fieldset.unit{border-color:var(--ink)}
     </div>
     <div class="card">
       <div class="cutbar"><h2>Corte A-A</h2>
-        <div class="seg" role="group" aria-label="Caso exibido no corte"><button type="button" id="c_serv" aria-pressed="true">Serviço</button><button type="button" id="c_test" aria-pressed="false">Teste</button></div></div>
+        <div class="cutctl">
+          <div class="seg vtabs" role="group" aria-label="Vista do corte"><button type="button" id="t_cargas" aria-pressed="true">Geometria e cargas</button><button type="button" id="t_arm" aria-pressed="false">Armaduras e esforços</button></div>
+          <div class="seg" role="group" aria-label="Caso exibido no corte" id="c_seg"><button type="button" id="c_serv" aria-pressed="true">Serviço</button><button type="button" id="c_test" aria-pressed="false">Teste</button></div>
+        </div></div>
       <svg class="draw" id="r_svg" viewBox="0 0 780 440" role="img" aria-label="Corte do bloco com dente, solo, diagramas de empuxo e armaduras"></svg>
       <p class="muted" id="c_note" style="margin:6px 0 0;font-size:12px"></p>
+      <div class="diag" id="r_diagw" hidden><div id="r_diag"></div><div class="tip" id="r_tip"></div></div>
     </div>
     <div class="two">
       <div class="card tbl"><h2>Caso 1 · Serviço</h2><p class="lead">Reaterro executado · ativo e passivo até o fundo do dente · passivo ½ mobilizado</p><table id="r_t1"></table></div>
@@ -280,6 +293,7 @@ fieldset.unit{border-color:var(--ink)}
   <ol>
     <li><b>Flexão:</b> λ = 0,8 e αc = 0,85. x = 1,25·d'·[1 − √(1 − Md/(0,425·fcd·bw·d'²))], As = Md/[fyd·(d' − 0,4x)], com d' = h − cobrimento − φ/2 e x/d' ≤ 0,45.</li>
     <li><b>Armadura mínima:</b> ρmín da Tabela 17.3 (0,150% até C30) ou taxa informada. Espaçamento em múltiplos de 2,5 cm, limitado a 20 cm e a 2h. Distribuição ≥ 20% da principal e ≥ 0,9 cm²/m.</li>
+    <li><b>Abertura de fissuras (ELS-W, item 17.3.3):</b> com o momento de serviço Mk do caso 1 (γf = 1). Se Mk &lt; Mr = 1,5·fctm·bw·h²/6, a seção não fissura. Caso contrário, σs no estádio II (αe = Es/Ecs, Ecs = αi·5600√fck) e wk = menor de φ/(12,5·η1)·σs/Es·3σs/fctm e φ/(12,5·η1)·σs/Es·(4/ρr + 45), com η1 = 2,25 e ρr na área de envolvimento de cada barra (até 7,5φ). Limite wk,lim informado (0,3 mm para CAA II e III).</li>
     <li><b>Cortante sem estribos:</b> VRd1 = τRd·k·(1,2 + 40ρ1)·bw·d', com τRd = 0,25·fctd, fctd = 0,7·0,3·fck^(2/3)/1,4, k = 1,6 − d' ≥ 1 e ρ1 ≤ 0,02.</li>
   </ol>
   <p class="muted">Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados aqui.</p>
@@ -319,6 +333,28 @@ function rc(Md,Vd,bw,h,cfg,phi){
   o.okV=Vd<=o.VRd1+1e-9; o.okM=o.okDuct; o.ok=o.okM&&o.okV&&s>0;
   return o;
 }
+/* Abertura de fissuras (NBR 6118, 17.3.3) com Mk de serviço; R = resultado de rc() */
+function fiss(Mk,R,bw,h,cfg,phi){
+  if(!R||R.err||!(R.s>0)) return null;
+  const fck=cfg.fck, fctm=0.3*Math.pow(fck,2/3)*1000, Wc=bw*h*h/6, Mr=1.5*fctm*Wc;
+  const Es=210e6, Ecs=Math.min(0.8+0.2*fck/80,1)*5600*Math.sqrt(fck)*1000, ae=Es/Ecs;
+  const As=R.Asef*bw*1e-4, d=R.dd;
+  const xII=(-ae*As+Math.sqrt((ae*As)**2+2*bw*ae*As*d))/bw, z=d-xII/3;
+  const ss=Mk>0?Mk/(As*z):0;
+  const f=phi/1000, sb=R.s/100, Acr=Math.min(sb,15*f)*Math.min(cfg.cob/100+f/2+7.5*f,h/2), rr=(Math.PI*f*f/4)/Acr, eta=2.25;
+  const w1=f/(12.5*eta)*ss/Es*3*ss/fctm, w2=f/(12.5*eta)*ss/Es*(4/rr+45);
+  const fissura=Mk>Mr, wk=fissura?Math.min(w1,w2)*1000:0;
+  return {Mk,Mr,fissura,ss,xII,rr,wk,lim:cfg.wlim,ok:wk<=cfg.wlim+1e-9};
+}
+/* Diagramas M e V de um balanço: w(t) em kN/m e cargas concentradas [t,P], t medido a partir da ponta */
+function diag(L,w,pts){
+  const n=40,m=160,x=[],M=[],V=[];
+  for(let i=0;i<=n;i++){const u=L*i/n;let mm=0,vv=0;
+    for(let j=0;j<m;j++){const t=(j+0.5)/m*u,q=w(t)*u/m;vv+=q;mm+=q*(u-t)}
+    for(const [t,P] of (pts||[])) if(t<=u+1e-12){vv+=P;mm+=P*(u-t)}
+    x.push(u);M.push(mm);V.push(vv)}
+  return {x,M,V};
+}
 /* Seção de concreto simples (NBR 6118, seção 24), largura bw e altura h em m */
 function cs(Md,Vd,bw,h,fck){
   const fctm=0.3*Math.pow(fck,2/3)*1000, fctd=0.7*fctm/1.68, twRd=0.3*0.85*fctd;
@@ -331,7 +367,9 @@ function face(MkS,VkS,MkT,VkT,gf1,gf2,bw,h,cfg,phi){
   const MdS=gf1*MkS, MdT=gf2*MkT, VdS=gf1*VkS, VdT=gf2*VkT;
   const MD=R2(Math.max(MdS,MdT,0)), VD=R2(Math.max(VdS,VdT,0));
   const gov=(MdS<=0&&MdT<=0)?'mínima':(MdT>MdS?'teste':'serviço');
-  return {MkS,VkS,MkT,VkT,MdS,MdT,VdS,VdT,MD,VD,gov,R:rc(MD,VD,bw,h,cfg,phi)};
+  const Rr=rc(MD,VD,bw,h,cfg,phi), Wf=fiss(Math.max(MkS,0),Rr,bw,h,cfg,phi);
+  if(Wf&&!Wf.ok) Rr.ok=false;
+  return {MkS,VkS,MkT,VkT,MdS,MdT,VdS,VdT,MD,VD,gov,R:Rr,W:Wf};
 }
 function compute(p){
   const {ps,pt,alfa,DN,DEmm,cT,cG,phi,coh,gs,del,sadm,fck,gc}=p, De=DEmm/1000;
@@ -389,7 +427,7 @@ function compute(p){
       M+=sg*u*D*du; Vr+=sg*D*du;}
     return {M,V:Vr,fora:false};
   }
-  const cfg={cob:p.cob,fck,fyk:p.fyk,rmin:p.rmode==='inf'?p.rho/100:null};
+  const cfg={cob:p.cob,fck,fyk:p.fyk,rmin:p.rmode==='inf'?p.rho/100:null,wlim:Number.isFinite(p.wlim)?p.wlim:0.3};
   const gf1=p.gf1, gf2=p.gf2;
   // degrau
   const Ww=De*De*Math.PI*0.25*D*10, Wtb=p.wt*D, Wst=B*D*E*gc;
@@ -408,16 +446,29 @@ function compute(p){
     KP=face(mom(EP2/2,EP3/2),cor(EP2/2,EP3/2),mom(EP2t,EP3t),cor(EP2t,EP3t),gf1,gf2,D,TK,cfg,p.fik);
     KA=face(mom(EA2,EA3),cor(EA2,EA3),mom(EA2t,EA3t),cor(EA2t,EA3t),gf1,gf2,D,TK,cfg,p.fik);
   }
+  // diagramas de cálculo (caso que rege em cada face)
+  const sig=(S,x)=>S.fora?0:(S.x===null?S.s1+(S.s2-S.s1)*x/A:(x<S.x?S.smax*(1-x/S.x):0));
+  const zFH=Math.max(F-De/2,0);
+  /* envoltória ponto a ponto entre serviço (γf1) e teste (γf2) */
+  const env=(a,b)=>({x:a.x,M:a.M.map((v,i)=>Math.max(v,b.M[i])),V:a.V.map((v,i)=>Math.max(v,b.V[i]))});
+  const DG={
+    deg:{L:B,
+      a:env(diag(B,()=>gf1*qS/B),diag(B,()=>gf2*qT/B)),
+      b:env(diag(B,t=>gf1*(sig(S1,A-t)*D-gc*E*D)),diag(B,t=>gf2*(sig(S2,A-t)*D-gc*E*D)))},
+    par:{L:F, a:env(diag(F,t=>gf1*D*(EA1+(EAf-EA1)*t/F),[[zFH,gf1*FH1]]),diag(F,()=>0,[[zFH,gf2*FH2]]))},
+    den:kon?{L:HK,
+      a:env(diag(HK,t=>gf1*D*(EP3/2+(EP2/2-EP3/2)*t/HK)),diag(HK,t=>gf2*D*(EP3t+(EP2t-EP3t)*t/HK))),
+      b:env(diag(HK,t=>gf1*D*(EA3+(EA2-EA3)*t/HK)),diag(HK,t=>gf2*D*(EA3t+(EA2t-EA3t)*t/HK)))}:null};
   const SIMP={
     deg:cs(Math.max(DSUP.MD,DINF.MD),Math.max(DSUP.VD,DINF.VD),D,E,fck), degFace:DSUP.MD>=DINF.MD?'face superior':'face inferior',
     par:cs(PAR.MD,PAR.VD,D,C,fck),
     den:kon?cs(Math.max(KP.MD,KA.MD),Math.max(KP.VD,KA.VD),D,TK,fck):null, denFace:kon?(KP.MD>=KA.MD?'face do passivo':'face do ativo'):''};
-  return {modo:p.modo==='simples'?'simples':'armado',SIMP,A,B,C,D,E,F,G,HK,TK,SK,kon,De,Hs,Kp,Ka,EA1,EA2,EA3,EAf,EA2t,EA3t,EP1,EP2,EP3,EP1t,EP2t,EP3t,cgcm,CGm,V0,VK,V,Wb,Wk,xk,Ws,Wt,W,
+  return {modo:p.modo==='simples'?'simples':'armado',SIMP,DG,A,B,C,D,E,F,G,HK,TK,SK,kon,De,Hs,Kp,Ka,EA1,EA2,EA3,EAf,EA2t,EA3t,EP1,EP2,EP3,EP1t,EP2t,EP3t,cgcm,CGm,V0,VK,V,Wb,Wk,xk,Ws,Wt,W,
     PAS_S,RP_S,PAS_T,RP_T,RPk_S,RPk_T,RAk_S,RAk_T,RA,yEcm,FH1,FH2,MT1,MT2,Me1,Me2,FD1,FD2,FDe1,FDe2,FDe1_0,FD1_0,FST1,FSD1,FST2,FSD2,
     xS,xT,a3,okXS,okXT,S1,S2,tracS:S1.s2<0,tracT:S2.s2<0,Ww,Wtb,Wst,Wsd,rS,rT,MaW,EaW,cfg,
     N1:DSUP,N5:DINF,N3:PAR,N2:KP,N4:KA};
 }
-if(typeof module!=='undefined') module.exports={compute,rc,cs};
+if(typeof module!=='undefined') module.exports={compute,rc,cs,fiss,diag};
 </script>
 <script>
 (function(){
@@ -432,6 +483,7 @@ const DEF={};FIELDS.forEach(id=>{const el=$(id);DEF[id]=el.type==='checkbox'?el.
 function chip(cls,k,v,r){return `<div class="chip ${cls}"><span class="k">${k}</span><span class="v">${v}</span>${r?`<span class="r">${r}</span>`:''}</div>`}
 function rows(list){return '<tr><th>Grandeza</th><th class="n">Valor</th></tr>'+list.map(([l,v,u,cls])=>`<tr><td>${l}</td><td class="n${cls?' '+cls:''}">${v}${u?' '+u:''}</td></tr>`).join('')}
 const sitTxt=ok=>ok?'atende':'não atende', sitCls=ok=>ok?'s-ok':'s-bad';
+const wkTxt=S=>!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)}`:'não fissura');
 const sugT=S=>S.R.sug?` → use φ${fphi(S.R.sug.phi)} c/ ${fmt(S.R.sug.s,1)}`:'';
 const bar=S=>S.R.err?S.R.err:`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`+sugT(S);
 const fState=S=>S.R.ok?(S.R.okS?'ok':'warn'):'bad';
@@ -453,8 +505,11 @@ $('v_pt').addEventListener('input',()=>{ptManual=$('v_pt').value!==''});
 $('v_kon').addEventListener('change',syncInputs);$('v_rmode').addEventListener('change',syncInputs);
 $('f1').addEventListener('input',e=>{if(NOTDATA.has(e.target.id))return;calc();if(e.target.id!=='u_find')marcarSujo()});
 $('f1').addEventListener('change',e=>{if(NOTDATA.has(e.target.id))return;calc()});
-let caso='serv', last=null, R=null;
+let caso='serv', vista='cargas', last=null, R=null;
 function setCaso(c){caso=c;$('c_serv').setAttribute('aria-pressed',c==='serv');$('c_test').setAttribute('aria-pressed',c==='test');if(last)draw(last)}
+function setVista(v){vista=v;$('t_cargas').setAttribute('aria-pressed',v==='cargas');$('t_arm').setAttribute('aria-pressed',v==='arm');
+  $('c_seg').hidden=v==='arm';$('r_diagw').hidden=v!=='arm';if(last){draw(last);if(v==='arm')renderDiag(last)}}
+$('t_cargas').addEventListener('click',()=>setVista('cargas'));$('t_arm').addEventListener('click',()=>setVista('arm'));
 $('c_serv').addEventListener('click',()=>setCaso('serv'));$('c_test').addEventListener('click',()=>setCaso('test'));
 
 /* tabela de peça com duas faces ou uma face */
@@ -473,6 +528,8 @@ function elemTable(cols,pre){
   h+=line('As efetiva',S=>S.R.err?'—':fmt(S.R.Asef,2),'cm²/m');
   h+=line('Distribuição',S=>S.R.err?'—':fmt(S.R.Asdist,2),'cm²/m');
   h+=line('Cortante Vd / VRd1',S=>S.R.err?'—':{v:`${fmt(S.VD)} / ${fmt(S.R.VRd1)}`,c:sitCls(S.R.okV)},'kN');
+  h+=line('Fissuração · Mk serviço / Mr',S=>S.W?`${fmt(S.W.Mk)} / ${fmt(S.W.Mr)}`:'—','kN·m');
+  h+=line('Abertura wk (ELS-W)',S=>!S.W?'—':(S.W.fissura?{v:`${fmt(S.W.wk,3)} mm ≤ ${fmt(S.W.lim,1)} mm · ${sitTxt(S.W.ok)}`,c:sitCls(S.W.ok)}:{v:'não fissura (Mk < Mr)',c:'s-ok'}),'');
   return h;
 }
 
@@ -484,7 +541,7 @@ function calc(){
     a:num('v_a'),b:num('v_b'),d:num('v_d'),e:num('v_e'),g:num('v_g'),
     kon:$('v_kon').checked,hk:num('v_hk'),tk:num('v_tk'),sk:num('v_sk'),
     fyk:+$('v_fyk').value,cob:num('v_cob'),fid:+$('v_fid').value,fip:+$('v_fip').value,fik:+$('v_fik').value,
-    rmode:$('v_rmode').value,rho:num('v_rho'),gf1:num('v_gf1'),gf2:num('v_gf2'),modo:$('v_modo').value};
+    rmode:$('v_rmode').value,rho:num('v_rho'),gf1:num('v_gf1'),gf2:num('v_gf2'),modo:$('v_modo').value,wlim:+$('v_wlim').value};
   const ptAuto=!ptManual;
   const A=p.a/100,B=p.b/100,G=p.g/100,E=p.e/100;
   $('v_dimhint').textContent=`c = a − b = ${fmt((A-B)*100,0)} cm · f = g − e = ${fmt((G-E)*100,0)} cm · b mínimo sugerido (DN/10 + 10) = ${fmt(p.DN/10+10,0)} cm`;
@@ -632,22 +689,22 @@ function calc(){
     ['Pressão base / fundo · serviço',S=>S===o.N2?`${fmt(o.EP2/2)} / ${fmt(o.EP3/2)}`:`${fmt(o.EA2)} / ${fmt(o.EA3)}`,'kPa'],
     ['Pressão base / fundo · teste',S=>S===o.N2?`${fmt(o.EP2t)} / ${fmt(o.EP3t)}`:`${fmt(o.EA2t)} / ${fmt(o.EA3t)}`,'kPa'],
   ]):'<tr><td class="muted">Bloco sem dente. Ative o dente no painel de entradas.</td></tr>';
-  const q=(n,S)=>S.R.err?`<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n s-bad" colspan="5">${S.R.err}</td></tr>`:
-    `<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}</td><td class="n${S.R.okS?'':' s-warn'}">φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}${sugT(S)}</td><td class="n">${fmt(S.R.Asef,2)}</td><td class="n">${S.R.nb}</td><td class="${S.R.ok?'s-ok':'s-bad'}">${S.R.ok?'atende':'não atende'}</td></tr>`;
-  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Elemento</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada</th><th class="n">cm²/m</th><th class="n">Barras</th><th>Situação</th></tr>'
+  const q=(n,S)=>S.R.err?`<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n s-bad" colspan="6">${S.R.err}</td></tr>`:
+    `<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}</td><td class="n${S.R.okS?'':' s-warn'}">φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}${sugT(S)}</td><td class="n">${fmt(S.R.Asef,2)}</td><td class="n">${S.R.nb}</td><td class="n ${S.W&&!S.W.ok?'s-bad':''}">${wkTxt(S)}</td><td class="${S.R.ok?'s-ok':'s-bad'}">${S.R.ok?'atende':'não atende'}</td></tr>`;
+  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Elemento</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada</th><th class="n">cm²/m</th><th class="n">Barras</th><th class="n">wk mm</th><th>Situação</th></tr>'
     +pieces.map(([n,S])=>q(n,S)).join('')
-    +`<tr><td colspan="8" class="muted" style="font-size:12px">Barras ao longo da largura d = ${fmt(p.d,0)} cm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante resistido sem estribos (VRd1).</td></tr>`;
+    +`<tr><td colspan="9" class="muted" style="font-size:12px">Barras ao longo da largura d = ${fmt(p.d,0)} cm. Abertura de fissuras com o momento de serviço (caso 1), limite ${fmt(p.wlim,1)} mm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante resistido sem estribos (VRd1).</td></tr>`;
   }
 
   R={p,o,ptAuto,lim,aciS,aciT,okTens1,okTens2,allOk,fails,pieces,simp,SP};
-  last=o; draw(o);
+  last=o; draw(o); if(vista==='arm') renderDiag(o);
 }
 
 function dimH(x1,x2,y,t){return `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="var(--muted)"/><line x1="${x1}" y1="${y-5}" x2="${x1}" y2="${y+5}" stroke="var(--muted)"/><line x1="${x2}" y1="${y-5}" x2="${x2}" y2="${y+5}" stroke="var(--muted)"/><text x="${(x1+x2)/2}" y="${y+14}" text-anchor="middle">${t}</text>`}
 function draw(o){
-  const {A,B,C,E,G,F,De,Hs,HK,TK,SK}=o, serv=caso==='serv';
-  const W=780,H=440,padL=190,padR=190,top=46,bot=70;
-  const hs=serv?Math.max(Hs,0):0;
+  const {A,B,C,E,G,F,De,Hs,HK,TK,SK}=o, arm=vista==='arm', serv=caso==='serv';
+  const W=780,H=440,padL=arm?150:190,padR=arm?150:190,top=46,bot=70;
+  const hs=(serv&&!arm)?Math.max(Hs,0):0;
   const s=Math.min((W-padL-padR)/A,(H-top-bot)/(G+hs+HK));
   const x0=padL+((W-padL-padR)-A*s)/2, yb=H-bot-HK*s, yTop=yb-G*s, yStep=yb-E*s, xb=x0+B*s, xr=x0+A*s;
   const yk=yb+HK*s, xkR=xr-SK*s, xkL=xkR-TK*s;
@@ -663,7 +720,8 @@ function draw(o){
   <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--act)"/></marker>
   <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker>
   <marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--soil-line)"/></marker></defs>`;
-  if(serv){
+  if(arm){}
+  else if(serv){
     g+=`<line x1="16" y1="${ySoil}" x2="${W-16}" y2="${ySoil}" stroke="var(--muted)" stroke-dasharray="6 4"/><text x="20" y="${ySoil-6}">terreno</text>`;
     if(hs>0){
       g+=`<rect x="${x0}" y="${yTop}" width="${B*s}" height="${F*s}" fill="var(--soil)" fill-opacity=".55"/>`;
@@ -677,9 +735,16 @@ function draw(o){
   if(o.kon) g+=`<rect x="${xkL}" y="${yb-1}" width="${TK*s}" height="${HK*s+1}" fill="url(#hc)" stroke="var(--ink)" stroke-width="1.5"/>`;
   g+=`<path d="M${x0} ${yb}V${yStep}H${xb}V${yTop}H${xr}V${yb}Z" fill="url(#hc)" stroke="var(--ink)" stroke-width="1.5"/>`;
   if(o.kon) g+=`<line x1="${xkL+1}" y1="${yb}" x2="${xkR-1}" y2="${yb}" stroke="url(#hc)" stroke-width="2"/>`;
-  g+=`<text x="${(xb+xr)/2}" y="${(yTop+yb)/2-4}" text-anchor="middle" style="font-weight:500">Pc</text><text x="${(xb+xr)/2}" y="${(yTop+yb)/2+10}" text-anchor="middle" style="font-weight:500">${fmt(o.Wt)} kN</text>`;
-  // armaduras (só no concreto armado)
-  if(o.modo!=='simples'){ const anc=Math.min(C*0.45,0.9)*s;
+  if(!arm) g+=`<text x="${(xb+xr)/2}" y="${(yTop+yb)/2-4}" text-anchor="middle" style="font-weight:500">Pc</text><text x="${(xb+xr)/2}" y="${(yTop+yb)/2+10}" text-anchor="middle" style="font-weight:500">${fmt(o.Wt)} kN</text>`;
+  else if(o.modo==='simples') g+=`<text x="${(xb+xr)/2}" y="${(yTop+yStep)/2}" text-anchor="middle" style="font-weight:500">concreto simples</text><text x="${(xb+xr)/2}" y="${(yTop+yStep)/2+14}" text-anchor="middle" style="fill:var(--muted)">sem armadura</text>`;
+  // seções críticas (engastes) e armaduras, só na vista de armaduras
+  if(arm){
+    const SC='stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="5 3"';
+    g+=`<line x1="${xb}" y1="${yStep-4}" x2="${xb}" y2="${yb+4}" ${SC}/><line x1="${xb-4}" y1="${yStep}" x2="${xr+4}" y2="${yStep}" ${SC}/>`;
+    if(o.kon) g+=`<line x1="${xkL-4}" y1="${yb}" x2="${xkR+4}" y2="${yb}" ${SC}/>`;
+    g+=`<text x="${x0+4}" y="${yb+18}" style="font-size:10px;fill:var(--muted)">seções críticas (engastes) tracejadas</text>`;
+  }
+  if(arm&&o.modo!=='simples'){ const anc=Math.min(C*0.45,0.9)*s;
     const y1=yStep+cv; g+=`<path d="M${x0+cv} ${y1+Math.min(E*s*0.4,12)}V${y1}H${xb+anc}" ${ST}/>`+tag(x0+cv+4,y1+13,lb('N1',o.N1));
     const y5=yb-cv; g+=`<path d="M${x0+cv} ${y5-Math.min(E*s*0.4,12)}V${y5}H${xb+anc}" ${ST}/>`+tag(x0+cv+4,y5-5,lb('N5',o.N5));
     const x3=xb+cv; g+=`<path d="M${x3+Math.min(C*s*0.3,12)} ${yTop+cv}H${x3}V${yStep+Math.min(E*0.8,0.9)*s}" ${ST}/>`+tag(x3+6,yTop+cv+24,lb('N3',o.N3));
@@ -688,6 +753,7 @@ function draw(o){
       g+=tag(xs2-4,ya-6,lb('N2',o.N2),'end')+tag(xs4-4,ya-20,lb('N4',o.N4),'end');
     }
   }
+  if(!arm){
   // ativo na face do tubo
   if(serv){
     const w1=o.EA1*k,w2=o.EA2*k,xl=x0;
@@ -720,14 +786,17 @@ function draw(o){
       g+=`<text x="${xp+w2+6}" y="${yb+10}" style="fill:var(--accent)">Ep = ${fmt(Rp)} kN</text>`;
     } else g+=`<text x="${xp+w2/2}" y="${yb+20}" text-anchor="middle" style="fill:var(--accent)">Ep = ${fmt(Rp)} kN</text>`;
   }
+  }
   // tubo e força hidráulica
   g+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--water)" fill-opacity=".35" stroke="var(--water)" stroke-width="2"/>`;
+  if(!arm){
   g+=`<line x1="${x0-150}" y1="${cy}" x2="${cx-r-4}" y2="${cy}" stroke="var(--accent)" stroke-width="2.6" marker-end="url(#ar)"/>`;
   g+=`<text x="${x0-150}" y="${cy-8}" style="fill:var(--accent);font-weight:500">FH = ${fmt(serv?o.FH1:o.FH2)} kN</text>`;
   g+=`<circle cx="${xr}" cy="${yb}" r="4" fill="var(--bad)"/>`;
+  }
   // ACI
   const yA=yk+14+(o.kon?12:0);
-  if(serv?o.tracS:o.tracT){ const x=serv?o.xS:o.xT, ok=serv?o.okXS:o.okXT;
+  if(!arm&&(serv?o.tracS:o.tracT)){ const x=serv?o.xS:o.xT, ok=serv?o.okXS:o.okXT;
     const z0=serv?xr-2*A/3*s:x0, z1=serv?xr-A/3*s:xr;
     g+=`<rect x="${z0}" y="${yA-3}" width="${z1-z0}" height="6" fill="var(--ok)" fill-opacity=".35"/>`;
     const px=Math.max(x0-30,Math.min(xr+30,xr-x*s)), col=ok?'var(--ok)':'var(--bad)';
@@ -739,21 +808,85 @@ function draw(o){
   g+=`<text x="${xb-6}" y="${yTop+14}" text-anchor="end">f ${fmt(F*100,0)}</text><text x="${xb-6}" y="${(yStep+yb)/2+4}" text-anchor="end">e ${fmt(E*100,0)}</text>`;
   g+=`<text x="${xr-6}" y="${yTop+14}" text-anchor="end">g ${fmt(G*100,0)}</text>`;
   if(o.kon) g+=`<text x="${(xkL+xkR)/2}" y="${yk-6}" text-anchor="middle" style="font-size:10px">h${fmt(HK*100,0)}·t${fmt(TK*100,0)}</text>`;
-  if(serv&&hs>0) g+=`<text x="${x0+6}" y="${ySoil+16}">Hsolo ${fmt(Hs)} m</text>`;
+  if(!arm&&serv&&hs>0) g+=`<text x="${x0+6}" y="${ySoil+16}">Hsolo ${fmt(Hs)} m</text>`;
   $('r_svg').innerHTML=g;
-  $('c_note').textContent=(serv
+  $('c_note').textContent=arm
+    ?(o.modo==='simples'?'Bloco em concreto simples, sem armadura. As linhas tracejadas marcam as seções críticas onde os momentos e cortantes são máximos.':'Disposição das armaduras N1 a N5, com bitola e espaçamento adotados. As linhas tracejadas marcam as seções críticas (engastes).')
+      +' Abaixo, os diagramas de momento fletor e cortante de cálculo de cada peça: envoltória dos casos de serviço e de teste, já majorados por γf.'
+    :(serv
     ?'Serviço: ativo na face do tubo (laranja) e passivo do terreno até a base (azul).'
     :'Teste: sem solo sobre o bloco e sem ativo na altura do bloco; passivo na altura g.')
     +(o.kon?' Abaixo da base, ativo e passivo acompanham o dente até o seu fundo e entram no deslizamento.':'')
-    +(o.modo==='simples'?' Bloco em concreto simples, sem armadura.':' Em vermelho, as armaduras N1 a N5.')+' Com tração na base, a faixa verde marca a região admissível da resultante R (ACI).';
+    +' Com tração na base, a faixa verde marca a região admissível da resultante R (ACI). As armaduras estão na aba Armaduras e esforços.';
+}
+
+/* ===================== Diagramas de momento fletor e cortante ===================== */
+let DIAGP=[];
+function diagSvg(o,interativo){
+  const simp=o.modo==='simples', NN=(n,t)=>simp?t:`${n} · ${t}`;
+  const rws=[
+    {nm:'Degrau',L:o.B,info:`balanço b = ${fmt(o.B*100,0)} cm`,s:[{d:o.DG.deg.a,lab:NN('N1','tração em cima'),c:'d1'},{d:o.DG.deg.b,lab:NN('N5','tração embaixo'),c:'d2'}]},
+    {nm:'Parede de apoio do tubo',L:o.F,info:`balanço f = ${fmt(o.F*100,0)} cm`,s:[{d:o.DG.par.a,lab:NN('N3','face do tubo'),c:'d1'}]},
+    ...(o.kon?[{nm:'Dente',L:o.HK,info:`balanço h = ${fmt(o.HK*100,0)} cm`,s:[{d:o.DG.den.a,lab:NN('N2','face do passivo'),c:'d1'},{d:o.DG.den.b,lab:NN('N4','face do ativo'),c:'d2'}]}]:[])];
+  const W=780, RH=196, H=rws.length*RH+6, PW=(W-16*3)/2, PH=118;
+  let g=''; DIAGP=[];
+  rws.forEach((r,ri)=>{
+    const y0=ri*RH+6;
+    g+=`<text x="16" y="${y0+12}" style="font-family:var(--f-body);font-size:13px;font-weight:600">${r.nm}</text><text x="${16+r.nm.length*7.4+12}" y="${y0+12}" style="fill:var(--muted)">${r.info}</text>`;
+    let lx=16; r.s.forEach(se=>{g+=`<rect x="${lx}" y="${y0+20}" width="10" height="10" rx="2" fill="var(--${se.c})"/><text x="${lx+15}" y="${y0+29}" style="fill:var(--muted)">${se.lab}</text>`;lx+=se.lab.length*6.7+40});
+    [['M','Momento fletor Md (kN·m)'],['V','Cortante Vd (kN)']].forEach(([key,tt],ci)=>{
+      const px=16+ci*(PW+16), py=y0+40, two=r.s.length>1;
+      const X0=px+8, X1=px+PW-74, base=two?py+16+(PH-16)/2:py+PH-12;
+      const amp=two?(PH-16)/2-8:PH-34;
+      const vals=r.s.map(se=>se.d[key].map(v=>Math.max(v,0)));
+      const vmax=Math.max(1e-9,...vals.flat());
+      const X=i=>X0+(X1-X0)*i/(r.s[0].d.x.length-1), Yv=(v,k)=>base+(k===0?-1:1)*v/vmax*amp;
+      g+=`<rect x="${px}" y="${py}" width="${PW}" height="${PH+18}" rx="6" fill="var(--bg)" stroke="var(--soft)"/>`;
+      g+=`<text x="${px+8}" y="${py+13}" style="fill:var(--muted);font-family:var(--f-body)">${tt}</text>`;
+      vals.forEach((vs,k)=>{const c=r.s[k].c;
+        let d=`M${X(0)} ${base}`; vs.forEach((v,i)=>{d+=`L${X(i)} ${Yv(v,k)}`}); d+=`L${X(vs.length-1)} ${base}Z`;
+        g+=`<path d="${d}" fill="var(--${c})" fill-opacity=".16"/>`;
+        let l=''; vs.forEach((v,i)=>{l+=(i?'L':'M')+X(i)+' '+Yv(v,k)}); g+=`<path d="${l}" fill="none" stroke="var(--${c})" stroke-width="2" stroke-linejoin="round"/>`;
+        const ve=vs[vs.length-1]; g+=`<circle cx="${X(vs.length-1)}" cy="${Yv(ve,k)}" r="3.5" fill="var(--${c})" stroke="var(--bg)" stroke-width="1.5"/>`;
+        g+=`<text x="${X1+8}" y="${Math.max(py+24,Math.min(py+PH+2,Yv(ve,k)+4))}" style="font-weight:500">${fmt(ve)}</text>`;
+      });
+      g+=`<line x1="${X0}" y1="${base}" x2="${X1}" y2="${base}" stroke="var(--ink)" stroke-width="1.2"/>`;
+      g+=`<line x1="${X1}" y1="${py+20}" x2="${X1}" y2="${py+PH+2}" stroke="var(--ink)" stroke-width="2"/>`;
+      for(let k2=0;k2<6;k2++) g+=`<line x1="${X1}" y1="${py+24+k2*(PH-24)/5}" x2="${X1+5}" y2="${py+20+k2*(PH-24)/5}" stroke="var(--muted)"/>`;
+      g+=`<text x="${X0}" y="${py+PH+14}" style="fill:var(--muted)">ponta</text><text x="${X1}" y="${py+PH+14}" text-anchor="end" style="fill:var(--muted)">engaste</text>`;
+      if(interativo) DIAGP.push({x0:X0,x1:X1,y0:py,y1:py+PH+18,L:r.L,key,unit:key==='M'?'kN·m':'kN',s:r.s,nm:r.nm});
+    });
+  });
+  if(interativo) g+=`<line id="dg_x" x1="0" y1="0" x2="0" y2="0" stroke="var(--muted)" stroke-dasharray="3 3" visibility="hidden"/>`;
+  return {svg:g,W,H};
+}
+function renderDiag(o){
+  const {svg,W,H}=diagSvg(o,true);
+  $('r_diag').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Diagramas de momento fletor e esforço cortante de cálculo do degrau, da parede e do dente">${svg}</svg>`;
+  const sv=$('r_diag').firstChild, tip=$('r_tip'), cross=sv.querySelector('#dg_x');
+  const hide=()=>{tip.style.display='none';cross.setAttribute('visibility','hidden')};
+  sv.addEventListener('pointerleave',hide);
+  sv.addEventListener('pointermove',e=>{
+    const pt=sv.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(sv.getScreenCTM().inverse());
+    const P=DIAGP.find(P=>q.x>=P.x0-6&&q.x<=P.x1+6&&q.y>=P.y0&&q.y<=P.y1); if(!P){hide();return}
+    const n=P.s[0].d.x.length-1, i=Math.max(0,Math.min(n,Math.round((q.x-P.x0)/(P.x1-P.x0)*n))), xx=P.x0+(P.x1-P.x0)*i/n;
+    cross.setAttribute('x1',xx);cross.setAttribute('x2',xx);cross.setAttribute('y1',P.y0+18);cross.setAttribute('y2',P.y1-14);cross.setAttribute('visibility','visible');
+    tip.innerHTML=`<div>${P.nm} · ${fmt(P.s[0].d.x[i]*100,0)} cm da ponta</div>`+P.s.map(se=>`<div><i style="background:var(--${se.c})"></i>${se.lab.split(' (')[0]}: ${fmt(Math.max(se.d[P.key][i],0))} ${P.unit}</div>`).join('');
+    const box=$('r_diagw').getBoundingClientRect(); tip.style.display='block';
+    let lx=e.clientX-box.left+14; if(lx+tip.offsetWidth>box.width) lx=e.clientX-box.left-tip.offsetWidth-14;
+    tip.style.left=Math.max(0,lx)+'px'; tip.style.top=(e.clientY-box.top+12)+'px';
+  });
 }
 
 /* ===================== Memorial (.docx, A4) ===================== */
-const LIGHT={bg:'#ffffff',panel:'#ffffff',ink:'#1d2326',muted:'#5d686d',line:'#d8dcda',soft:'#e9ecea',accent:'#0f5f7a','accent-soft':'#dcebf0',concrete:'#c9ccc8','concrete-dot':'#8e9491',water:'#3c8fb8',soil:'#d8c49c','soil-line':'#8a6d3b',act:'#b5651d',steel:'#a3243b',ok:'#21794a','ok-bg':'#e1f1e7',bad:'#b3261e','bad-bg':'#f8e2df',warn:'#9a6400','warn-bg':'#f8eed6'};
-function svgFor(c){const keep=caso;caso=c;draw(last);const inner=$('r_svg').innerHTML;caso=keep;draw(last);
+const LIGHT={bg:'#ffffff',panel:'#ffffff',ink:'#1d2326',muted:'#5d686d',line:'#d8dcda',soft:'#e9ecea',accent:'#0f5f7a','accent-soft':'#dcebf0',concrete:'#c9ccc8','concrete-dot':'#8e9491',water:'#3c8fb8',soil:'#d8c49c','soil-line':'#8a6d3b',act:'#b5651d',steel:'#a3243b',d1:'#1d6fa8',d2:'#b5651d',ok:'#21794a','ok-bg':'#e1f1e7',bad:'#b3261e','bad-bg':'#f8e2df',warn:'#9a6400','warn-bg':'#f8eed6'};
+function svgFor(c,v){const keep=caso,kv=vista;caso=c;vista=v||'cargas';draw(last);const inner=$('r_svg').innerHTML;caso=keep;vista=kv;draw(last);
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 440" width="2340" height="1320"><rect width="780" height="440" fill="#ffffff"/><g font-family="Menlo, Consolas, monospace" font-size="12" fill="#1d2326">`+
     inner.replace(/var\(--([\w-]+)\)/g,(m,k)=>LIGHT[k]||'#000').replace(/<text /g,'<text fill="#1d2326" ')+'</g></svg>';}
-function svgToPng(svg){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const cv=document.createElement('canvas');cv.width=2340;cv.height=1320;
+function diagSvgLight(o){const {svg,W,H}=diagSvg(o,false);
+  return {W,H,svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W*3}" height="${H*3}"><rect width="${W}" height="${H}" fill="#ffffff"/><g font-family="Menlo, Consolas, monospace" font-size="11" fill="#1d2326">`+
+    svg.replace(/var\(--f-body\)/g,'Arial, sans-serif').replace(/var\(--([\w-]+)\)/g,(m,k)=>LIGHT[k]||'#000').replace(/<text /g,'<text fill="#1d2326" ')+'</g></svg>'};}
+function svgToPng(svg,w=2340,h=1320){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const cv=document.createElement('canvas');cv.width=w;cv.height=h;
   const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(img,0,0,cv.width,cv.height);
   cv.toBlob(b=>b?b.arrayBuffer().then(a=>res(new Uint8Array(a))):rej(new Error('png')),'image/png')};
   img.onerror=()=>rej(new Error('svg'));img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});}
@@ -796,7 +929,7 @@ async function buildDocx(){
     new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:0},children:[new ImageRun({type:'png',data:png,transformation:{width:iw,height:ih}})]}),
     new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:20},children:[t(cap,{size:14,it:true})]})]});
   const figs=new Table({width:{size:9638,type:WidthType.DXA},columnWidths:[4819,4819],layout:TableLayoutType.FIXED,
-    rows:[new TableRow({children:[figCell(pS,'Figura 1 – Serviço: solo sobre o bloco, ativo e passivo até o fundo do dente'),figCell(pT,'Figura 2 – Teste: vala aberta, empuxos no dente abaixo da base')]})]});
+    rows:[new TableRow({children:[figCell(pS,'Figura 1 – Serviço: geometria e cargas, ativo e passivo até o fundo do dente'),figCell(pT,'Figura 2 – Teste: vala aberta, empuxos no dente abaixo da base')]})]});
   const par=table([2900,1919,2900,1919],[
     ['Parâmetro','Valor','Parâmetro','Valor'],
     [L('H solo = Ct − (Cgi + f)'),fmt(o.Hs)+' m',L('Kp / Ka (Rankine)'),`${fmt(o.Kp,3)} / ${fmt(o.Ka,3)}`],
@@ -823,10 +956,10 @@ async function buildDocx(){
     [{t:'ACI · resultante x = (Me − Mt)/ΣV',left:1,bold:1},B(aciSt),B(aciTt),aciCrit,(o.tracS||o.tracT)?sit(R.aciS&&R.aciT):'—'],
   ],{head:1,shade:[0]});
   const POS={N1:'Degrau, face superior',N5:'Degrau, face inferior',N3:'Parede, face do tubo',N2:'Dente, face do passivo',N4:'Dente, face do ativo'};
-  const armRow=(n,S)=>S.R.err?[L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,{t:S.R.err,span:3},sit(false)]:
-    [L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`,`${fmt(S.R.VRd1)} kN`,sit(S.R.ok)];
-  const arm=table([2500,1350,900,1350,1238,1100,1200],[
-    ['Posição','Md kN·m / Vd kN','Rege','As / As,mín cm²','Adotada','VRd1','Situação'],
+  const armRow=(n,S)=>S.R.err?[L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,{t:S.R.err,span:4},sit(false)]:
+    [L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`,`${fmt(S.R.VRd1)} kN`,!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)} mm`:'não fissura'),sit(S.R.ok)];
+  const arm=table([2250,1250,800,1250,1238,1000,950,900],[
+    ['Posição','Md kN·m / Vd kN','Rege','As / As,mín cm²','Adotada','VRd1',`wk (≤ ${fmt(p.wlim,1)})`,'Situação'],
     ...R.pieces.map(([n,S])=>armRow(n,S)),
   ],{head:1,shade:[0]});
   const csTab=table([2600,1500,2100,2100,1338],[
@@ -834,7 +967,15 @@ async function buildDocx(){
     ...R.SP.map(([lab,S])=>[L(lab),`${fmt(S.bw*100,0)} × ${fmt(S.h*100,0)}`,`${fmt(S.Md)} / ${fmt(S.Mrd)}`,`${fmt(S.Vd)} / ${fmt(S.Vrd)}`,sit(S.ok)]),
   ],{head:1,shade:[0]});
   const csTxt=`Sem armadura. fctd = 0,7·0,3·fck^(2/3)/1,68 = ${fmt(R.SP[0][1].fctd/1000,3)} MPa; Mrd = fctd·bw·h²/6; Vrd = 2/3·τwRd·bw·h, com τwRd = 0,3·0,85·fctd = ${fmt(R.SP[0][1].twRd/1000,3)} MPa. Em cada peça vale o maior momento entre as duas faces.`;
-  const distTxt='Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1).';
+  const distTxt='Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1). Abertura de fissuras (ELS-W) com o momento de serviço do caso 1.';
+  const DGs=diagSvgLight(o);
+  const [pA,pD]=await Promise.all([svgToPng(svgFor('serv','arm')),svgToPng(DGs.svg,DGs.W*3,DGs.H*3)]);
+  const ihD=Math.round(8.3*DGs.H/DGs.W/2.54*96);
+  const figCell2=(png,h,cap)=>new TableCell({width:{size:4819,type:WidthType.DXA},borders:noborders,margins:{top:0,bottom:0,left:0,right:0},verticalAlign:VerticalAlign.TOP,children:[
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:0},children:[new ImageRun({type:'png',data:png,transformation:{width:iw,height:h}})]}),
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:20},children:[t(cap,{size:14,it:true})]})]});
+  const figs5=new Table({width:{size:9638,type:WidthType.DXA},columnWidths:[4819,4819],layout:TableLayoutType.FIXED,
+    rows:[new TableRow({children:[figCell2(pA,ih,R.simp?'Figura 3 – Seções críticas (concreto simples, sem armadura)':'Figura 3 – Disposição das armaduras N1 a N5'),figCell2(pD,ihD,'Figura 4 – Momento fletor e cortante de cálculo (envoltória serviço e teste)')]})]});
   let concl=`O bloco de ${fmt(p.a,0)} × ${fmt(p.d,0)} × ${fmt(p.g,0)} cm`+(o.kon?`, com dente de ${fmt(p.hk,0)} × ${fmt(p.tk,0)} cm`:'')+` (${fmt(o.V,2)} m³ de concreto, fck ${fmt(p.fck,0)} MPa) `;
   if(R.allOk){concl+='atende às verificações de estabilidade nos casos de serviço e de teste e às verificações de flexão e cortante'+(R.simp?', em concreto simples,':', em concreto armado,')+' do degrau, da parede de apoio do tubo'+(o.kon?' e do dente.':'.');
     if(o.tracT) concl+=` No teste ocorre tração na base, com a resultante dentro da base (x = ${fmt(o.xT)} m), aceita por ser condição excepcional.`;
@@ -849,8 +990,8 @@ async function buildDocx(){
       H('2. Cortes e esforços'),figs,
       H('3. Parâmetros'),par,
       H('4. Verificações de estabilidade'),ver,
-      ...(R.simp?[H('5. Flexão e cortante nas peças · concreto simples (NBR 6118, seção 24)'),csTab,P([t(csTxt,{size:14,it:true})],{before:20})]
-                :[H('5. Flexão e cortante nas peças · concreto armado (NBR 6118)'),arm,P([t(distTxt,{size:14,it:true})],{before:20})]),
+      ...(R.simp?[H('5. Flexão e cortante nas peças · concreto simples (NBR 6118, seção 24)'),csTab,P([t(csTxt,{size:14,it:true})],{before:20,after:40}),figs5]
+                :[H('5. Flexão e cortante nas peças · concreto armado (NBR 6118)'),arm,P([t(distTxt,{size:14,it:true})],{before:20,after:40}),figs5]),
       H('6. Conclusão'),P([t(concl)],{after:0}),
     ]}]});
   return Packer.toBlob(doc);
@@ -925,7 +1066,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V1.6',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V1.7',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -991,7 +1132,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.6',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.7',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });

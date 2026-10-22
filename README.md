@@ -29,14 +29,14 @@ No painel **Concreto**, escolha o tipo de dimensionamento:
 | N2 | Dente, face do passivo | Empuxo passivo |
 | N4 | Dente, face do ativo | Empuxo ativo |
 
-No concreto armado, para cada posição: armadura calculada e mínima, bitola e espaçamento adotados, armadura de distribuição e cortante sem estribos (VRd1).
+No concreto armado, para cada posição: armadura calculada e mínima, bitola e espaçamento adotados, armadura de distribuição, cortante sem estribos (VRd1) e abertura de fissuras (ELS-W, item 17.3.3) com o momento de serviço, contra o limite wk,lim escolhido (0,3 mm por padrão).
 
 A formulação completa está no próprio aplicativo, na seção **Memória de cálculo**, no fim da página.
 
 ## Como usar
 
 1. Preencha os dados da tubulação, cotas, solo, bloco, dente e concreto, e escolha concreto simples ou armado. Os resultados atualizam a cada alteração.
-2. No topo, confira a estabilidade (tombamento, deslizamento e tensões na base) e o corte A-A, nos casos de serviço e de teste. Mais abaixo, o **Quadro de armaduras** traz o resultado das peças e as verificações de flexão e cortante.
+2. No topo, confira a estabilidade (tombamento, deslizamento e tensões na base). No corte A-A, a aba **Geometria e cargas** mostra os esforços de serviço e de teste, e a aba **Armaduras e esforços** mostra a disposição das armaduras e os diagramas de momento fletor e cortante de cada peça. Mais abaixo, o **Quadro de armaduras** traz o resultado das peças e as verificações de flexão e cortante.
 3. Clique em **Gerar memorial** para baixar a memória de cálculo em Word.
 
 ### Unidades salvas
@@ -54,4 +54,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V1.6 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V1.7 · outubro de 2026 · Eng. Rafael J. R. Alves
