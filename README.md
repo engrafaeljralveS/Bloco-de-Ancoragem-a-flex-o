@@ -1,6 +1,6 @@
 # Bloco de Ancoragem com Dente
 
-Aplicativo web para verificação de estabilidade e dimensionamento em concreto armado de **bloco de ancoragem em L com dente de cisalhamento**, para curvas horizontais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
+Aplicativo web para verificação de estabilidade e dimensionamento em concreto simples ou armado de **bloco de ancoragem em L com dente de cisalhamento**, para curvas horizontais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
 
 **Acesse:** https://engrafaeljralves.github.io/Bloco-de-Ancoragem-a-flex-o/
 
@@ -15,6 +15,12 @@ Funciona direto no navegador, no computador ou no celular. Não precisa instalar
 
 **Flexão e cortante nas peças (NBR 6118)**
 
+No painel **Concreto**, escolha o tipo de dimensionamento:
+
+- **Concreto armado:** dimensiona as armaduras N1 a N5 da tabela abaixo.
+- **Concreto simples:** verifica as mesmas peças sem armadura (NBR 6118, seção 24, γc = 1,68), com Mrd = fctd·W e Vrd = 2/3·τwRd·bw·h. Os esforços são os mesmos nos dois casos, e a estabilidade não muda.
+
+
 | Posição | Peça | Esforço principal |
 |---|---|---|
 | N1 | Degrau, face superior | Peso do tubo, água, solo sobre o degrau e peso próprio |
@@ -23,13 +29,13 @@ Funciona direto no navegador, no computador ou no celular. Não precisa instalar
 | N2 | Dente, face do passivo | Empuxo passivo |
 | N4 | Dente, face do ativo | Empuxo ativo |
 
-Para cada posição: armadura calculada e mínima, bitola e espaçamento adotados, armadura de distribuição e cortante sem estribos (VRd1).
+No concreto armado, para cada posição: armadura calculada e mínima, bitola e espaçamento adotados, armadura de distribuição e cortante sem estribos (VRd1).
 
 A formulação completa está no próprio aplicativo, na seção **Memória de cálculo**, no fim da página.
 
 ## Como usar
 
-1. Preencha os dados da tubulação, cotas, solo, bloco, dente e concreto. Os resultados atualizam a cada alteração.
+1. Preencha os dados da tubulação, cotas, solo, bloco, dente e concreto, e escolha concreto simples ou armado. Os resultados atualizam a cada alteração.
 2. Confira o veredito, o corte A-A (serviço e teste) e o quadro de armaduras.
 3. Clique em **Gerar memorial** para baixar a memória de cálculo em Word.
 
@@ -48,4 +54,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V1.3 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V1.4 · outubro de 2026 · Eng. Rafael J. R. Alves
