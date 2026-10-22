@@ -1,12 +1,21 @@
 # Bloco de Ancoragem
 
-Aplicativo web para verificação de estabilidade e dimensionamento em concreto simples ou armado de **bloco de ancoragem em L com dente de cisalhamento**, para curvas horizontais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
+Aplicativo web para verificação de estabilidade e dimensionamento em concreto simples ou armado de **bloco de ancoragem em L com dente de cisalhamento**, para curvas horizontais e verticais com junta elástica em redes de água. Gera a memória de cálculo em Word (.docx, A4).
 
 **Acesse:** https://engrafaeljralves.github.io/Bloco-de-Ancoragem-a-flex-o/
 
 Funciona direto no navegador, no computador ou no celular. Não precisa instalar nada nem criar conta.
 
 ## O que o aplicativo verifica
+
+**Curvas horizontais e verticais**
+
+No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90°, 45° ou 22°30').
+
+- **Horizontal:** o empuxo F = 2·p·A·sen(α/2) é horizontal e empurra o tubo contra a parede do bloco.
+- **Vertical:** uma perna horizontal e a outra inclinada de α. O empuxo faz α/2 com a vertical: H = F·sen(α/2) contra a parede e V = F·cos(α/2) na vertical.
+  - **Para baixo** (curva em ponto baixo): V soma ao peso, ajuda no tombamento e no atrito e carrega o degrau.
+  - **Para cima** (curva em ponto alto): V tende a levantar e tombar o bloco. O app verifica o levantamento (peso / V) e dimensiona as cintas que prendem o tubo ao degrau.
 
 **Estabilidade, nos casos de serviço e de teste**
 - Tombamento e deslizamento, com os fatores de segurança mínimos informados.
@@ -54,4 +63,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V1.9 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.0 · outubro de 2026 · Eng. Rafael J. R. Alves
