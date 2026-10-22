@@ -36,7 +36,7 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 ## Como usar
 
 1. Preencha os dados da tubulação, cotas, solo, bloco, dente e concreto, e escolha concreto simples ou armado. Os resultados atualizam a cada alteração.
-2. Confira o veredito, o corte A-A (serviço e teste) e o quadro de armaduras.
+2. No topo, confira a estabilidade (tombamento, deslizamento e tensões na base) e o corte A-A, nos casos de serviço e de teste. Mais abaixo, o **Quadro de armaduras** traz o resultado das peças e as verificações de flexão e cortante.
 3. Clique em **Gerar memorial** para baixar a memória de cálculo em Word.
 
 ### Unidades salvas
@@ -54,4 +54,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V1.4 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V1.5 · outubro de 2026 · Eng. Rafael J. R. Alves
