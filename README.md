@@ -21,6 +21,8 @@ No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90
 - Tombamento e deslizamento, com os fatores de segurança mínimos informados.
 - Tensões na base e posição da resultante (critério ACI quando há tração na base).
 - Empuxos de Rankine: ativo e passivo acompanham o dente até o seu fundo.
+- **Bloco acima do solo:** a cota do terreno pode ficar abaixo do topo do bloco, até o nível da base. Nesse caso não há solo sobre o bloco, e os empuxos atuam só na altura enterrada e no dente. Com a base no nível do terreno, o deslizamento é resistido pelo atrito na base (peso do bloco e do tubo) somado ao passivo do dente.
+- O peso próprio do tubo entra na normal da base e no momento estabilizante.
 
 **Flexão e cortante nas peças (NBR 6118)**
 
@@ -63,4 +65,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.1 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.2 · outubro de 2026 · Eng. Rafael J. R. Alves
