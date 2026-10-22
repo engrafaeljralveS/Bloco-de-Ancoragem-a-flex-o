@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloco de Ancoragem com Dente</title>
+<meta name="description" content="Verificação de estabilidade e dimensionamento em concreto armado (NBR 6118) de bloco de ancoragem em L com dente de cisalhamento, para curvas horizontais de adutoras. Gera memorial de cálculo em Word.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ficha técnica de cálculo — entradas à esquerda, veredito, corte e tabelas à direita; empilha no celular */
+:root{
+  --bg:#f3f4f2; --panel:#ffffff; --ink:#1d2326; --muted:#5d686d; --line:#d8dcda; --soft:#e9ecea;
+  --accent:#0f5f7a; --accent-soft:#dcebf0; --concrete:#c9ccc8; --concrete-dot:#8e9491; --water:#3c8fb8;
+  --soil:#d8c49c; --soil-line:#8a6d3b; --act:#b5651d; --steel:#a3243b; --ok:#21794a; --ok-bg:#e1f1e7; --bad:#b3261e; --bad-bg:#f8e2df; --warn:#9a6400; --warn-bg:#f8eed6;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141819; --panel:#1c2224; --ink:#e4e8e6; --muted:#9aa5a9; --line:#323b3e; --soft:#252c2f;
+  --accent:#5cb3d1; --accent-soft:#1d3640; --concrete:#4a5052; --concrete-dot:#6f7678; --water:#4fa3cc;
+  --soil:#4d3f2a; --soil-line:#c8a46a; --act:#e39a55; --steel:#ef7a8e; --ok:#6cc792; --ok-bg:#1b3326; --bad:#f08a80; --bad-bg:#3d1f1c; --warn:#e3b45c; --warn-bg:#3a2e14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141819; --panel:#1c2224; --ink:#e4e8e6; --muted:#9aa5a9; --line:#323b3e; --soft:#252c2f;
+  --accent:#5cb3d1; --accent-soft:#1d3640; --concrete:#4a5052; --concrete-dot:#6f7678; --water:#4fa3cc;
+  --soil:#4d3f2a; --soil-line:#c8a46a; --act:#e39a55; --steel:#ef7a8e; --ok:#6cc792; --ok-bg:#1b3326; --bad:#f08a80; --bad-bg:#3d1f1c; --warn:#e3b45c; --warn-bg:#3a2e14; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:12px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:2px 0 0;font-size:13px}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.inputs{display:flex;flex-direction:column;gap:12px;min-width:0}
+fieldset{border:1px solid var(--line);background:var(--panel);border-radius:8px;margin:0;padding:10px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;min-width:0}
+fieldset.new{border-color:var(--accent)}
+legend{font:600 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);padding:0 4px}
+.f{display:flex;flex-direction:column;gap:3px;min-width:0}
+.f.full{grid-column:1/-1}
+.f label{font-size:12px;color:var(--muted);line-height:1.25}
+.in{display:flex;align-items:center;border:1px solid var(--line);border-radius:5px;background:var(--bg);overflow:hidden}
+.in input,.in select{border:0;background:transparent;color:var(--ink);font:500 14px var(--f-mono);padding:6px 8px;width:100%;min-width:0;font-variant-numeric:tabular-nums}
+.in input:disabled,.in select:disabled{opacity:.5}
+.in span{font:12px var(--f-mono);color:var(--muted);padding:0 8px;white-space:nowrap}
+.in:focus-within{border-color:var(--accent)}
+.chk{grid-column:1/-1;display:flex;gap:8px;align-items:flex-start;font-size:13px}
+.chk input{margin-top:3px;accent-color:var(--accent)}
+.hint{grid-column:1/-1;font-size:12px;color:var(--muted);margin:0}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{flex:1;font:500 12px var(--f-body);padding:7px 6px;border:0;background:var(--panel);color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.out{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.card h2{font-family:var(--f-display);font-weight:600;font-size:16px;margin:0 0 10px;letter-spacing:.005em}
+.card .lead{margin:-4px 0 8px;font-size:12px;color:var(--muted)}
+.verdict{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.big{font-family:var(--f-display);font-weight:700;font-size:20px}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.chip{border-radius:6px;padding:8px 10px;border:1px solid transparent;display:flex;flex-direction:column;gap:1px;min-width:0}
+.chip .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.85}
+.chip .v{font:500 16px var(--f-mono);font-variant-numeric:tabular-nums}
+.chip .r{font-size:11.5px;opacity:.85}
+.ok{background:var(--ok-bg);color:var(--ok)} .bad{background:var(--bad-bg);color:var(--bad)} .warn{background:var(--warn-bg);color:var(--warn)} .neu{background:var(--soft);color:var(--ink)}
+.pill{font:600 12px var(--f-body);padding:3px 10px;border-radius:99px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media (max-width:640px){.two{grid-template-columns:minmax(0,1fr)}}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--soft);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+th.n{text-align:right}
+td.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.s-ok{color:var(--ok);font-weight:600} .s-bad{color:var(--bad);font-weight:600} .s-warn{color:var(--warn);font-weight:600}
+.draw{width:100%;height:auto;display:block}
+.draw text{font-family:var(--f-mono);font-size:11px;fill:var(--ink)}
+.btn{font:600 14px var(--f-body);padding:10px 16px;border-radius:6px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+details{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 16px}
+summary{cursor:pointer;font-weight:600}
+details p,details li{max-width:80ch;color:var(--ink)}
+details li{margin-bottom:4px}
+details h4{font:600 12px var(--f-body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin:14px 0 4px}
+.muted{color:var(--muted)}
+.cutbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}.cutbar h2{margin:0}.cutbar .seg{min-width:220px}
+.memrow{display:flex;flex-direction:column;gap:6px}.memrow .btn{width:100%}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btnrow .btn{width:100%;padding-inline:8px}
+fieldset.unit{border-color:var(--ink)}
+.units{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.uhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.units h3{font:600 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0}
+.ucount{font:12px var(--f-mono);color:var(--muted)}
+.ulist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto}
+.urow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;align-items:center;padding:7px 8px;border:1px solid var(--soft);border-radius:6px;background:var(--bg)}
+.urow.cur{border-color:var(--accent);background:var(--accent-soft)}
+.urow .nm{font-weight:600;overflow-wrap:anywhere;line-height:1.3}
+.urow .meta{grid-column:1/-1;font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.urow .acts{display:flex;gap:4px}
+.st{font:600 11px var(--f-body);padding:1px 7px;border-radius:99px}
+.mini{font:600 12px var(--f-body);padding:5px 9px;border-radius:5px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.mini:hover{border-color:var(--accent)}
+.mini.danger{color:var(--bad);border-color:var(--bad)}
+.mini:disabled,.btn:disabled{opacity:.55;cursor:not-allowed}
+.uempty{font-size:12.5px;color:var(--muted);padding:6px 2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div>
+    <h1>Bloco de Ancoragem com Dente</h1>
+    <p class="sub">Curvas horizontais com junta elástica · bloco em L com dente de cisalhamento · concreto armado (NBR 6118) · casos de serviço e de teste</p>
+  </div>
+  <span class="pill neu">Versão V1.3 · out/2026</span>
+</header>
+
+<div class="grid">
+  <form class="inputs" id="f1" onsubmit="return false">
+    <fieldset class="unit"><legend>Unidade</legend>
+      <div class="f full"><label for="v_nome">Nome da unidade</label><div class="in"><input id="v_nome" type="text" maxlength="80" placeholder="ex.: BA-03 · Curva 45° · Rua das Flores" style="font-family:var(--f-body)"></div></div>
+      <p class="hint" id="u_status">Nova unidade · ainda não salva</p>
+    </fieldset>
+    <fieldset><legend>Tubulação e pressão</legend>
+      <div class="f"><label for="v_ps">Pressão de serviço</label><div class="in"><input id="v_ps" type="number" step="0.01" value="52.09"><span>m.c.a.</span></div></div>
+      <div class="f"><label for="v_pt">Pressão de teste</label><div class="in"><input id="v_pt" type="number" step="0.01" value="78.14"><span>m.c.a.</span></div></div>
+      <div class="f"><label for="v_tipo">Conexão</label><div class="in"><select id="v_tipo"><option value="90">Curva 90°</option><option value="45" selected>Curva 45°</option><option value="22.5">Curva 22°30'</option><option value="11.25">Curva 11°15'</option><option value="x">Outro ângulo</option></select></div></div>
+      <div class="f"><label for="v_alfa">Ângulo α</label><div class="in"><input id="v_alfa" type="number" step="0.01" value="45" disabled><span>°</span></div></div>
+      <div class="f"><label for="v_dn">DN</label><div class="in"><input id="v_dn" type="number" value="600"><span>mm</span></div></div>
+      <div class="f"><label for="v_de">DE</label><div class="in"><input id="v_de" type="number" value="635"><span>mm</span></div></div>
+      <div class="f full"><label for="v_wt">Peso próprio do tubo</label><div class="in"><input id="v_wt" type="number" step="0.01" value="1.45"><span>kN/m</span></div></div>
+      <p class="hint">A pressão de teste é preenchida com 1,5 × a pressão de serviço. Você pode alterá-la; para voltar ao valor automático, apague o campo.</p>
+    </fieldset>
+    <fieldset><legend>Cotas</legend>
+      <div class="f"><label for="v_ct">Cota do terreno</label><div class="in"><input id="v_ct" type="number" step="0.01" value="3.47"><span>m</span></div></div>
+      <div class="f"><label for="v_cg">Geratriz inf. interna</label><div class="in"><input id="v_cg" type="number" step="0.01" value="1.11"><span>m</span></div></div>
+    </fieldset>
+    <fieldset><legend>Solo</legend>
+      <div class="f"><label for="v_phi">Atrito do solo φ</label><div class="in"><input id="v_phi" type="number" step="0.1" value="28"><span>°</span></div></div>
+      <div class="f"><label for="v_coh">Coesão/2</label><div class="in"><input id="v_coh" type="number" step="0.1" value="0"><span>kPa</span></div></div>
+      <div class="f"><label for="v_gs">γ solo</label><div class="in"><input id="v_gs" type="number" step="0.1" value="18"><span>kN/m³</span></div></div>
+      <div class="f"><label for="v_del">Atrito concreto-solo δ</label><div class="in"><input id="v_del" type="number" step="0.1" value="30"><span>°</span></div></div>
+      <div class="f full"><label for="v_sadm">σadm solo</label><div class="in"><input id="v_sadm" type="number" step="1" value="200"><span>kPa</span></div></div>
+    </fieldset>
+    <fieldset><legend>Dimensões do bloco</legend>
+      <div class="f"><label for="v_a">a · comprimento total</label><div class="in"><input id="v_a" type="number" value="250"><span>cm</span></div></div>
+      <div class="f"><label for="v_b">b · degrau do tubo</label><div class="in"><input id="v_b" type="number" value="70"><span>cm</span></div></div>
+      <div class="f"><label for="v_d">d · largura</label><div class="in"><input id="v_d" type="number" value="170"><span>cm</span></div></div>
+      <div class="f"><label for="v_e">e · altura do degrau</label><div class="in"><input id="v_e" type="number" value="50"><span>cm</span></div></div>
+      <div class="f full"><label for="v_g">g · altura total</label><div class="in"><input id="v_g" type="number" value="180"><span>cm</span></div></div>
+      <p class="hint" id="v_dimhint"></p>
+    </fieldset>
+    <fieldset class="new"><legend>Dente de cisalhamento</legend>
+      <label class="chk"><input id="v_kon" type="checkbox" checked><span>Bloco com dente sob a base, em toda a largura d</span></label>
+      <div class="f"><label for="v_hk">h · altura do dente</label><div class="in"><input id="v_hk" type="number" value="40"><span>cm</span></div></div>
+      <div class="f"><label for="v_tk">t · espessura</label><div class="in"><input id="v_tk" type="number" value="30"><span>cm</span></div></div>
+      <div class="f full"><label for="v_sk">s · distância da face do passivo ao dente</label><div class="in"><input id="v_sk" type="number" value="0"><span>cm</span></div></div>
+      <p class="hint">s = 0 alinha o dente com a face do bloco do lado do terreno. Ativo e passivo descem até o fundo do dente e entram no deslizamento.</p>
+    </fieldset>
+    <fieldset><legend>Concreto</legend>
+      <div class="f"><label for="v_fck">fck</label><div class="in"><input id="v_fck" type="number" value="20"><span>MPa</span></div></div>
+      <div class="f"><label for="v_gc">γ concreto</label><div class="in"><input id="v_gc" type="number" step="0.1" value="24"><span>kN/m³</span></div></div>
+    </fieldset>
+    <fieldset class="new"><legend>Concreto armado</legend>
+      <div class="f"><label for="v_fyk">Aço</label><div class="in"><select id="v_fyk"><option value="500" selected>CA-50</option><option value="600">CA-60</option></select></div></div>
+      <div class="f"><label for="v_cob">Cobrimento</label><div class="in"><input id="v_cob" type="number" step="0.5" value="4"><span>cm</span></div></div>
+      <div class="f"><label for="v_fid">φ degrau · N1, N5</label><div class="in"><select id="v_fid"><option>8</option><option selected>10</option><option>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
+      <div class="f"><label for="v_fip">φ parede · N3</label><div class="in"><select id="v_fip"><option>8</option><option>10</option><option selected>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
+      <div class="f"><label for="v_fik">φ dente · N2, N4</label><div class="in"><select id="v_fik"><option>8</option><option selected>10</option><option>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
+      <div class="f"><label for="v_rmode">Armadura mínima</label><div class="in"><select id="v_rmode"><option value="nbr" selected>NBR Tab. 17.3</option><option value="inf">Taxa informada</option></select></div></div>
+      <div class="f"><label for="v_rho">Taxa mínima informada</label><div class="in"><input id="v_rho" type="number" step="0.01" value="0.10" disabled><span>%</span></div></div>
+      <div class="f"><label for="v_gf1">γf · serviço</label><div class="in"><input id="v_gf1" type="number" step="0.05" value="1.4"></div></div>
+      <div class="f"><label for="v_gf2">γf · teste</label><div class="in"><input id="v_gf2" type="number" step="0.05" value="1.2"></div></div>
+      <p class="hint">γc = 1,4 e γs = 1,15. O teste é tratado como combinação excepcional de construção. A taxa informada vale para todas as peças e serve para seções maciças, como a parede.</p>
+    </fieldset>
+    <fieldset><legend>Fatores de segurança mínimos</legend>
+      <div class="f"><label for="v_fst1">Tombamento · serviço</label><div class="in"><input id="v_fst1" type="number" step="0.05" value="1.5"></div></div>
+      <div class="f"><label for="v_fsd1">Deslizamento · serviço</label><div class="in"><input id="v_fsd1" type="number" step="0.05" value="1.5"></div></div>
+      <div class="f"><label for="v_fst2">Tombamento · teste</label><div class="in"><input id="v_fst2" type="number" step="0.05" value="1.0"></div></div>
+      <div class="f"><label for="v_fsd2">Deslizamento · teste</label><div class="in"><input id="v_fsd2" type="number" step="0.05" value="1.0"></div></div>
+    </fieldset>
+    <div class="memrow">
+      <div class="btnrow"><button class="btn" type="button" id="v_mem">Gerar memorial</button><button class="btn" type="button" id="u_save">Salvar unidade</button></div>
+      <span class="hint" id="v_memst">Memória de cálculo em Word (A4) com os cortes de serviço e teste e o quadro de armaduras.</span>
+      <span class="hint" id="u_msg" role="status" aria-live="polite"></span>
+    </div>
+    <div class="btnrow"><button class="btn ghost" type="button" id="u_new">Nova unidade</button><button class="btn ghost" type="button" id="u_copy">Salvar como nova</button></div>
+    <button class="btn ghost" type="button" id="v_reset">Restaurar dados iniciais</button>
+    <section class="units" aria-labelledby="u_h">
+      <div class="uhead"><h3 id="u_h">Unidades salvas</h3><span class="ucount" id="u_count"></span></div>
+      <div class="in"><input id="u_find" type="search" placeholder="Buscar pelo nome" aria-label="Buscar unidade pelo nome" style="font-family:var(--f-body)"></div>
+      <ul class="ulist" id="u_list"><li class="uempty">Carregando as unidades salvas…</li></ul>
+      <p class="hint" id="u_where"></p>
+      <div class="btnrow"><button class="mini" type="button" id="u_exp">Exportar unidades (.json)</button><button class="mini" type="button" id="u_imp">Importar unidades</button></div>
+      <input id="u_file" type="file" accept="application/json,.json" hidden>
+    </section>
+  </form>
+
+  <div class="out">
+    <div class="card">
+      <div class="verdict"><span class="big" id="r_verdict">—</span><span class="pill" id="r_pill"></span></div>
+      <div class="chips" id="r_chips"></div>
+    </div>
+    <div class="card">
+      <div class="cutbar"><h2>Corte A-A</h2>
+        <div class="seg" role="group" aria-label="Caso exibido no corte"><button type="button" id="c_serv" aria-pressed="true">Serviço</button><button type="button" id="c_test" aria-pressed="false">Teste</button></div></div>
+      <svg class="draw" id="r_svg" viewBox="0 0 780 440" role="img" aria-label="Corte do bloco com dente, solo, diagramas de empuxo e armaduras"></svg>
+      <p class="muted" id="c_note" style="margin:6px 0 0;font-size:12px"></p>
+    </div>
+    <div class="two">
+      <div class="card tbl"><h2>Caso 1 · Serviço</h2><p class="lead">Reaterro executado · ativo e passivo até o fundo do dente · passivo ½ mobilizado</p><table id="r_t1"></table></div>
+      <div class="card tbl"><h2>Caso 2 · Teste</h2><p class="lead">Vala aberta acima do bloco · só concreto · passivo na altura g + h</p><table id="r_t2"></table></div>
+    </div>
+    <div class="card tbl"><h2>Quadro de armaduras</h2><table id="r_t6"></table></div>
+    <div class="two">
+      <div class="card tbl"><h2>Degrau sob o tubo</h2><p class="lead">Balanço de comprimento b engastado no corpo · N1 face superior, N5 face inferior</p><table id="r_t4"></table></div>
+      <div class="card tbl"><h2>Parede de apoio do tubo</h2><p class="lead">Balanço vertical de altura f engastado no topo do degrau · N3 na face do tubo</p><table id="r_t7"></table></div>
+    </div>
+    <div class="two">
+      <div class="card tbl"><h2>Dente</h2><p class="lead">Balanço de altura h engastado na base · N2 face do passivo, N4 face do ativo</p><table id="r_t5"></table></div>
+      <div class="card tbl"><h2>Empuxos e pesos</h2><table id="r_t3"></table></div>
+    </div>
+  </div>
+</div>
+
+<details>
+  <summary>Memória de cálculo</summary>
+  <p>Mantém a formulação do aplicativo de bloco em L V1.3 (aba "CURVA 90° 3" da planilha mãe, versão corrigida). Sem o dente, os resultados de estabilidade são idênticos aos da V1.3.</p>
+  <h4>Estabilidade</h4>
+  <ol>
+    <li><b>Empuxo hidráulico:</b> F = 2·p·10·π·DE²/4·sen(α/2), com p em m.c.a. Atua a e + DE/2 da base.</li>
+    <li><b>Altura de solo sobre o bloco:</b> H solo = cota do terreno − (cota da geratriz inferior + f), com f = g − e.</li>
+    <li><b>Empuxos de Rankine:</b> σa = γ·z·Ka − 2c√Ka e σp = γ·z·Kp + 2c√Kp, com Kp = (1 + sen φ)/(1 − sen φ) e Ka = 1/Kp. No serviço z parte do terreno; no teste, do topo do bloco.</li>
+    <li><b>Serviço:</b> ativo na face do tubo, na altura g, e na face do dente voltada para o tubo, de H solo + g até H solo + g + h. Passivo do terreno sobre H solo + g e na face oposta do dente até o seu fundo, com metade mobilizada. Força deslizante = FH + Ea + Ea,dente. Resistente = 0,9·P·tan δ + ½·(Ep + Ep,dente).</li>
+    <li><b>Teste:</b> vala aberta acima do bloco, sem solo por cima e sem ativo na altura do bloco. Abaixo da base o solo é natural: ativo e passivo atuam no dente, de g até g + h. Força deslizante = FH + Ea,dente. Resistente = Pconcreto·tan φ + Ep + Ep,dente + 2/3·c·a·d.</li>
+    <li><b>Dente no tombamento e nas tensões:</b> o peso do dente entra no momento estabilizante e na normal da base, aplicado em s + t/2 do ponto de tombamento. Os empuxos abaixo da base não entram no tombamento e a área de contato continua a·d, a favor da segurança.</li>
+    <li><b>Tombamento:</b> em torno da aresta posterior da base (lado do passivo). FS = momento estabilizante / momento de tombamento.</li>
+    <li><b>Tensões na base:</b> σ = N/(a·d) ± M·(a/2)/I, com M em relação ao centro da base; σ1 na aresta do passivo e σ2 na aresta do tubo. Com tração, σmáx = 2N/(x·d), x = 3(a/2 − M/N).</li>
+    <li><b>Posição da resultante (critério ACI):</b> só quando há tração na base. x = (Me − Mt)/ΣV. Serviço: terço médio. Teste: dentro da base.</li>
+  </ol>
+  <h4>Esforços nas peças</h4>
+  <ol>
+    <li><b>Degrau, face superior (N1):</b> balanço de comprimento b. Cargas para baixo: peso próprio, peso do tubo, água no tubo (π·DE²/4·10·d) e, no serviço, o solo sobre o degrau, [(H solo + f)·b − π·DE²/4]·d·γs. Todas aplicadas em b/2, como na planilha mãe. A reação do solo é desprezada.</li>
+    <li><b>Degrau, face inferior (N5):</b> reação do solo sob o degrau, integrada do diagrama de tensões da base de cada caso, menos o peso próprio do degrau. Tubo, água e solo são desprezados, a favor da segurança.</li>
+    <li><b>Parede de apoio do tubo (N3):</b> trecho do corpo acima do degrau, balanço vertical de altura f engastado no topo do degrau, seção c × d. Cargas: FH a DE/2 do engaste e, no serviço, o ativo do solo sobre o degrau, de H solo até H solo + f. O passivo e o peso não aliviam o momento.</li>
+    <li><b>Dente, face do passivo (N2):</b> passivo de σp(base) a σp(fundo), com ½ no serviço e inteiro no teste. Seção d × t.</li>
+    <li><b>Dente, face do ativo (N4):</b> ativo de σa(base) a σa(fundo), sem desconto do passivo. Arma a reversão de esforço antes de o passivo ser mobilizado.</li>
+    <li><b>Combinações:</b> Md = γf·Mk, com γf de serviço no caso 1 e de teste no caso 2. Em cada face vale o maior dos dois casos.</li>
+  </ol>
+  <h4>Dimensionamento (NBR 6118)</h4>
+  <ol>
+    <li><b>Flexão:</b> λ = 0,8 e αc = 0,85. x = 1,25·d'·[1 − √(1 − Md/(0,425·fcd·bw·d'²))], As = Md/[fyd·(d' − 0,4x)], com d' = h − cobrimento − φ/2 e x/d' ≤ 0,45.</li>
+    <li><b>Armadura mínima:</b> ρmín da Tabela 17.3 (0,150% até C30) ou taxa informada. Espaçamento em múltiplos de 2,5 cm, limitado a 20 cm e a 2h. Distribuição ≥ 20% da principal e ≥ 0,9 cm²/m.</li>
+    <li><b>Cortante sem estribos:</b> VRd1 = τRd·k·(1,2 + 40ρ1)·bw·d', com τRd = 0,25·fctd, fctd = 0,7·0,3·fck^(2/3)/1,4, k = 1,6 − d' ≥ 1 e ρ1 ≤ 0,02.</li>
+  </ol>
+  <p class="muted">Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados aqui.</p>
+</details>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/docx@9.8.1/dist/index.iife.js"></script>
+<script>
+/* ===================== núcleo de cálculo (puro) ===================== */
+const rad=d=>d*Math.PI/180;
+const R2=x=>Math.round(x*100)/100;
+const RHOMIN=[[20,.150],[25,.150],[30,.150],[35,.164],[40,.179],[45,.194],[50,.208],[55,.211],[60,.219],[70,.226],[80,.233],[90,.239]];
+function rhoMin(fck){if(fck<=20)return .150/100;for(let i=1;i<RHOMIN.length;i++){const[a,ra]=RHOMIN[i-1],[b,rb]=RHOMIN[i];if(fck<=b)return(ra+(rb-ra)*(fck-a)/(b-a))/100}return .239/100}
+/* Seção retangular de largura bw (m) e altura h (m), Md em kN·m, Vd em kN */
+function rc(Md,Vd,bw,h,cfg,phi){
+  const {cob,fck,fyk,rmin}=cfg;
+  const fcd=fck/1.4*1000, fyd=fyk/1.15*1000;
+  const dd=h-cob/100-phi/2000;
+  const o={Md,Vd,bw,h,dd,phi};
+  if(!(dd>0)){o.err='altura útil nula';o.ok=false;return o}
+  const k=Md/(0.425*fcd*bw*dd*dd);
+  if(k>=1){o.err='seção insuficiente';o.ok=false;return o}
+  const x=1.25*dd*(1-Math.sqrt(1-Math.max(k,0)));
+  o.x=x; o.xd=x/dd; o.okDuct=o.xd<=0.45+1e-9;
+  o.As=Md>0?Md/(fyd*(dd-0.4*x))*1e4:0;
+  o.rmin=rmin??rhoMin(fck); o.Asmin=o.rmin*bw*h*1e4;
+  o.Asd=Math.max(o.As,o.Asmin); o.Asm=o.Asd/bw;
+  const Aphi=Math.PI*(phi/10)**2/4, smax=Math.min(20,2*h*100);
+  const s=Math.min(smax,Math.floor(100*Aphi/o.Asm/2.5+1e-9)*2.5);
+  o.s=s; o.okS=s>=7.5; o.Asef=s>0?100*Aphi/s:NaN;
+  o.nb=s>0?Math.floor((bw*100-2*cob)/s)+1:NaN;
+  if(!o.okS){for(const f of [8,10,12.5,16,20,25,32]){if(f<=phi)continue;const af=Math.PI*(f/10)**2/4,sf=Math.min(smax,Math.floor(100*af/o.Asm/2.5+1e-9)*2.5);if(sf>=10){o.sug={phi:f,s:sf};break}}}
+  o.Asdist=Math.max(0.2*o.Asef,0.9);
+  const fctd=0.7*0.3*Math.pow(fck,2/3)/1.4*1000, tRd=0.25*fctd;
+  const r1=Math.min(o.Asef*1e-4/dd,0.02), kk=Math.max(1.6-dd,1);
+  o.VRd1=tRd*kk*(1.2+40*r1)*bw*dd;
+  o.okV=Vd<=o.VRd1+1e-9; o.okM=o.okDuct; o.ok=o.okM&&o.okV&&s>0;
+  return o;
+}
+/* esforço governante entre serviço e teste para uma face */
+function face(MkS,VkS,MkT,VkT,gf1,gf2,bw,h,cfg,phi){
+  const MdS=gf1*MkS, MdT=gf2*MkT, VdS=gf1*VkS, VdT=gf2*VkT;
+  const MD=R2(Math.max(MdS,MdT,0)), VD=R2(Math.max(VdS,VdT,0));
+  const gov=(MdS<=0&&MdT<=0)?'mínima':(MdT>MdS?'teste':'serviço');
+  return {MkS,VkS,MkT,VkT,MdS,MdT,VdS,VdT,MD,VD,gov,R:rc(MD,VD,bw,h,cfg,phi)};
+}
+function compute(p){
+  const {ps,pt,alfa,DN,DEmm,cT,cG,phi,coh,gs,del,sadm,fck,gc}=p, De=DEmm/1000;
+  const A=p.a/100,B=p.b/100,D=p.d/100,E=p.e/100,G=p.g/100;
+  const kon=!!p.kon, HK=kon?p.hk/100:0, TK=kon?p.tk/100:0, SK=kon?p.sk/100:0;
+  const C=A-B, F=G-E;
+  if(![ps,pt,alfa,DN,DEmm,cT,cG,phi,coh,gs,del,sadm,fck,gc,A,B,D,E,G,p.wt,p.cob,p.gf1,p.gf2].every(Number.isFinite)) return {err:'Dados incompletos',why:'preencha todos os campos'};
+  if(!(C>0&&F>0&&A>0&&D>0&&E>0)) return {err:'Geometria inválida',why:'exige a > b e g > e'};
+  if(kon&&!(HK>0&&TK>0&&SK>=0&&SK+TK<=A+1e-9)) return {err:'Dente inválido',why:'altura e espessura > 0 e dente dentro da base (s + t ≤ a)'};
+  const Hs=cT-(cG+F);
+  const s2=Math.sin(rad(alfa)/2), Y6=DEmm/20;
+  const FH1=R2(2*ps*10*Math.PI*De*De*0.25*s2), FH2=R2(2*pt*10*Math.PI*De*De*0.25*s2);
+  const sp=Math.sin(rad(phi)), Kp=(1+sp)/(1-sp), Ka=1/Kp, cp=2*coh*Math.sqrt(Kp), ca=2*coh*Math.sqrt(Ka);
+  const sa=z=>Math.max(R2(z*Ka*gs-ca),0), spv=z=>R2(z*Kp*gs+cp);
+  const EA1=sa(Hs), EA2=sa(Hs+G), EA3=sa(Hs+G+HK), EAf=sa(Hs+F);
+  const EA2t=sa(G), EA3t=sa(G+HK);
+  const EP1=R2(cp), EP2=spv(Hs+G), EP3=spv(Hs+G+HK);
+  const EP1t=R2(cp), EP2t=spv(G), EP3t=spv(G+HK);
+  const cgcm=Math.floor((B*E*(C+B/2)+G*C*C/2)/(C*G+B*E)*100+1e-9), CGm=cgcm/100;
+  const V0=D*B*E+C*G*D, VK=TK*HK*D, V=V0+VK;
+  const Wb=V0*gc, Wk=VK*gc, xk=SK+TK/2, Ws=Hs*A*D*gs;
+  const Wt=R2(Wb+Wk), W=R2(Wb+Wk+Ws);
+  const Ht=Hs+G;
+  const PAS_S=EP1*Ht*Ht*0.5*D+(EP2-EP1)*Ht*0.5*Ht/3*D, RP_S=(EP1+EP2)*0.5*Ht*D;
+  const PAS_T=EP1t*G*G*0.5*D+(EP2t-EP1t)*G*0.5*G/3*D, RP_T=(EP1t+EP2t)*0.5*G*D;
+  const RPk_S=(EP2+EP3)*0.5*HK*D, RPk_T=(EP2t+EP3t)*0.5*HK*D;
+  const RAk_S=(EA2+EA3)*0.5*HK*D, RAk_T=(EA2t+EA3t)*0.5*HK*D;
+  const RA=(EA1+EA2)*0.5*G*D, yEcm=E*100+Y6;
+  const MT1=R2(yEcm*FH1*0.01+EA1*G*G*0.5*D+(EA2-EA1)*G*0.5*G/3*D);
+  const MT2=R2(yEcm*FH2*0.01);
+  const Me1=R2(Wb*CGm+Wk*xk+Ws*A*0.5+PAS_S/2);
+  const Me2=R2(R2(Wb)*CGm+Wk*xk+PAS_T);
+  const FD1=R2(RA+FH1+RAk_S), FD2=R2(FH2+RAk_T);
+  const FDe1=R2(0.9*W*Math.tan(rad(del))+(RP_S+RPk_S)/2);
+  const FDe2=R2(Wt*Math.tan(rad(phi))+RP_T+RPk_T+0.6667*D*A*coh);
+  const FDe1_0=R2(0.9*W*Math.tan(rad(del))+RP_S/2), FD1_0=R2(RA+FH1);
+  const FST1=Me1/MT1, FSD1=FDe1/FD1, FST2=Me2/MT2, FSD2=FDe2/FD2;
+  const xS=(Me1-MT1)/W, xT=(Me2-MT2)/Wt, a3=A/3;
+  const okXS=xS>=a3&&xS<=2*a3, okXT=xT>0&&xT<=A;
+  const I=A**3*D/12, Mpp=Wb*(A*0.5-CGm)+Wk*(A*0.5-xk);
+  function base(MT,Mpas,N){
+    const M0=MT-Mpas+Mpp, M=Math.abs(M0<0?Mpp+MT:M0);
+    const s1=M*(A/2)/I+N/(A*D), s2b=-M*(A/2)/I+N/(A*D);
+    let x=null, smax=s1, fora=false;
+    if(s2b<0){x=3*(A*0.5-M/N); if(x>0) smax=2*N/(x*D); else {fora=true; smax=Infinity}}
+    return {M,s1,s2:s2b,x,smax,fora};
+  }
+  const S1=base(MT1,PAS_S/2,W), S2=base(MT2,PAS_T,Wt);
+  /* reação do solo sob o degrau (u medido do engaste para a ponta) */
+  function reac(S){
+    if(S.fora) return {M:0,V:0,fora:true};
+    const n=400, du=B/n; let M=0,Vr=0;
+    for(let i=0;i<n;i++){const u=(i+0.5)*du, x=A-B+u;      // x a partir da aresta do passivo
+      const sg=S.x===null?S.s1+(S.s2-S.s1)*x/A:(x<S.x?S.smax*(1-x/S.x):0);
+      M+=sg*u*D*du; Vr+=sg*D*du;}
+    return {M,V:Vr,fora:false};
+  }
+  const cfg={cob:p.cob,fck,fyk:p.fyk,rmin:p.rmode==='inf'?p.rho/100:null};
+  const gf1=p.gf1, gf2=p.gf2;
+  // degrau
+  const Ww=De*De*Math.PI*0.25*D*10, Wtb=p.wt*D, Wst=B*D*E*gc;
+  const Wsd=Math.max((Math.max(Hs,0)+F)*B-Math.PI*De*De/4,0)*D*gs;
+  const qS=Ww+Wtb+Wst+Wsd, qT=Ww+Wtb+Wst;
+  const DSUP=face(qS*B/2,qS,qT*B/2,qT,gf1,gf2,D,E,cfg,p.fid);
+  const rS=reac(S1), rT=reac(S2);
+  const DINF=face(Math.max(rS.M-Wst*B/2,0),Math.max(rS.V-Wst,0),Math.max(rT.M-Wst*B/2,0),Math.max(rT.V-Wst,0),gf1,gf2,D,E,cfg,p.fid);
+  // parede de apoio do tubo
+  const MaW=D*(EA1*F*F/2+(EAf-EA1)*F*F/6), EaW=D*(EA1+EAf)/2*F;
+  const PAR=face(FH1*De/2+MaW,FH1+EaW,FH2*De/2,FH2,gf1,gf2,D,C,cfg,p.fip);
+  // dente
+  let KP=null, KA=null;
+  if(kon){
+    const mom=(p1,p2)=>D*(p1*HK*HK/2+(p2-p1)*HK*HK/3), cor=(p1,p2)=>D*(p1+p2)/2*HK;
+    KP=face(mom(EP2/2,EP3/2),cor(EP2/2,EP3/2),mom(EP2t,EP3t),cor(EP2t,EP3t),gf1,gf2,D,TK,cfg,p.fik);
+    KA=face(mom(EA2,EA3),cor(EA2,EA3),mom(EA2t,EA3t),cor(EA2t,EA3t),gf1,gf2,D,TK,cfg,p.fik);
+  }
+  return {A,B,C,D,E,F,G,HK,TK,SK,kon,De,Hs,Kp,Ka,EA1,EA2,EA3,EAf,EA2t,EA3t,EP1,EP2,EP3,EP1t,EP2t,EP3t,cgcm,CGm,V0,VK,V,Wb,Wk,xk,Ws,Wt,W,
+    PAS_S,RP_S,PAS_T,RP_T,RPk_S,RPk_T,RAk_S,RAk_T,RA,yEcm,FH1,FH2,MT1,MT2,Me1,Me2,FD1,FD2,FDe1,FDe2,FDe1_0,FD1_0,FST1,FSD1,FST2,FSD2,
+    xS,xT,a3,okXS,okXT,S1,S2,tracS:S1.s2<0,tracT:S2.s2<0,Ww,Wtb,Wst,Wsd,rS,rT,MaW,EaW,cfg,
+    N1:DSUP,N5:DINF,N3:PAR,N2:KP,N4:KA};
+}
+if(typeof module!=='undefined') module.exports={compute,rc};
+</script>
+<script>
+(function(){
+if(typeof document==='undefined')return;
+const $=id=>document.getElementById(id);
+const fmt=(x,d=2)=>Number.isFinite(x)?x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const num=id=>{const v=parseFloat(String($(id).value).replace(',','.'));return Number.isFinite(v)?v:NaN};
+const fphi=v=>String(v).replace('.',',');
+const NOTDATA=new Set(['v_nome','u_find','u_file']);
+const FIELDS=[...document.querySelectorAll('#f1 input,#f1 select')].map(el=>el.id).filter(id=>id&&!NOTDATA.has(id));
+const DEF={};FIELDS.forEach(id=>{const el=$(id);DEF[id]=el.type==='checkbox'?el.checked:el.value});
+function chip(cls,k,v,r){return `<div class="chip ${cls}"><span class="k">${k}</span><span class="v">${v}</span>${r?`<span class="r">${r}</span>`:''}</div>`}
+function rows(list){return '<tr><th>Grandeza</th><th class="n">Valor</th></tr>'+list.map(([l,v,u,cls])=>`<tr><td>${l}</td><td class="n${cls?' '+cls:''}">${v}${u?' '+u:''}</td></tr>`).join('')}
+const sitTxt=ok=>ok?'atende':'não atende', sitCls=ok=>ok?'s-ok':'s-bad';
+const sugT=S=>S.R.sug?` → use φ${fphi(S.R.sug.phi)} c/ ${fmt(S.R.sug.s,1)}`:'';
+const bar=S=>S.R.err?S.R.err:`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`+sugT(S);
+const fState=S=>S.R.ok?(S.R.okS?'ok':'warn'):'bad';
+const POS={N1:'Degrau · face superior',N5:'Degrau · face inferior',N3:'Parede · face do tubo',N2:'Dente · face do passivo',N4:'Dente · face do ativo'};
+
+function syncInputs(){const on=$('v_kon').checked;['v_hk','v_tk','v_sk','v_fik'].forEach(i=>$(i).disabled=!on);$('v_rho').disabled=$('v_rmode').value!=='inf'}
+$('v_tipo').addEventListener('change',()=>{const v=$('v_tipo').value;$('v_alfa').disabled=v!=='x';if(v!=='x')$('v_alfa').value=v;calc()});
+function aplicar(d){FIELDS.forEach(id=>{if(!(id in d))return;const el=$(id);if(el.type==='checkbox')el.checked=!!d[id];else el.value=d[id]});$('v_alfa').disabled=$('v_tipo').value!=='x';syncInputs()}
+$('v_reset').addEventListener('click',()=>{ptManual=false;aplicar(DEF);calc();marcarSujo()});
+let ptManual=false;
+$('v_pt').addEventListener('input',()=>{ptManual=$('v_pt').value!==''});
+$('v_kon').addEventListener('change',syncInputs);$('v_rmode').addEventListener('change',syncInputs);
+$('f1').addEventListener('input',e=>{if(NOTDATA.has(e.target.id))return;calc();if(e.target.id!=='u_find')marcarSujo()});
+$('f1').addEventListener('change',e=>{if(NOTDATA.has(e.target.id))return;calc()});
+let caso='serv', last=null, R=null;
+function setCaso(c){caso=c;$('c_serv').setAttribute('aria-pressed',c==='serv');$('c_test').setAttribute('aria-pressed',c==='test');if(last)draw(last)}
+$('c_serv').addEventListener('click',()=>setCaso('serv'));$('c_test').addEventListener('click',()=>setCaso('test'));
+
+/* tabela de peça com duas faces ou uma face */
+function elemTable(cols,pre){
+  const th='<tr><th>Grandeza</th>'+cols.map(c=>`<th class="n">${c.lab}</th>`).join('')+'</tr>';
+  const line=(l,f,u)=>`<tr><td>${l}</td>${cols.map(c=>{const r=f(c.S);return typeof r==='object'?`<td class="n ${r.c||''}">${r.v}${u?' '+u:''}</td>`:`<td class="n">${r}${u?' '+u:''}</td>`}).join('')}</tr>`;
+  let h=th+(pre||[]).map(([l,f,u])=>line(l,f,u)).join('');
+  h+=line('Mk serviço / teste',S=>`${fmt(S.MkS)} / ${fmt(S.MkT)}`,'kN·m');
+  h+=line('Md de cálculo',S=>`${fmt(S.MD)}`,'kN·m');
+  h+=line('Caso que rege',S=>S.gov,'');
+  h+=line('Vd de cálculo',S=>fmt(S.VD),'kN');
+  h+=line("Altura útil d'",S=>S.R.err?'—':fmt(S.R.dd*100,1),'cm');
+  h+=line("x / d'",S=>S.R.err?{v:S.R.err,c:'s-bad'}:{v:fmt(S.R.xd,3),c:S.R.okDuct?'':'s-bad'},'');
+  h+=line('As calculada / mínima',S=>S.R.err?'—':`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,'cm²');
+  h+=line('Armadura adotada',S=>({v:bar(S),c:S.R.err?'s-bad':(S.R.okS?'':'s-warn')}),'');
+  h+=line('As efetiva',S=>S.R.err?'—':fmt(S.R.Asef,2),'cm²/m');
+  h+=line('Distribuição',S=>S.R.err?'—':fmt(S.R.Asdist,2),'cm²/m');
+  h+=line('Cortante Vd / VRd1',S=>S.R.err?'—':{v:`${fmt(S.VD)} / ${fmt(S.R.VRd1)}`,c:sitCls(S.R.okV)},'kN');
+  return h;
+}
+
+function calc(){
+  const ps=num('v_ps');
+  if(!ptManual||!Number.isFinite(num('v_pt'))){ptManual=false;$('v_pt').value=Number.isFinite(ps)?(Math.round(1.5*ps*100)/100):''}
+  const p={ps,pt:num('v_pt'),alfa:num('v_alfa'),DN:num('v_dn'),DEmm:num('v_de'),wt:num('v_wt'),cT:num('v_ct'),cG:num('v_cg'),
+    phi:num('v_phi'),coh:num('v_coh'),gs:num('v_gs'),del:num('v_del'),sadm:num('v_sadm'),fck:num('v_fck'),gc:num('v_gc'),
+    a:num('v_a'),b:num('v_b'),d:num('v_d'),e:num('v_e'),g:num('v_g'),
+    kon:$('v_kon').checked,hk:num('v_hk'),tk:num('v_tk'),sk:num('v_sk'),
+    fyk:+$('v_fyk').value,cob:num('v_cob'),fid:+$('v_fid').value,fip:+$('v_fip').value,fik:+$('v_fik').value,
+    rmode:$('v_rmode').value,rho:num('v_rho'),gf1:num('v_gf1'),gf2:num('v_gf2')};
+  const ptAuto=!ptManual;
+  const A=p.a/100,B=p.b/100,G=p.g/100,E=p.e/100;
+  $('v_dimhint').textContent=`c = a − b = ${fmt((A-B)*100,0)} cm · f = g − e = ${fmt((G-E)*100,0)} cm · b mínimo sugerido (DN/10 + 10) = ${fmt(p.DN/10+10,0)} cm`;
+  const o=compute(p);
+  if(o.err){$('r_verdict').textContent=o.err;$('r_pill').className='pill bad';$('r_pill').textContent=o.why;$('r_chips').innerHTML='';['r_t1','r_t2','r_t3','r_t4','r_t5','r_t6','r_t7','r_svg'].forEach(i=>$(i).innerHTML='');R=null;last=null;return}
+
+  const lim=[num('v_fst1'),num('v_fsd1'),num('v_fst2'),num('v_fsd2')];
+  let html='', allOk=true;
+  [['Tombamento · serviço',o.FST1,lim[0]],['Deslizamento · serviço',o.FSD1,lim[1]],['Tombamento · teste',o.FST2,lim[2]],['Deslizamento · teste',o.FSD2,lim[3]]]
+   .forEach(([k,v,m])=>{const ok=v>=m;allOk=allOk&&ok;html+=chip(ok?'ok':'bad',k,fmt(v),`mín. ${fmt(m)}`)});
+  const {S1,S2,tracS,tracT}=o;
+  const aciS=!tracS||o.okXS, aciT=!tracT||o.okXT;
+  const okTens1=!S1.fora&&S1.smax<=p.sadm&&aciS, okTens2=tracT?aciT:(S2.smax<=p.sadm);
+  allOk=allOk&&okTens1&&okTens2;
+  {const r=S1.fora?'resultante fora da base':(tracS?(aciS?'kPa · tração na base, ACI atende':'kPa · tração na base, ACI não atende'):`kPa · adm. ${fmt(p.sadm,0)}`);
+   html+=chip(okTens1?'ok':'bad','σ máx · serviço',S1.fora?'fora da base':fmt(S1.smax,1),r)}
+  if(tracT) html+=chip(okTens2?'ok':'bad','Tensões · teste',okTens2?'dentro da base':'fora da base',okTens2?'tração na base · resultante dentro da base (ACI)':'tração na base · resultante fora da base (ACI)');
+  else html+=chip(okTens2?'ok':'bad','σ máx · teste',fmt(S2.smax,1),`kPa · adm. ${fmt(p.sadm,0)}`);
+  const pieces=[['N1',o.N1],['N5',o.N5],['N3',o.N3],...(o.kon?[['N2',o.N2],['N4',o.N4]]:[])];
+  const failPos=[]; let warnS=false;
+  const group=(lab,list)=>{const st=list.map(([,S])=>fState(S));const cls=st.includes('bad')?'bad':st.includes('warn')?'warn':'ok';
+    list.forEach(([n,S])=>{if(!S.R.ok)failPos.push(n);if(S.R.ok&&!S.R.okS)warnS=true});
+    html+=chip(cls,lab,list.map(([n,S])=>`${n} ${S.R.err?'—':'φ'+fphi(S.R.phi)+'/'+fmt(S.R.s,1)}`).join(' · '),
+      list.map(([n,S])=>S.R.err?`${n}: ${S.R.err}`:`${n} Md ${fmt(S.MD)}`).join(' · ')+' kN·m')};
+  group('Degrau',pieces.filter(([n])=>n==='N1'||n==='N5'));
+  group('Parede do tubo',pieces.filter(([n])=>n==='N3'));
+  if(o.kon) group('Dente',pieces.filter(([n])=>n==='N2'||n==='N4'));
+  if(o.kon) html+=chip('neu','Efeito do dente',`FS ${fmt(o.FDe1_0/o.FD1_0)} → ${fmt(o.FSD1)}`,'deslizamento de serviço, sem e com dente');
+  const okH=o.Hs>=0.10;
+  html+=chip(okH?'neu':'warn','Solo sobre o bloco',fmt(o.Hs),okH?'m':'m · abaixo de 0,10 m');
+  html+=chip('neu','Volume de concreto',fmt(o.V,3),'m³');
+  $('r_chips').innerHTML=html;
+  const okRC=failPos.length===0; allOk=allOk&&okRC;
+  const fails=[];
+  if(o.FST1<lim[0]||o.FSD1<lim[1]||!okTens1) fails.push('serviço');
+  if(o.FST2<lim[2]||o.FSD2<lim[3]||!okTens2) fails.push('teste');
+  if(!okRC) fails.push('armaduras '+failPos.join(', '));
+  $('r_verdict').textContent=allOk?'Bloco atende às verificações':'Bloco não atende';
+  $('r_pill').className='pill '+(allOk?((okH&&!warnS)?'ok':'warn'):'bad');
+  $('r_pill').textContent=allOk?(!okH?'pouco recobrimento':warnS?'espaçamento < 7,5 cm: troque a bitola sugerida no quadro':'estabilidade e armaduras ok'):'falha: '+fails.join(', ');
+
+  const xrow=S=>S.x!==null?[['Base comprimida',S.fora?'resultante fora da base':fmt(S.x),S.fora?'':'m']]:[];
+  $('r_t1').innerHTML=rows([
+    ['Força hidráulica FH1',fmt(o.FH1),'kN'],
+    ['Ativo na altura g',fmt(o.RA),'kN'],
+    ...(o.kon?[['Ativo no dente',fmt(o.RAk_S),'kN']]:[]),
+    ['Passivo até a base · H solo + g',fmt(o.RP_S),'kN'],
+    ...(o.kon?[['Passivo no dente',fmt(o.RPk_S),'kN']]:[]),
+    ['Momento de tombamento',fmt(o.MT1),'kN·m'],
+    ['Momento estabilizante',fmt(o.Me1),'kN·m'],
+    ['Força deslizante',fmt(o.FD1),'kN'],
+    ['Força resistente',fmt(o.FDe1),'kN'],
+    ['Peso resistente',fmt(o.W),'kN'],
+    ['Momento no centro da base',fmt(S1.M),'kN·m'],
+    ['Tensão σ1 (passivo) / σ2 (tubo)',`${fmt(S1.s1,1)} / ${fmt(S1.s2,1)}`,'kPa'],
+    ...xrow(S1),
+    ...(tracS?[['ACI · resultante x',fmt(o.xS,3),'m'],['ACI · terço médio',`${fmt(o.a3)} a ${fmt(2*o.a3)} m · ${sitTxt(o.okXS)}`,'',sitCls(o.okXS)]]
+            :[['ACI · posição da resultante','não necessária','']]),
+  ]);
+  $('r_t2').innerHTML=rows([
+    ['Pressão de teste'+(ptAuto?' (1,5 × serviço)':' (informada)'),fmt(p.pt),'m.c.a.'],
+    ['Força hidráulica FH2',fmt(o.FH2),'kN'],
+    ...(o.kon?[['Ativo no dente',fmt(o.RAk_T),'kN']]:[]),
+    ['Passivo na altura g',fmt(o.RP_T),'kN'],
+    ...(o.kon?[['Passivo no dente',fmt(o.RPk_T),'kN']]:[]),
+    ['Momento de tombamento',fmt(o.MT2),'kN·m'],
+    ['Momento estabilizante',fmt(o.Me2),'kN·m'],
+    ['Força deslizante',fmt(o.FD2),'kN'],
+    ['Força resistente',fmt(o.FDe2),'kN'],
+    ['Peso resistente (só concreto)',fmt(o.Wt),'kN'],
+    ['Momento no centro da base',fmt(S2.M),'kN·m'],
+    ['Tensão σ1 (passivo) / σ2 (tubo)',`${fmt(S2.s1,1)} / ${fmt(S2.s2,1)}`,'kPa'],
+    ...xrow(S2),
+    ...(tracT?[['ACI · resultante x',fmt(o.xT,3),'m'],['ACI · dentro da base',`0 a ${fmt(o.A)} m · ${sitTxt(o.okXT)}`,'',sitCls(o.okXT)]]
+            :[['ACI · posição da resultante','não necessária','']]),
+  ]);
+  $('r_t3').innerHTML=rows([
+    ['Coef. passivo / ativo',`${fmt(o.Kp,3)} / ${fmt(o.Ka,3)}`,''],
+    ['Ativo serviço topo / base'+(o.kon?' / fundo do dente':''),`${fmt(o.EA1)} / ${fmt(o.EA2)}`+(o.kon?` / ${fmt(o.EA3)}`:''),'kPa'],
+    ...(o.kon?[['Ativo teste base / fundo do dente',`${fmt(o.EA2t)} / ${fmt(o.EA3t)}`,'kPa']]:[]),
+    ['Passivo serviço topo / base'+(o.kon?' / fundo do dente':''),`${fmt(o.EP1)} / ${fmt(o.EP2)}`+(o.kon?` / ${fmt(o.EP3)}`:''),'kPa'],
+    ['Passivo teste topo / base'+(o.kon?' / fundo do dente':''),`${fmt(o.EP1t)} / ${fmt(o.EP2t)}`+(o.kon?` / ${fmt(o.EP3t)}`:''),'kPa'],
+    ['Altura de solo sobre o bloco',fmt(o.Hs),'m'],
+    ['Peso do corpo do bloco',fmt(o.Wb),'kN'],
+    ...(o.kon?[['Peso do dente · braço s + t/2',`${fmt(o.Wk)} kN · ${fmt(o.xk)}`,'m']]:[]),
+    ['Peso do solo sobre o bloco',fmt(o.Ws),'kN'],
+    ['CG do corpo a partir do ponto de tombamento',fmt(o.cgcm,0),'cm'],
+    ['Altura da força hidráulica (e + DE/2)',fmt(o.yEcm,1),'cm'],
+  ]);
+  $('r_t4').innerHTML=elemTable([{lab:'N1 · superior',S:o.N1},{lab:'N5 · inferior',S:o.N5}],[
+    ['Cargas serviço',S=>S===o.N1?`${fmt(o.Ww+o.Wtb+o.Wst+o.Wsd)} kN`:`reação ${fmt(o.rS.V)} kN`,''],
+    ['Cargas teste',S=>S===o.N1?`${fmt(o.Ww+o.Wtb+o.Wst)} kN`:`reação ${fmt(o.rT.V)} kN`,''],
+  ])+`<tr><td colspan="3" class="muted" style="font-size:12px">Superior: água ${fmt(o.Ww)}, tubo ${fmt(o.Wtb)}, degrau ${fmt(o.Wst)} e solo sobre o degrau ${fmt(o.Wsd)} kN (só no serviço). Inferior: reação do solo menos o peso do degrau.</td></tr>`;
+  $('r_t7').innerHTML=elemTable([{lab:'N3 · face do tubo',S:o.N3}],[
+    ['Força hidráulica · braço DE/2',()=>`${fmt(o.FH1)} / ${fmt(o.FH2)} kN · ${fmt(o.De/2,3)} m`,''],
+    ['Ativo do solo sobre o degrau',()=>`${fmt(o.EaW)} kN`,''],
+    ['Seção c × d',()=>`${fmt(o.C*100,0)} × ${fmt(o.D*100,0)} cm`,''],
+  ]);
+  $('r_t5').innerHTML=o.kon?elemTable([{lab:'N2 · passivo',S:o.N2},{lab:'N4 · ativo',S:o.N4}],[
+    ['Pressão base / fundo · serviço',S=>S===o.N2?`${fmt(o.EP2/2)} / ${fmt(o.EP3/2)}`:`${fmt(o.EA2)} / ${fmt(o.EA3)}`,'kPa'],
+    ['Pressão base / fundo · teste',S=>S===o.N2?`${fmt(o.EP2t)} / ${fmt(o.EP3t)}`:`${fmt(o.EA2t)} / ${fmt(o.EA3t)}`,'kPa'],
+  ]):'<tr><td class="muted">Bloco sem dente. Ative o dente no painel de entradas.</td></tr>';
+  const q=(n,S)=>S.R.err?`<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n s-bad" colspan="5">${S.R.err}</td></tr>`:
+    `<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}</td><td class="n${S.R.okS?'':' s-warn'}">φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}${sugT(S)}</td><td class="n">${fmt(S.R.Asef,2)}</td><td class="n">${S.R.nb}</td><td class="${S.R.ok?'s-ok':'s-bad'}">${S.R.ok?'atende':'não atende'}</td></tr>`;
+  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Elemento</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada</th><th class="n">cm²/m</th><th class="n">Barras</th><th>Situação</th></tr>'
+    +pieces.map(([n,S])=>q(n,S)).join('')
+    +`<tr><td colspan="8" class="muted" style="font-size:12px">Barras ao longo da largura d = ${fmt(p.d,0)} cm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante resistido sem estribos (VRd1).</td></tr>`;
+
+  R={p,o,ptAuto,lim,aciS,aciT,okTens1,okTens2,allOk,fails,pieces};
+  last=o; draw(o);
+}
+
+function dimH(x1,x2,y,t){return `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="var(--muted)"/><line x1="${x1}" y1="${y-5}" x2="${x1}" y2="${y+5}" stroke="var(--muted)"/><line x1="${x2}" y1="${y-5}" x2="${x2}" y2="${y+5}" stroke="var(--muted)"/><text x="${(x1+x2)/2}" y="${y+14}" text-anchor="middle">${t}</text>`}
+function draw(o){
+  const {A,B,C,E,G,F,De,Hs,HK,TK,SK}=o, serv=caso==='serv';
+  const W=780,H=440,padL=190,padR=190,top=46,bot=70;
+  const hs=serv?Math.max(Hs,0):0;
+  const s=Math.min((W-padL-padR)/A,(H-top-bot)/(G+hs+HK));
+  const x0=padL+((W-padL-padR)-A*s)/2, yb=H-bot-HK*s, yTop=yb-G*s, yStep=yb-E*s, xb=x0+B*s, xr=x0+A*s;
+  const yk=yb+HK*s, xkR=xr-SK*s, xkL=xkR-TK*s;
+  const r=De/2*s, cx=xb-r-2, cy=yStep-r, ySoil=yTop-hs*s;
+  const pmax=Math.max(o.EA2,serv?o.EP3:o.EP3t,1), k=110/pmax;
+  const cv=Math.max(R.p.cob/100*s,3);
+  const ST='fill="none" stroke="var(--steel)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"';
+  const tag=(x,y,txt,anc)=>`<text x="${x}" y="${y}" text-anchor="${anc||'start'}" style="fill:var(--steel);font-weight:500">${txt}</text>`;
+  const lb=(n,S)=>`${n} ${S.R.err?'—':'φ'+fphi(S.R.phi)+'/'+fmt(S.R.s,1)}`;
+  let g=`<defs><pattern id="hc" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="var(--concrete)"/><circle cx="2" cy="3" r="0.9" fill="var(--concrete-dot)"/><circle cx="6.5" cy="7" r="0.7" fill="var(--concrete-dot)"/></pattern>
+  <pattern id="hs" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="var(--soil)"/><path d="M0 10L10 0" stroke="var(--soil-line)" stroke-width=".6"/></pattern>
+  <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker>
+  <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--act)"/></marker>
+  <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker>
+  <marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--soil-line)"/></marker></defs>`;
+  if(serv){
+    g+=`<line x1="16" y1="${ySoil}" x2="${W-16}" y2="${ySoil}" stroke="var(--muted)" stroke-dasharray="6 4"/><text x="20" y="${ySoil-6}">terreno</text>`;
+    if(hs>0){
+      g+=`<rect x="${x0}" y="${yTop}" width="${B*s}" height="${F*s}" fill="var(--soil)" fill-opacity=".55"/>`;
+      g+=`<rect x="${x0}" y="${ySoil}" width="${A*s}" height="${hs*s}" fill="url(#hs)" stroke="var(--soil-line)" stroke-width="1"/>`;
+      for(let i=1;i<=4;i++){const ax=x0+A*s*i/5; g+=`<line x1="${ax}" y1="${ySoil+4}" x2="${ax}" y2="${yTop-3}" stroke="var(--soil-line)" stroke-width="1.6" marker-end="url(#as)"/>`}
+      g+=`<text x="${(x0+xr)/2}" y="${ySoil-8}" text-anchor="middle" style="font-weight:500">Ps = ${fmt(o.Ws)} kN</text>`;
+    } else g+=`<rect x="${x0}" y="${yTop}" width="${B*s}" height="${F*s}" fill="var(--soil)" fill-opacity=".55"/>`;
+  } else g+=`<text x="${(x0+xr)/2}" y="${yTop-10}" text-anchor="middle">vala aberta · sem solo sobre o bloco</text>`;
+  // bloco + dente
+  g+=`<rect x="${x0}" y="${yb}" width="${A*s}" height="5" fill="var(--soft)" stroke="var(--muted)" stroke-width=".6"/>`;
+  if(o.kon) g+=`<rect x="${xkL}" y="${yb-1}" width="${TK*s}" height="${HK*s+1}" fill="url(#hc)" stroke="var(--ink)" stroke-width="1.5"/>`;
+  g+=`<path d="M${x0} ${yb}V${yStep}H${xb}V${yTop}H${xr}V${yb}Z" fill="url(#hc)" stroke="var(--ink)" stroke-width="1.5"/>`;
+  if(o.kon) g+=`<line x1="${xkL+1}" y1="${yb}" x2="${xkR-1}" y2="${yb}" stroke="url(#hc)" stroke-width="2"/>`;
+  g+=`<text x="${(xb+xr)/2}" y="${(yTop+yb)/2-4}" text-anchor="middle" style="font-weight:500">Pc</text><text x="${(xb+xr)/2}" y="${(yTop+yb)/2+10}" text-anchor="middle" style="font-weight:500">${fmt(o.Wt)} kN</text>`;
+  // armaduras
+  { const anc=Math.min(C*0.45,0.9)*s;
+    const y1=yStep+cv; g+=`<path d="M${x0+cv} ${y1+Math.min(E*s*0.4,12)}V${y1}H${xb+anc}" ${ST}/>`+tag(x0+cv+4,y1+13,lb('N1',o.N1));
+    const y5=yb-cv; g+=`<path d="M${x0+cv} ${y5-Math.min(E*s*0.4,12)}V${y5}H${xb+anc}" ${ST}/>`+tag(x0+cv+4,y5-5,lb('N5',o.N5));
+    const x3=xb+cv; g+=`<path d="M${x3+Math.min(C*s*0.3,12)} ${yTop+cv}H${x3}V${yStep+Math.min(E*0.8,0.9)*s}" ${ST}/>`+tag(x3+6,yTop+cv+24,lb('N3',o.N3));
+    if(o.kon){ const ya=yb-Math.min(G*0.55,1.0)*s, yf=yk-cv, xs2=xkR-cv, xs4=xkL+cv;
+      g+=`<path d="M${xs2} ${ya}V${yf}H${xs4}V${ya}" ${ST}/>`;
+      g+=tag(xs2-4,ya-6,lb('N2',o.N2),'end')+tag(xs4-4,ya-20,lb('N4',o.N4),'end');
+    }
+  }
+  // ativo na face do tubo
+  if(serv){
+    const w1=o.EA1*k,w2=o.EA2*k,xl=x0;
+    g+=`<path d="M${xl} ${yTop}L${xl-w1} ${yTop}L${xl-w2} ${yb}L${xl} ${yb}Z" fill="var(--act)" fill-opacity=".14" stroke="var(--act)" stroke-width="1"/>`;
+    for(let i=0;i<=5;i++){const t=i/5,yy=yTop+(yb-yTop)*t,ww=w1+(w2-w1)*t; if(ww>6) g+=`<line x1="${xl-ww}" y1="${yy}" x2="${xl-2}" y2="${yy}" stroke="var(--act)" stroke-width="1.2" marker-end="url(#aa)"/>`}
+    g+=`<text x="${xl-Math.max(w1,8)-6}" y="${yTop+4}" text-anchor="end" style="fill:var(--act)">${fmt(o.EA1)} kPa</text>`;
+    g+=`<text x="${xl-w2-6}" y="${yb+4}" text-anchor="end" style="fill:var(--act)">${fmt(o.EA2)} kPa</text>`;
+    g+=`<text x="${xl-w2-6}" y="${yb+20}" text-anchor="end" style="fill:var(--act)">Ea = ${fmt(o.RA)} kN</text>`;
+  }
+  // ativo no dente (face voltada para o tubo)
+  if(o.kon){ const a2=serv?o.EA2:o.EA2t, a3=serv?o.EA3:o.EA3t, R_=serv?o.RAk_S:o.RAk_T, w2=a2*k, w3=a3*k, xf=xkL;
+    g+=`<path d="M${xf} ${yb+5}L${xf-w2} ${yb+5}L${xf-w3} ${yk}L${xf} ${yk}Z" fill="var(--act)" fill-opacity=".22" stroke="var(--act)" stroke-width="1"/>`;
+    for(let i=1;i<=3;i++){const t=i/3.5,yy=yb+5+(yk-yb-5)*t,ww=w2+(w3-w2)*t; if(ww>6) g+=`<line x1="${xf-ww}" y1="${yy}" x2="${xf-2}" y2="${yy}" stroke="var(--act)" stroke-width="1.2" marker-end="url(#aa)"/>`}
+    g+=`<text x="${xf-w3-6}" y="${yk+14}" text-anchor="end" style="fill:var(--act)">${fmt(a3)} kPa · Ea,dente ${fmt(R_)} kN</text>`;
+  }
+  // passivo
+  { const yt=serv?ySoil:yTop, p1=serv?o.EP1:o.EP1t, p2=serv?o.EP2:o.EP2t, p3=serv?o.EP3:o.EP3t;
+    const Rp=serv?o.RP_S:o.RP_T, Rk=serv?o.RPk_S:o.RPk_T;
+    const w1=p1*k,w2=p2*k,w3=p3*k,xp=xr;
+    g+=`<path d="M${xp} ${yt}L${xp+w1} ${yt}L${xp+w2} ${yb}L${xp} ${yb}Z" fill="var(--accent)" fill-opacity=".12" stroke="var(--accent)" stroke-width="1"/>`;
+    for(let i=0;i<=6;i++){const t=i/6,yy=yt+(yb-yt)*t,ww=w1+(w2-w1)*t; if(ww>6) g+=`<line x1="${xp+ww}" y1="${yy}" x2="${xp+2}" y2="${yy}" stroke="var(--accent)" stroke-width="1.2" marker-end="url(#ap)"/>`}
+    g+=`<text x="${xp+Math.max(w1,4)+6}" y="${yt+14}" style="fill:var(--accent)">${fmt(p1)} kPa</text>`;
+    g+=`<text x="${xp+w2+6}" y="${yb-4}" style="fill:var(--accent)">${fmt(p2)} kPa</text>`;
+    if(o.kon){
+      const xf=xkR;
+      g+=`<path d="M${xf} ${yb}L${xf+w2} ${yb}L${xf+w3} ${yk}L${xf} ${yk}Z" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-width="1" stroke-dasharray="${SK>0?'4 3':'0'}"/>`;
+      for(let i=1;i<=3;i++){const t=i/3.5,yy=yb+(yk-yb)*t,ww=w2+(w3-w2)*t; if(ww>6) g+=`<line x1="${xf+ww}" y1="${yy}" x2="${xf+2}" y2="${yy}" stroke="var(--accent)" stroke-width="1.2" marker-end="url(#ap)"/>`}
+      g+=`<text x="${xf+w3+6}" y="${yk+4}" style="fill:var(--accent)">${fmt(p3)} kPa</text>`;
+      g+=`<text x="${xf+w3+6}" y="${yk+19}" style="fill:var(--accent)">Ep,dente = ${fmt(Rk)} kN</text>`;
+      g+=`<text x="${xp+w2+6}" y="${yb+10}" style="fill:var(--accent)">Ep = ${fmt(Rp)} kN</text>`;
+    } else g+=`<text x="${xp+w2/2}" y="${yb+20}" text-anchor="middle" style="fill:var(--accent)">Ep = ${fmt(Rp)} kN</text>`;
+  }
+  // tubo e força hidráulica
+  g+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--water)" fill-opacity=".35" stroke="var(--water)" stroke-width="2"/>`;
+  g+=`<line x1="${x0-150}" y1="${cy}" x2="${cx-r-4}" y2="${cy}" stroke="var(--accent)" stroke-width="2.6" marker-end="url(#ar)"/>`;
+  g+=`<text x="${x0-150}" y="${cy-8}" style="fill:var(--accent);font-weight:500">FH = ${fmt(serv?o.FH1:o.FH2)} kN</text>`;
+  g+=`<circle cx="${xr}" cy="${yb}" r="4" fill="var(--bad)"/>`;
+  // ACI
+  const yA=yk+14+(o.kon?12:0);
+  if(serv?o.tracS:o.tracT){ const x=serv?o.xS:o.xT, ok=serv?o.okXS:o.okXT;
+    const z0=serv?xr-2*A/3*s:x0, z1=serv?xr-A/3*s:xr;
+    g+=`<rect x="${z0}" y="${yA-3}" width="${z1-z0}" height="6" fill="var(--ok)" fill-opacity=".35"/>`;
+    const px=Math.max(x0-30,Math.min(xr+30,xr-x*s)), col=ok?'var(--ok)':'var(--bad)';
+    g+=`<path d="M${px} ${yA-4}l-6 -10h12z" fill="${col}"/><text x="${px<(x0+xr)/2?px-6:px+6}" y="${yA+18}" text-anchor="${px<(x0+xr)/2?'start':'end'}" style="fill:${col};font-weight:500">R · x = ${fmt(x)} m</text>`;
+  }
+  // cotas
+  const yd=Math.min(H-12,yA+28);
+  g+=dimH(x0,xb,yd,`b ${fmt(B*100,0)}`)+dimH(xb,xr,yd,`c ${fmt(C*100,0)}`);
+  g+=`<text x="${xb-6}" y="${yTop+14}" text-anchor="end">f ${fmt(F*100,0)}</text><text x="${xb-6}" y="${(yStep+yb)/2+4}" text-anchor="end">e ${fmt(E*100,0)}</text>`;
+  g+=`<text x="${xr-6}" y="${yTop+14}" text-anchor="end">g ${fmt(G*100,0)}</text>`;
+  if(o.kon) g+=`<text x="${(xkL+xkR)/2}" y="${yk-6}" text-anchor="middle" style="font-size:10px">h${fmt(HK*100,0)}·t${fmt(TK*100,0)}</text>`;
+  if(serv&&hs>0) g+=`<text x="${x0+6}" y="${ySoil+16}">Hsolo ${fmt(Hs)} m</text>`;
+  $('r_svg').innerHTML=g;
+  $('c_note').textContent=(serv
+    ?'Serviço: ativo na face do tubo (laranja) e passivo do terreno até a base (azul).'
+    :'Teste: sem solo sobre o bloco e sem ativo na altura do bloco; passivo na altura g.')
+    +(o.kon?' Abaixo da base, ativo e passivo acompanham o dente até o seu fundo e entram no deslizamento.':'')
+    +' Em vermelho, as armaduras N1 a N5. Com tração na base, a faixa verde marca a região admissível da resultante R (ACI).';
+}
+
+/* ===================== Memorial (.docx, A4) ===================== */
+const LIGHT={bg:'#ffffff',panel:'#ffffff',ink:'#1d2326',muted:'#5d686d',line:'#d8dcda',soft:'#e9ecea',accent:'#0f5f7a','accent-soft':'#dcebf0',concrete:'#c9ccc8','concrete-dot':'#8e9491',water:'#3c8fb8',soil:'#d8c49c','soil-line':'#8a6d3b',act:'#b5651d',steel:'#a3243b',ok:'#21794a','ok-bg':'#e1f1e7',bad:'#b3261e','bad-bg':'#f8e2df',warn:'#9a6400','warn-bg':'#f8eed6'};
+function svgFor(c){const keep=caso;caso=c;draw(last);const inner=$('r_svg').innerHTML;caso=keep;draw(last);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 440" width="2340" height="1320"><rect width="780" height="440" fill="#ffffff"/><g font-family="Menlo, Consolas, monospace" font-size="12" fill="#1d2326">`+
+    inner.replace(/var\(--([\w-]+)\)/g,(m,k)=>LIGHT[k]||'#000').replace(/<text /g,'<text fill="#1d2326" ')+'</g></svg>';}
+function svgToPng(svg){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const cv=document.createElement('canvas');cv.width=2340;cv.height=1320;
+  const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(img,0,0,cv.width,cv.height);
+  cv.toBlob(b=>b?b.arrayBuffer().then(a=>res(new Uint8Array(a))):rej(new Error('png')),'image/png')};
+  img.onerror=()=>rej(new Error('svg'));img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});}
+async function buildDocx(){
+  const DX=window.docx; if(!DX) throw new Error('biblioteca de documentos não carregou');
+  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,AlignmentType,BorderStyle,ShadingType,ImageRun,VerticalAlign,TableLayoutType}=DX;
+  const {p,o}=R, cm=x=>Math.round(x*567), FN='Arial';
+  const t=(s,op={})=>new TextRun({text:String(s),font:FN,size:op.size||15,bold:op.bold,italics:op.it,color:op.color});
+  const P=(runs,op={})=>new Paragraph({children:Array.isArray(runs)?runs:[t(runs,op)],alignment:op.align,spacing:{before:op.before||0,after:op.after??20,line:op.line||220}});
+  const H=s=>new Paragraph({children:[t(s,{bold:true,size:18,color:'0F5F7A'})],spacing:{before:60,after:25},border:{bottom:{style:BorderStyle.SINGLE,size:4,color:'0F5F7A',space:1}}});
+  const bd={style:BorderStyle.SINGLE,size:2,color:'B8BEC0'}, borders={top:bd,bottom:bd,left:bd,right:bd};
+  const nob={style:BorderStyle.NONE,size:0,color:'FFFFFF'}, noborders={top:nob,bottom:nob,left:nob,right:nob};
+  function table(widths,rws,{head=0,shade=[]}={}){
+    return new Table({width:{size:widths.reduce((a,b)=>a+b,0),type:WidthType.DXA},columnWidths:widths,layout:TableLayoutType.FIXED,
+      rows:rws.map((row,i)=>{let col=0;return new TableRow({children:row.map(c=>{const j=col;const op=typeof c==='object'?c:{t:c};col+=op.span||1;
+        const isH=i<head, w=op.span?widths.slice(j,j+op.span).reduce((a,b)=>a+b,0):widths[j];
+        const fill=isH?'DCEBF0':(shade.includes(j)?'F2F4F3':undefined);
+        return new TableCell({columnSpan:op.span,width:{size:w,type:WidthType.DXA},borders,verticalAlign:VerticalAlign.CENTER,margins:{top:15,bottom:15,left:60,right:60},
+          shading:fill?{type:ShadingType.CLEAR,color:'auto',fill}:undefined,
+          children:[new Paragraph({alignment:(isH||(j>0&&!op.left))?AlignmentType.CENTER:AlignmentType.LEFT,spacing:{before:0,after:0,line:200},children:[t(op.t,{bold:isH||op.bold,color:op.color})]})]})})})})});
+  }
+  const L=s=>({t:s,left:1}), B=s=>({t:s,bold:1});
+  const sit=ok=>ok?{t:'Atende',bold:1,color:'21794A'}:{t:'Não atende',bold:1,color:'B3261E'};
+  const conn=p.alfa==90?'Curva 90°':p.alfa==45?'Curva 45°':p.alfa==22.5?"Curva 22°30'":p.alfa==11.25?"Curva 11°15'":`Curva ${fmt(p.alfa,2)}°`;
+  const dados=table([1850,1250,1850,1600,1850,1238],[
+    [{t:'Tubulação',span:2},{t:'Solo e materiais',span:2},{t:'Bloco (cm)',span:2}],
+    [L('Conexão'),conn,L('Ângulo de atrito φ'),fmt(p.phi,1)+'°',L('a · comprimento'),fmt(p.a,0)],
+    [L('DN / DE'),`${fmt(p.DN,0)} / ${fmt(p.DEmm,0)} mm`,L('Coesão c'),fmt(p.coh,1)+' kPa',L('b · degrau / c = a − b'),`${fmt(p.b,0)} / ${fmt(p.a-p.b,0)}`],
+    [L('Pressão de serviço'),fmt(p.ps)+' m.c.a.',L('γ solo'),fmt(p.gs,1)+' kN/m³',L('d · largura'),fmt(p.d,0)],
+    [L('Pressão de teste'+(R.ptAuto?' (1,5×)':'')),fmt(p.pt)+' m.c.a.',L('Atrito concreto-solo δ'),fmt(p.del,1)+'°',L('e · altura do degrau'),fmt(p.e,0)],
+    [L('Peso próprio do tubo'),fmt(p.wt)+' kN/m',L('σadm do solo'),fmt(p.sadm,0)+' kPa',L('g · altura / f = g − e'),`${fmt(p.g,0)} / ${fmt(p.g-p.e,0)}`],
+    [L('Cota terreno / geratriz'),`${fmt(p.cT)} / ${fmt(p.cG)} m`,L('Concreto fck / γc'),`${fmt(p.fck,0)} MPa / ${fmt(p.gc,0)} kN/m³`,L('Dente h / t / s'),o.kon?`${fmt(p.hk,0)} / ${fmt(p.tk,0)} / ${fmt(p.sk,0)}`:'sem dente'],
+    [L('γf serviço / teste'),`${fmt(p.gf1)} / ${fmt(p.gf2)}`,L('Aço / cobrimento'),`CA-${p.fyk/10} / ${fmt(p.cob,1)} cm`,L('As,mín'),p.rmode==='inf'?`${fmt(p.rho,2)}%`:'NBR Tab. 17.3'],
+  ],{head:1,shade:[0,2,4]});
+  const [pS,pT]=await Promise.all([svgToPng(svgFor('serv')),svgToPng(svgFor('test'))]);
+  const iw=Math.round(8.3/2.54*96), ih=Math.round(8.3*440/780/2.54*96);
+  const figCell=(png,cap)=>new TableCell({width:{size:4819,type:WidthType.DXA},borders:noborders,margins:{top:0,bottom:0,left:0,right:0},children:[
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:0},children:[new ImageRun({type:'png',data:png,transformation:{width:iw,height:ih}})]}),
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:20},children:[t(cap,{size:14,it:true})]})]});
+  const figs=new Table({width:{size:9638,type:WidthType.DXA},columnWidths:[4819,4819],layout:TableLayoutType.FIXED,
+    rows:[new TableRow({children:[figCell(pS,'Figura 1 – Serviço: solo sobre o bloco, ativo e passivo até o fundo do dente'),figCell(pT,'Figura 2 – Teste: vala aberta, empuxos no dente abaixo da base')]})]});
+  const par=table([2900,1919,2900,1919],[
+    ['Parâmetro','Valor','Parâmetro','Valor'],
+    [L('H solo = Ct − (Cgi + f)'),fmt(o.Hs)+' m',L('Kp / Ka (Rankine)'),`${fmt(o.Kp,3)} / ${fmt(o.Ka,3)}`],
+    [L('Volume de concreto'),fmt(o.V,3)+' m³',L('Ativo serviço topo / base / dente'),`${fmt(o.EA1)} / ${fmt(o.EA2)} / ${o.kon?fmt(o.EA3):'—'} kPa`],
+    [L('Peso do corpo / dente'),`${fmt(o.Wb)} / ${fmt(o.Wk)} kN`,L('Passivo serviço topo / base / dente'),`${fmt(o.EP1)} / ${fmt(o.EP2)} / ${o.kon?fmt(o.EP3):'—'} kPa`],
+    [L('Peso do solo sobre o bloco Ps'),fmt(o.Ws)+' kN',L('Passivo teste topo / base / dente'),`${fmt(o.EP1t)} / ${fmt(o.EP2t)} / ${o.kon?fmt(o.EP3t):'—'} kPa`],
+    [L('CG do corpo (ponto de tomb.)'),fmt(o.cgcm,0)+' cm',L('Altura de FH (e + DE/2)'),fmt(o.yEcm,1)+' cm'],
+  ],{head:1,shade:[0,2]});
+  const tens=S=>`${fmt(S.s1,1)} / ${fmt(S.s2,1)} kPa`;
+  const aciSt=o.tracS?`${fmt(o.xS,3)} m`:'não necessária', aciTt=o.tracT?`${fmt(o.xT,3)} m`:'não necessária';
+  const aciCrit=[o.tracS?`serv.: ${fmt(o.A/3)} a ${fmt(2*o.A/3)} m`:null,o.tracT?`teste: 0 a ${fmt(o.A)} m`:null].filter(Boolean).join(' · ')||'sem tração na base';
+  const lim=R.lim;
+  const ver=table([3300,1500,1500,2138,1200],[
+    ['Verificação','Serviço','Teste','Critério','Situação'],
+    [L('Força hidráulica FH'),fmt(o.FH1)+' kN',fmt(o.FH2)+' kN','2·p·γw·π·DE²/4·sen(α/2)','—'],
+    [L('Ativo Ea / passivo Ep'),`${fmt(o.RA)} / ${fmt(o.RP_S)} kN`,`— / ${fmt(o.RP_T)} kN`,'serviço: ½ Ep','—'],
+    ...(o.kon?[[L('Dente · ativo / passivo'),`${fmt(o.RAk_S)} / ${fmt(o.RPk_S)} kN`,`${fmt(o.RAk_T)} / ${fmt(o.RPk_T)} kN`,'só no deslizamento','—']]:[]),
+    [L('Momento tombamento / estabilizante'),`${fmt(o.MT1)} / ${fmt(o.Me1)}`,`${fmt(o.MT2)} / ${fmt(o.Me2)}`,'kN·m','—'],
+    [{t:'FS tombamento',left:1,bold:1},B(fmt(o.FST1)),B(fmt(o.FST2)),`≥ ${fmt(lim[0])} / ≥ ${fmt(lim[2])}`,sit(o.FST1>=lim[0]&&o.FST2>=lim[2])],
+    [L('Força deslizante / resistente'),`${fmt(o.FD1)} / ${fmt(o.FDe1)}`,`${fmt(o.FD2)} / ${fmt(o.FDe2)}`,'kN','—'],
+    [{t:'FS deslizamento',left:1,bold:1},B(fmt(o.FSD1)),B(fmt(o.FSD2)),`≥ ${fmt(lim[1])} / ≥ ${fmt(lim[3])}`,sit(o.FSD1>=lim[1]&&o.FSD2>=lim[3])],
+    [L('Peso resistente ΣV'),fmt(o.W)+' kN',fmt(o.Wt)+' kN','teste: só concreto','—'],
+    [{t:'Tensões na base σ1 / σ2',left:1,bold:1},B(tens(o.S1)),B(tens(o.S2)),`σmáx ≤ ${fmt(p.sadm,0)} kPa`+(o.tracT?' (teste: ACI)':''),sit(R.okTens1&&R.okTens2)],
+    [{t:'ACI · resultante x = (Me − Mt)/ΣV',left:1,bold:1},B(aciSt),B(aciTt),aciCrit,(o.tracS||o.tracT)?sit(R.aciS&&R.aciT):'—'],
+  ],{head:1,shade:[0]});
+  const POS={N1:'Degrau, face superior',N5:'Degrau, face inferior',N3:'Parede, face do tubo',N2:'Dente, face do passivo',N4:'Dente, face do ativo'};
+  const armRow=(n,S)=>S.R.err?[L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,{t:S.R.err,span:3},sit(false)]:
+    [L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`,`${fmt(S.R.VRd1)} kN`,sit(S.R.ok)];
+  const arm=table([2500,1350,900,1350,1238,1100,1200],[
+    ['Posição','Md kN·m / Vd kN','Rege','As / As,mín cm²','Adotada','VRd1','Situação'],
+    ...R.pieces.map(([n,S])=>armRow(n,S)),
+  ],{head:1,shade:[0]});
+  const distTxt='Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1).';
+  let concl=`O bloco de ${fmt(p.a,0)} × ${fmt(p.d,0)} × ${fmt(p.g,0)} cm`+(o.kon?`, com dente de ${fmt(p.hk,0)} × ${fmt(p.tk,0)} cm`:'')+` (${fmt(o.V,2)} m³ de concreto, fck ${fmt(p.fck,0)} MPa) `;
+  if(R.allOk){concl+='atende às verificações de estabilidade nos casos de serviço e de teste e às verificações de flexão e cortante do degrau, da parede de apoio do tubo'+(o.kon?' e do dente.':'.');
+    if(o.tracT) concl+=` No teste ocorre tração na base, com a resultante dentro da base (x = ${fmt(o.xT)} m), aceita por ser condição excepcional.`;
+  } else concl+=`não atende: falha em ${R.fails.join(', ')}. Revisar as dimensões.`;
+  if(o.Hs<0.10) concl+=' Atenção: recobrimento de solo sobre o bloco inferior a 0,10 m.';
+  const doc=new Document({styles:{default:{document:{run:{font:FN,size:16}}}},
+    sections:[{properties:{page:{size:{width:cm(21),height:cm(29.7)},margin:{top:cm(2.5),left:cm(2.5),right:cm(1.5),bottom:cm(1.5),header:cm(1),footer:cm(0.8)}}},
+    children:[
+      new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:$('v_nome').value.trim()?0:60},children:[t('MEMÓRIA DE CÁLCULO – BLOCO DE ANCORAGEM COM DENTE',{bold:true,size:26})]}),
+      ...($('v_nome').value.trim()?[new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:60},children:[t('Unidade: '+$('v_nome').value.trim(),{bold:true,size:18,color:'0F5F7A'})]})]:[]),
+      H('1. Dados de entrada'),dados,
+      H('2. Cortes e esforços'),figs,
+      H('3. Parâmetros'),par,
+      H('4. Verificações de estabilidade'),ver,
+      H('5. Flexão e cortante nas peças (NBR 6118)'),arm,P([t(distTxt,{size:14,it:true})],{before:20}),
+      H('6. Conclusão'),P([t(concl)],{after:0}),
+    ]}]});
+  return Packer.toBlob(doc);
+}
+$('v_mem').addEventListener('click',async()=>{
+  const st=$('v_memst'), btn=$('v_mem');
+  if(!R){st.textContent='Corrija os dados do bloco antes de gerar o memorial.';return}
+  btn.disabled=true; st.textContent='Gerando o memorial…';
+  let blob; try{blob=await buildDocx()}catch(e){st.textContent='Não foi possível gerar o memorial: '+(e&&e.message||e)+'.';btn.disabled=false;return}
+  const nm=$('v_nome').value.trim().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w.-]+/g,'_').replace(/^_+|_+$/g,'');
+  const filename='Memoria_de_Calculo_'+(nm||'Bloco_com_Dente')+'.docx';
+  let dl=null; if(window.claude?.use){try{dl=await window.claude.use('downloads')}catch(e){}}
+  if(dl){
+    try{const res=await dl.save({filename,data:blob});st.textContent=res&&res.status==='saved'?'Memorial salvo (.docx, A4).':'Memorial enviado.'}
+    catch(e){const c=e&&e.code;st.textContent=c==='declined'?'Download cancelado.':c==='rate_limited'?'Já existe um pedido de download aberto. Tente de novo em instantes.':'Não foi possível salvar o arquivo neste visualizador.'}
+  } else {
+    try{baixar(blob,filename);st.textContent=`Memorial baixado: ${filename}`}
+    catch(e){st.textContent='O navegador bloqueou o download. Verifique as permissões de download do site e tente de novo.'}
+  }
+  btn.disabled=false;
+});
+function baixar(blob,filename){
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=filename; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+/* ===================== Unidades salvas ===================== */
+/* Armazenamento no navegador (localStorage), com a mesma interface usada pelo app no claude.ai */
+const CHAVE='bloco-ancoragem-dente:unidades:v1';
+function localDb(){
+  try{const k='__t';localStorage.setItem(k,'1');localStorage.removeItem(k)}catch(e){return null}
+  const ler=()=>{try{const o=JSON.parse(localStorage.getItem(CHAVE)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(e){return {}}};
+  const subs=new Set();
+  const avisar=()=>{const m=ler();subs.forEach(s=>s(m))};
+  const gravarTudo=m=>{try{localStorage.setItem(CHAVE,JSON.stringify(m))}catch(e){throw {code:'quota_exceeded'}}avisar()};
+  window.addEventListener('storage',e=>{if(e.key===CHAVE)avisar()});
+  const novoId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  const docRef=id=>({id,async set(b){const m=ler();m[id]=JSON.parse(JSON.stringify(b));gravarTudo(m)},async delete(){const m=ler();delete m[id];gravarTudo(m)}});
+  return {local:true,
+    lerTudo:ler, gravarTudo,
+    collection:()=>({doc:id=>docRef(id||novoId()),
+      orderBy:(f,dir)=>({onSnapshot(next){const emit=m=>{const docs=Object.entries(m).map(([id,b])=>({id,data:()=>b}))
+          .sort((x,y)=>{const a=String(x.data()[f]||''),b=String(y.data()[f]||'');return dir==='desc'?b.localeCompare(a):a.localeCompare(b)});next({docs})};
+        subs.add(emit);emit(ler());return()=>subs.delete(emit)}})})};
+}
+let db=null, carregado=false, erroLista=false, unidades=[], atualId=null, sujo=false, salvoEm=null, pendente=null, pendDel=null, ocupado=false;
+const fdata=iso=>{try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function msg(t,cls){const m=$('u_msg');m.textContent=t||'';m.className='hint'+(cls?' '+cls:'')}
+function marcarSujo(){sujo=true;if(pendente){pendente=null;$('u_new').textContent='Nova unidade'}statusLine()}
+function statusLine(){
+  let t;
+  if(!atualId) t='Nova unidade · ainda não salva';
+  else t=(sujo?'Alterações não salvas':'Salva')+(salvoEm?' · gravada em '+fdata(salvoEm):'');
+  $('u_status').textContent=t; $('u_status').className='hint'+(sujo&&atualId?' s-warn':'');
+  $('u_save').disabled=!db||ocupado; $('u_copy').disabled=!db||!atualId||ocupado;
+  $('u_save').textContent=ocupado?'Salvando…':(atualId&&sujo?'Salvar alterações':'Salvar unidade');
+  renderLista();
+}
+const conexaoTxt=()=>$('v_tipo').value==='x'?`Curva ${$('v_alfa').value}°`:$('v_tipo').selectedOptions[0].textContent;
+function resumo(){
+  if(!R) return {ok:false,txt:'dados inválidos'};
+  return {ok:R.allOk,txt:$('r_pill').textContent,conexao:conexaoTxt(),dn:+$('v_dn').value,
+    dim:`${$('v_a').value} × ${$('v_d').value} × ${$('v_g').value} cm`,dente:R.o.kon,volume:Math.round(R.o.V*1000)/1000};
+}
+async function gravar(nova){
+  if(!db||ocupado) return;
+  let nome=$('v_nome').value.trim();
+  if(!nome){nome=`${conexaoTxt()} DN${$('v_dn').value}`;$('v_nome').value=nome}
+  const antes=unidades.find(u=>u.id===atualId);
+  if(nova&&antes&&nome===antes.nome){nome+=' (cópia)';$('v_nome').value=nome}
+  const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
+  const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
+  const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
+    ptManual,versao:'V1.3',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+  ocupado=true; statusLine(); msg('Salvando a unidade…');
+  const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
+  try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
+    msg(nova?`Cópia salva como “${nome}”.`:`Unidade “${nome}” salva.`,'s-ok')}
+  catch(e){const c=e&&e.code;
+    msg(c==='quota_exceeded'?'O limite de unidades salvas foi atingido. Exclua unidades antigas e salve de novo.':
+        c==='invalid_argument'?'Você não tem permissão para salvar unidades neste aplicativo.':
+        'Não foi possível salvar agora. Verifique a conexão e tente de novo.','s-bad')}
+  ocupado=false; statusLine();
+}
+function confirmarDescarte(chave){
+  if(!sujo||pendente===chave){pendente=null;$('u_new').textContent='Nova unidade';return true}
+  pendente=chave; $('u_new').textContent=chave==='nova'?'Descartar e criar nova':'Nova unidade';
+  msg('Há alterações não salvas nesta unidade. Clique de novo para descartá-las, ou salve antes.','s-warn'); renderLista(); return false;
+}
+function abrir(id){
+  const u=unidades.find(x=>x.id===id); if(!u) return;
+  if(!confirmarDescarte('abrir:'+id)) return;
+  ptManual=!!u.ptManual; aplicar({...DEF,...(u.dados||{})}); $('v_nome').value=u.nome||'';
+  atualId=id; salvoEm=u.atualizado; sujo=false; pendDel=null; calc();
+  msg(`Unidade “${u.nome}” aberta.`,'s-ok'); statusLine();
+  try{$('f1').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}catch(e){}
+}
+function nova(){
+  if(!confirmarDescarte('nova')) return;
+  ptManual=false; aplicar(DEF); $('v_nome').value=''; atualId=null; salvoEm=null; sujo=false; pendDel=null; calc();
+  msg('Nova unidade com os dados iniciais. Dê um nome e salve quando terminar.'); statusLine(); $('v_nome').focus();
+}
+async function excluir(id){
+  const u=unidades.find(x=>x.id===id); if(!u||!db) return;
+  if(pendDel!==id){pendDel=id;renderLista();msg(`Clique em “Confirmar exclusão” para apagar “${u.nome}”. Não dá para desfazer.`,'s-warn');return}
+  pendDel=null;
+  try{await db.collection('unidades').doc(id).delete();
+    if(atualId===id){atualId=null;salvoEm=null;sujo=true}
+    msg(`Unidade “${u.nome}” excluída.`+(sujo&&!atualId?' Os dados continuam no formulário; salve de novo se quiser mantê-los.':''),'s-ok')}
+  catch(e){msg('Não foi possível excluir agora. Tente de novo.','s-bad')}
+  statusLine();
+}
+function renderLista(){
+  const ul=$('u_list'), q=$('u_find').value.trim().toLowerCase();
+  if(!db){ul.innerHTML=`<li class="uempty">${carregado?'Este navegador está bloqueando o armazenamento local (janela anônima ou dados do site desativados). Os cálculos e o memorial funcionam normalmente, mas as unidades não podem ser salvas.':'Carregando as unidades salvas…'}</li>`;$('u_count').textContent='';return}
+  if(erroLista){ul.innerHTML='<li class="uempty">Não foi possível carregar as unidades. Recarregue a página.</li>';return}
+  $('u_count').textContent=carregado?`${unidades.length} ${unidades.length===1?'unidade':'unidades'}`:'';
+  if(!carregado){ul.innerHTML='<li class="uempty">Carregando as unidades salvas…</li>';return}
+  if(!unidades.length){ul.innerHTML='<li class="uempty">Nenhuma unidade salva ainda. Preencha os dados, dê um nome à unidade e clique em Salvar unidade.</li>';return}
+  const lst=unidades.filter(u=>!q||String(u.nome||'').toLowerCase().includes(q));
+  if(!lst.length){ul.innerHTML='<li class="uempty">Nenhuma unidade com esse nome.</li>';return}
+  ul.innerHTML=lst.map(u=>{const r=u.resumo||{}, cur=u.id===atualId;
+    const ab=pendente==='abrir:'+u.id?'Descartar e abrir':(cur?'Reabrir':'Abrir');
+    return `<li class="urow${cur?' cur':''}"><span class="nm">${esc(u.nome)}${cur?' <span class="muted" style="font-weight:400">· aberta</span>':''}</span>
+      <span class="acts"><button type="button" class="mini" data-a="abrir" data-id="${esc(u.id)}">${ab}</button><button type="button" class="mini danger" data-a="del" data-id="${esc(u.id)}">${pendDel===u.id?'Confirmar exclusão':'Excluir'}</button></span>
+      <span class="meta"><span class="st ${r.ok?'ok':'bad'}">${r.ok?'atende':'não atende'}</span><span>${esc(r.conexao||'')} DN${esc(r.dn??'')}</span><span>${esc(r.dim||'')}${r.dente?' · com dente':''}</span><span>${esc(fdata(u.atualizado))}</span></span></li>`}).join('');
+}
+$('u_list').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const id=b.dataset.id;
+  if(b.dataset.a==='abrir'){pendDel=null;abrir(id)} else excluir(id)});
+$('u_find').addEventListener('input',renderLista);
+$('u_save').addEventListener('click',()=>gravar(false));
+$('u_copy').addEventListener('click',()=>gravar(true));
+$('u_new').addEventListener('click',nova);
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();gravar(false)}});
+/* exportar / importar unidades (.json) */
+$('u_exp').addEventListener('click',()=>{
+  if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
+  const m=db.lerTudo(), n=Object.keys(m).length;
+  if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.3',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
+  catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
+});
+$('u_imp').addEventListener('click',()=>{if(db?.local)$('u_file').click();else msg('A importação funciona na versão do navegador.','s-warn')});
+$('u_file').addEventListener('change',async()=>{
+  const f=$('u_file').files[0]; $('u_file').value=''; if(!f) return;
+  try{
+    const j=JSON.parse(await f.text()), src=j&&typeof j==='object'?(j.unidades||j):null;
+    if(!src||typeof src!=='object') throw 0;
+    const m=db.lerTudo(); let n=0;
+    for(const [id,u] of Object.entries(src)){
+      if(!/^[\w.~:@+-]{1,200}$/.test(id)||!u||typeof u.nome!=='string'||!u.dados||typeof u.dados!=='object') continue;
+      const dados={}; FIELDS.forEach(k=>{const v=u.dados[k];if(typeof v==='string'||typeof v==='boolean'||typeof v==='number')dados[k]=v});
+      const r=u.resumo&&typeof u.resumo==='object'?u.resumo:{};
+      m[id]={nome:u.nome.slice(0,80),dados,ptManual:!!u.ptManual,versao:String(u.versao||''),
+        resumo:{ok:!!r.ok,conexao:String(r.conexao||''),dn:Number(r.dn)||'',dim:String(r.dim||''),dente:!!r.dente,volume:Number(r.volume)||0},
+        criado:String(u.criado||u.atualizado||new Date().toISOString()),atualizado:String(u.atualizado||new Date().toISOString())};
+      n++;
+    }
+    if(!n){msg('O arquivo não contém unidades deste aplicativo.','s-bad');return}
+    db.gravarTudo(m); msg(`${n} ${n===1?'unidade importada':'unidades importadas'}. Unidades com o mesmo identificador foram substituídas.`,'s-ok');
+  }catch(e){msg(e&&e.code==='quota_exceeded'?'Sem espaço no armazenamento do navegador para importar.':'Não foi possível ler o arquivo. Use um .json exportado por este aplicativo.','s-bad')}
+});
+(async()=>{
+  if(window.claude?.use){try{db=await window.claude.use('db')}catch(e){db=null}}
+  if(!db) db=localDb();
+  $('u_where').textContent=db?.local?'As unidades ficam salvas neste navegador. Use Exportar para guardar uma cópia ou levá-las para outro computador.':'';
+  $('u_exp').hidden=$('u_imp').hidden=!db?.local;
+  carregado=!db;
+  if(db){
+    db.collection('unidades').orderBy('atualizado','desc').onSnapshot(
+      s=>{unidades=s.docs.map(d=>({id:d.id,...d.data()}));carregado=true;erroLista=false;renderLista()},
+      ()=>{carregado=true;erroLista=true;renderLista()});
+  }
+  statusLine();
+})();
+
+syncInputs(); calc(); statusLine();
+})();
+</script>
+
+</body>
+</html>
