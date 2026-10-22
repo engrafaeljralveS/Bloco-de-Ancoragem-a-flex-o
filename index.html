@@ -123,7 +123,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem com Dente</h1>
     <p class="sub">Curvas horizontais com junta elástica · bloco em L com dente de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V1.5 · out/2026</span>
+  <span class="pill neu">Versão V1.6 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -761,7 +761,8 @@ async function buildDocx(){
   const DX=window.docx; if(!DX) throw new Error('biblioteca de documentos não carregou');
   const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,AlignmentType,BorderStyle,ShadingType,ImageRun,VerticalAlign,TableLayoutType}=DX;
   const {p,o}=R, cm=x=>Math.round(x*567), FN='Arial';
-  const t=(s,op={})=>new TextRun({text:String(s),font:FN,size:op.size||15,bold:op.bold,italics:op.it,color:op.color});
+  const FMAX=24; /* tamanho máximo no memorial: 12 pt (meios-pontos) */
+  const t=(s,op={})=>new TextRun({text:String(s),font:FN,size:Math.min(op.size||15,FMAX),bold:op.bold,italics:op.it,color:op.color});
   const P=(runs,op={})=>new Paragraph({children:Array.isArray(runs)?runs:[t(runs,op)],alignment:op.align,spacing:{before:op.before||0,after:op.after??20,line:op.line||220}});
   const H=s=>new Paragraph({children:[t(s,{bold:true,size:18,color:'0F5F7A'})],spacing:{before:60,after:25},border:{bottom:{style:BorderStyle.SINGLE,size:4,color:'0F5F7A',space:1}}});
   const bd={style:BorderStyle.SINGLE,size:2,color:'B8BEC0'}, borders={top:bd,bottom:bd,left:bd,right:bd};
@@ -839,10 +840,10 @@ async function buildDocx(){
     if(o.tracT) concl+=` No teste ocorre tração na base, com a resultante dentro da base (x = ${fmt(o.xT)} m), aceita por ser condição excepcional.`;
   } else concl+=`não atende: falha em ${R.fails.join(', ')}. Revisar as dimensões.`;
   if(o.Hs<0.10) concl+=' Atenção: recobrimento de solo sobre o bloco inferior a 0,10 m.';
-  const doc=new Document({styles:{default:{document:{run:{font:FN,size:16}}}},
+  const doc=new Document({styles:{default:{document:{run:{font:FN,size:16}},title:{run:{font:FN,size:FMAX}},heading1:{run:{font:FN,size:FMAX}},heading2:{run:{font:FN,size:22}},heading3:{run:{font:FN,size:20}},heading4:{run:{font:FN,size:18}},heading5:{run:{font:FN,size:18}},heading6:{run:{font:FN,size:18}}}},
     sections:[{properties:{page:{size:{width:cm(21),height:cm(29.7)},margin:{top:cm(2.5),left:cm(2.5),right:cm(1.5),bottom:cm(1.5),header:cm(1),footer:cm(0.8)}}},
     children:[
-      new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:$('v_nome').value.trim()?0:60},children:[t('MEMÓRIA DE CÁLCULO – BLOCO DE ANCORAGEM COM DENTE',{bold:true,size:26})]}),
+      new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:$('v_nome').value.trim()?0:60},children:[t('MEMÓRIA DE CÁLCULO – BLOCO DE ANCORAGEM COM DENTE',{bold:true,size:24})]}),
       ...($('v_nome').value.trim()?[new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:60},children:[t('Unidade: '+$('v_nome').value.trim(),{bold:true,size:18,color:'0F5F7A'})]})]:[]),
       H('1. Dados de entrada'),dados,
       H('2. Cortes e esforços'),figs,
@@ -924,7 +925,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V1.5',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V1.6',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -990,7 +991,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.5',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V1.6',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });
