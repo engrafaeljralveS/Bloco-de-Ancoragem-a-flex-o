@@ -16,7 +16,8 @@ No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90
 - **Vertical:** uma perna horizontal e a outra inclinada de α. O empuxo faz α/2 com a vertical: H = F·sen(α/2) contra a parede e V = F·cos(α/2) na vertical.
   - **Para baixo** (curva em ponto baixo): V soma ao peso, ajuda no tombamento e no atrito e carrega o degrau.
   - **Para cima** (curva em ponto alto): V tende a levantar e tombar o bloco. O app verifica o levantamento (peso / V) e dimensiona as cintas que prendem o tubo ao degrau.
-  - **Para baixo, sem componente horizontal** (descida vertical que segue para os lados): o empuxo F é todo vertical, para baixo (V = F, H = 0). Carrega o bloco e o degrau, sem gerar tombamento nem deslizamento pelo tubo.
+  - **Para baixo, sem componente horizontal** (descida vertical que segue para os lados): o empuxo F é todo vertical, para baixo (V = F, H = 0). Sem nada empurrando o bloco na horizontal, os empuxos de terra se equilibram e ficam fora da estabilidade: tombamento e deslizamento aparecem como "sem esforço", e a tensão na base é a média σ = N/(a·d).
+  - Em todas as curvas verticais, o solo sobre o degrau (entre e e g) e a água no tubo entram na estabilidade como cargas favoráveis. No teste, entra só a água.
 
 **Estabilidade, nos casos de serviço e de teste**
 - Tombamento e deslizamento, com os fatores de segurança mínimos informados.
@@ -68,4 +69,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.5 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.6 · outubro de 2026 · Eng. Rafael J. R. Alves
