@@ -132,7 +132,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem</h1>
     <p class="sub">Curvas horizontais e verticais com junta elástica · bloco em L com chaveta de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V2.8 · out/2026</span>
+  <span class="pill neu">Versão V2.9 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -196,7 +196,7 @@ fieldset.unit{border-color:var(--ink)}
     <fieldset class="new" id="fs_arm"><legend>Armadura</legend>
       <div class="f"><label for="v_fyk">Aço</label><div class="in"><select id="v_fyk"><option value="500" selected>CA-50</option><option value="600">CA-60</option></select></div></div>
       <div class="f"><label for="v_cob">Cobrimento</label><div class="in"><input id="v_cob" type="number" step="0.5" value="5"><span>cm</span></div></div>
-      <input type="hidden" id="v_aN1" value="10"><input type="hidden" id="v_sN1" value=""><input type="hidden" id="v_aN5" value="10"><input type="hidden" id="v_sN5" value=""><input type="hidden" id="v_aN6" value="10"><input type="hidden" id="v_sN6" value=""><input type="hidden" id="v_aN3" value="12.5"><input type="hidden" id="v_sN3" value=""><input type="hidden" id="v_aN2" value="10"><input type="hidden" id="v_sN2" value=""><input type="hidden" id="v_aN4" value="10"><input type="hidden" id="v_sN4" value="">
+      <input type="hidden" id="v_aB" value="10"><input type="hidden" id="v_sB" value=""><input type="hidden" id="v_aP" value="12.5"><input type="hidden" id="v_sP" value=""><input type="hidden" id="v_aK" value="10"><input type="hidden" id="v_sK" value=""><input type="hidden" id="v_aS" value="8"><input type="hidden" id="v_sS" value="20">
       <div class="f"><label for="v_rmode">Armadura mínima</label><div class="in"><select id="v_rmode"><option value="nbr" selected>NBR Tab. 17.3</option><option value="inf">Taxa informada</option></select></div></div>
       <div class="f"><label for="v_rho">Taxa mínima informada</label><div class="in"><input id="v_rho" type="number" step="0.01" value="0.10" disabled><span>%</span></div></div>
       <div class="f full"><label for="v_wlim">Abertura máxima de fissura wk,lim</label><div class="in"><select id="v_wlim"><option value="0.1">0,1</option><option value="0.2">0,2</option><option value="0.3" selected>0,3 · NBR 6118, CAA II e III</option><option value="0.4">0,4 · CAA I</option></select><span>mm</span></div></div>
@@ -255,11 +255,11 @@ fieldset.unit{border-color:var(--ink)}
       <div class="chips" id="r_rcchips" style="margin-top:6px"></div>
     </div>
     <div class="two">
-      <div class="card tbl"><h2>Degrau sob o tubo</h2><p class="lead" id="l_t4">Balanço de comprimento b engastado no corpo · N1 face superior, N5 face inferior</p><table id="r_t4"></table></div>
-      <div class="card tbl"><h2>Parede de apoio do tubo</h2><p class="lead" id="l_t7">Balanço vertical de altura f engastado no topo do degrau · N3 na face do tubo</p><table id="r_t7"></table></div>
+      <div class="card tbl"><h2>Degrau sob o tubo</h2><p class="lead" id="l_t4">Balanço de comprimento b engastado no corpo · estribo N1</p><table id="r_t4"></table></div>
+      <div class="card tbl"><h2>Parede de apoio do tubo</h2><p class="lead" id="l_t7">Balanço vertical de altura f engastado no topo do degrau · estribo N2</p><table id="r_t7"></table></div>
     </div>
     <div class="two">
-      <div class="card tbl"><h2>Chaveta</h2><p class="lead" id="l_t5">Balanço de altura h engastado na base · N2 face do passivo, N4 face do ativo</p><table id="r_t5"></table></div>
+      <div class="card tbl"><h2>Chaveta</h2><p class="lead" id="l_t5">Balanço de altura h engastado na base · barra em U N3</p><table id="r_t5"></table></div>
       <div class="card tbl"><h2>Empuxos e pesos</h2><table id="r_t3"></table></div>
     </div>
     <div class="card tbl" id="w_sal" hidden><h2>Saliência da laje</h2><p class="lead" id="l_t8">Balanço de comprimento j engastado na face da parede, do lado do terreno · reação do solo menos o peso próprio e o solo sobre a saliência</p><table id="r_t8"></table></div>
@@ -287,24 +287,24 @@ fieldset.unit{border-color:var(--ink)}
   <ol>
     <li><b>Geometria:</b> a laje da base, de espessura e, avança j além da face da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. Com j = 0, o bloco volta ao L original.</li>
     <li><b>Estabilidade:</b> o ponto de tombamento fica na ponta da saliência, e o passivo atua no plano vertical que passa por ela. O peso da saliência e o solo sobre ela (altura H solo + g − e, no serviço) entram no peso resistente e no momento estabilizante. No teste, com a vala aberta, o solo sobre a saliência não entra.</li>
-    <li><b>Flexão (N6):</b> balanço de comprimento j engastado na face da parede, carregado pela reação do solo sob a saliência, integrada do diagrama de tensões da base de cada caso, menos o peso próprio e o solo sobre a saliência. A tração fica na face inferior.</li>
+    <li><b>Flexão (saliência, ramo inferior do estribo N1):</b> balanço de comprimento j engastado na face da parede, carregado pela reação do solo sob a saliência, integrada do diagrama de tensões da base de cada caso, menos o peso próprio e o solo sobre a saliência. A tração fica na face inferior.</li>
   </ol>
   <h4>Curva vertical</h4>
   <ol>
     <li><b>Direção do empuxo:</b> uma perna horizontal e a outra inclinada de α. O empuxo total F = 2·p·A·sen(α/2) faz α/2 com a vertical: H = F·sen(α/2), horizontal, contra a parede do bloco; V = F·cos(α/2), vertical, aplicado no centro do tubo, a c + DE/2 do ponto de tombamento.</li>
-    <li><b>Empuxo para baixo:</b> V soma ao peso. Entra no momento estabilizante, na normal da base (atrito e tensões) e no degrau como carga concentrada a DE/2 do engaste (face superior, N1).</li>
-    <li><b>Empuxo para cima:</b> V entra no momento de tombamento e é subtraído da normal na base (atrito e tensões). O tubo fica preso por cintas ancoradas no degrau, que levam V ao degrau (face inferior, N5) e são dimensionadas por As = γf·V/fyd. Verifica-se o levantamento: FS = peso do bloco (com o solo, no serviço) / V.</li>
+    <li><b>Empuxo para baixo:</b> V soma ao peso. Entra no momento estabilizante, na normal da base (atrito e tensões) e no degrau como carga concentrada a DE/2 do engaste (face superior).</li>
+    <li><b>Empuxo para cima:</b> V entra no momento de tombamento e é subtraído da normal na base (atrito e tensões). O tubo fica preso por cintas ancoradas no degrau, que levam V ao degrau (face inferior) e são dimensionadas por As = γf·V/fyd. Verifica-se o levantamento: FS = peso do bloco (com o solo, no serviço) / V.</li>
     <li><b>Parede de apoio do tubo:</b> recebe só a componente horizontal H, no mesmo braço DE/2.</li>
     <li><b>Para baixo, sem componente horizontal:</b> descida vertical que segue para os lados. O empuxo F = 2·p·A·sen(α/2) é tomado todo na vertical, para baixo (V = F, H = 0). Entra como carga no degrau, no momento estabilizante e na normal da base. Sem H, nada empurra o bloco na horizontal: os empuxos de terra dos dois lados se equilibram e ficam fora do deslizamento, do tombamento e das tensões, e os FS aparecem como "sem esforço". A tensão na base é a média σ = N/(a·d), com N = peso do bloco + solo sobre o bloco + solo sobre o degrau + tubo + água + V (no teste, sem solo).</li>
     <li><b>Cargas favoráveis (todas as curvas):</b> o solo sobre o degrau, entre o topo do degrau e o topo do bloco, descontado o tubo, e a água no tubo entram na normal da base e no momento estabilizante. No teste, com a vala aberta, entra só a água.</li>
   </ol>
   <h4>Esforços nas peças</h4>
   <ol>
-    <li><b>Degrau, face superior (N1):</b> balanço de comprimento b. Cargas para baixo: peso próprio, peso do tubo, água no tubo (π·DE²/4·10·d) e, no serviço, o solo sobre o degrau, [(H solo + f)·b − π·DE²/4]·d·γs. Todas aplicadas em b/2, como na planilha mãe. A reação do solo é desprezada.</li>
-    <li><b>Degrau, face inferior (N5):</b> reação do solo sob o degrau, integrada do diagrama de tensões da base de cada caso, menos o peso próprio do degrau, o solo sobre ele e, quando apoiados no degrau, o tubo e a água.</li>
-    <li><b>Parede de apoio do tubo (N3):</b> trecho do corpo acima do degrau, balanço vertical de altura f engastado no topo do degrau, seção c × d. Cargas: FH a DE/2 do engaste e, no serviço, o ativo do solo sobre o degrau, de H solo até H solo + f. O passivo e o peso não aliviam o momento.</li>
-    <li><b>Chaveta, face do passivo (N2):</b> passivo de σp(base) a σp(fundo), com ½ no serviço e inteiro no teste. Seção d × t.</li>
-    <li><b>Chaveta, face do ativo (N4):</b> ativo de σa(base) a σa(fundo), sem desconto do passivo. Arma a reversão de esforço antes de o passivo ser mobilizado.</li>
+    <li><b>Degrau, face superior (ramo superior do estribo N1):</b> balanço de comprimento b. Cargas para baixo: peso próprio, peso do tubo, água no tubo (π·DE²/4·10·d) e, no serviço, o solo sobre o degrau, [(H solo + f)·b − π·DE²/4]·d·γs. Todas aplicadas em b/2, como na planilha mãe. A reação do solo é desprezada.</li>
+    <li><b>Degrau, face inferior (ramo inferior do estribo N1):</b> reação do solo sob o degrau, integrada do diagrama de tensões da base de cada caso, menos o peso próprio do degrau, o solo sobre ele e, quando apoiados no degrau, o tubo e a água.</li>
+    <li><b>Parede de apoio do tubo (estribo N2):</b> trecho do corpo acima do degrau, balanço vertical de altura f engastado no topo do degrau, seção c × d. Cargas: FH a DE/2 do engaste e, no serviço, o ativo do solo sobre o degrau, de H solo até H solo + f. O passivo e o peso não aliviam o momento.</li>
+    <li><b>Chaveta, face do passivo (perna da barra N3):</b> passivo de σp(base) a σp(fundo), com ½ no serviço e inteiro no teste. Seção d × t.</li>
+    <li><b>Chaveta, face do ativo (perna da barra N3):</b> ativo de σa(base) a σa(fundo), sem desconto do passivo. Arma a reversão de esforço antes de o passivo ser mobilizado.</li>
     <li><b>Combinações:</b> Md = γf·Mk, com γf de serviço no caso 1 e de teste no caso 2. Em cada face vale o maior dos dois casos.</li>
   </ol>
   <h4>Concreto simples (NBR 6118, seção 24)</h4>
@@ -318,7 +318,9 @@ fieldset.unit{border-color:var(--ink)}
   <h4>Concreto armado (NBR 6118)</h4>
   <ol>
     <li><b>Flexão:</b> λ = 0,8 e αc = 0,85. x = 1,25·d'·[1 − √(1 − Md/(0,425·fcd·bw·d'²))], As = Md/[fyd·(d' − 0,4x)], com d' = h − cobrimento − φ/2 e x/d' ≤ 0,45.</li>
-    <li><b>Armadura mínima:</b> ρmín da Tabela 17.3 (0,150% até C30) ou taxa informada. Bitola e espaçamento escolhidos pelo usuário em cada posição (ou automático: maior espaçamento, múltiplo de 2,5 cm, que atende). Verifica-se As,ef ≥ max(As, As,mín), espaçamento ≤ 20 cm e ≤ 2h, com alerta abaixo de 7,5 cm. Distribuição ≥ 20% da principal e ≥ 0,9 cm²/m.</li>
+    <li><b>Armadura mínima:</b> ρmín da Tabela 17.3 (0,150% até C30) ou taxa informada. Bitola e espaçamento escolhidos pelo usuário em cada posição (ou automático: maior espaçamento, múltiplo de 2,5 cm, que atende). Verifica-se As,ef ≥ max(As, As,mín), espaçamento ≤ 20 cm e ≤ 2h, com alerta abaixo de 7,5 cm. </li>
+    <li><b>Armaduras em estribo:</b> N1 é um estribo fechado em toda a laje da base (degrau, trecho sob a parede e saliência), dimensionado pelo maior As entre a face superior e a inferior do degrau e a face inferior da saliência. N2 é um estribo fechado da parede, do topo até o fundo da base, dimensionado pelo momento do empuxo do tubo na face do tubo. N3 é uma barra em U pelo fundo da chaveta, com as pernas até o topo da base dobradas na horizontal, dimensionada pelo maior As entre a face do passivo e a do ativo. Cada uma tem uma só bitola e um só espaçamento; no modo automático, o espaçamento é o menor entre os automáticos das faces.</li>
+    <li><b>Armadura secundária (N4):</b> barras ao longo da largura d, amarradas nos estribos e na barra da chaveta. As ≥ 20% da maior armadura principal efetiva e ≥ 0,9 cm²/m, com espaçamento ≤ 33 cm.</li>
     <li><b>Abertura de fissuras (ELS-W, item 17.3.3):</b> com o momento de serviço Mk do caso 1 (γf = 1). Se Mk &lt; Mr = 1,5·fctm·bw·h²/6, a seção não fissura. Caso contrário, σs no estádio II (αe = Es/Ecs, Ecs = αi·5600√fck) e wk = menor de φ/(12,5·η1)·σs/Es·3σs/fctm e φ/(12,5·η1)·σs/Es·(4/ρr + 45), com η1 = 2,25 e ρr na área de envolvimento de cada barra (até 7,5φ). Limite wk,lim informado (0,3 mm para CAA II e III).</li>
     <li><b>Cortante sem estribos:</b> VRd1 = τRd·k·(1,2 + 40ρ1)·bw·d', com τRd = 0,25·fctd, fctd = 0,7·0,3·fck^(2/3)/1,4, k = 1,6 − d' ≥ 1 e ρ1 ≤ 0,02.</li>
   </ol>
@@ -402,7 +404,34 @@ function face(MkS,VkS,MkT,VkT,gf1,gf2,bw,h,cfg,phi,sAd){
   if(Wf&&!Wf.ok) Rr.ok=false;
   return {MkS,VkS,MkT,VkT,MdS,MdT,VdS,VdT,MD,VD,gov,R:Rr,W:Wf};
 }
+/* Armaduras por grupo: B = estribo da base (degrau, face sup./inf., e saliência), P = estribo da parede, K = barra em U da chaveta */
+const GRUPOS={B:['N1','N5','N6'],P:['N3'],K:['N2','N4']}, FACEG={N1:'B',N5:'B',N6:'B',N3:'P',N2:'K',N4:'K'};
 function compute(p){
+  let o=compute0(p); if(o.err||o.modo==='simples') return o;
+  /* espaçamento automático do grupo = menor espaçamento automático entre as faces do grupo */
+  const arm={...(p.arm||{})}; let re=false;
+  for(const g in GRUPOS){const a=arm[g]||{};
+    if(!(Number.isFinite(a.s)&&a.s>0)){const fs=GRUPOS[g].map(n=>o[n]).filter(S=>S&&!S.R.err&&S.R.sAuto>0);
+      arm[g]={phi:a.phi,s:fs.length?Math.min(...fs.map(S=>S.R.sAuto)):NaN,auto:true};re=true}}
+  if(re) o=compute0({...p,arm});
+  o.ARM={}; let asMax=0;
+  for(const g in GRUPOS){const L=GRUPOS[g].filter(n=>o[n]).map(n=>[n,o[n]]); if(!L.length) continue;
+    const bad=L.find(([,S])=>S.R.err);
+    const gov=bad||L.reduce((a,b)=>b[1].R.Asm>a[1].R.Asm?b:a);
+    const R0=gov[1].R, ok=L.every(([,S])=>S.R.ok), okAs=L.every(([,S])=>S.R.err||S.R.okAs);
+    const wks=L.map(([,S])=>S.W).filter(Boolean), wk=wks.length?wks.reduce((a,b)=>b.wk>a.wk?b:a):null;
+    let sug=null; if(!bad&&(!okAs||!R0.okSmax||!R0.okS)) sug=R0.sug||null;
+    o.ARM[g]={faces:L,gov:gov[0],S:gov[1],ok,okAs,err:bad?bad[1].R.err:null,phi:R0.phi,s:R0.s,auto:!!arm[g].auto,
+      Asef:R0.Asef,Asnec:bad?NaN:Math.max(...L.map(([,S])=>S.R.Asm)),okS:R0.okS,okSmax:R0.okSmax,smax:R0.smax,nb:R0.nb,W:wk,sug,
+      okV:L.every(([,S])=>S.R.err||S.R.okV)};
+    if(!bad) asMax=Math.max(asMax,R0.Asef)}
+  /* armadura secundária (ao longo da largura d): ≥ 20% da maior principal efetiva e ≥ 0,9 cm²/m, s ≤ 33 cm */
+  const sc=p.sec||{}, sphi=Number.isFinite(sc.phi)&&sc.phi>0?sc.phi:8, ss=Number.isFinite(sc.s)&&sc.s>0?sc.s:20;
+  const sAs=100*Math.PI*(sphi/10)**2/4/ss, sNec=Math.max(0.2*asMax,0.9);
+  o.SEC={phi:sphi,s:ss,Asef:sAs,Asnec:sNec,okAs:sAs>=sNec-1e-6,okS:ss<=33+1e-9,ok:sAs>=sNec-1e-6&&ss<=33+1e-9};
+  return o;
+}
+function compute0(p){
   const {ps,pt,alfa,DN,DEmm,cT,cG,phi,coh,gs,del,sadm,fck,gc}=p, De=DEmm/1000;
   const A=p.a/100,B=p.b/100,D=p.d/100,E=p.e/100,G=p.g/100;
   const kon=!!p.kon, HK=kon?p.hk/100:0, TK=kon?p.tk/100:0, SK=kon?p.sk/100:0;
@@ -501,7 +530,7 @@ function compute(p){
     return {M,V:Vr};
   }
   const ARMD={N1:10,N5:10,N6:10,N3:12.5,N2:10,N4:10}, ARMO={N1:p.fid,N5:p.fid,N6:p.fid,N3:p.fip,N2:p.fik,N4:p.fik};
-  const bf=n=>{const a=(p.arm||{})[n]||{};return [Number.isFinite(a.phi)&&a.phi>0?a.phi:(Number.isFinite(ARMO[n])&&ARMO[n]>0?ARMO[n]:ARMD[n]),a.s]};
+  const bf=n=>{const A_=p.arm||{}, a=A_[FACEG[n]]||A_[n]||{};return [Number.isFinite(a.phi)&&a.phi>0?a.phi:(Number.isFinite(ARMO[n])&&ARMO[n]>0?ARMO[n]:ARMD[n]),a.s]};
   const cfg={cob:p.cob,fck,fyk:p.fyk,rmin:p.rmode==='inf'?p.rho/100:null,wlim:Number.isFinite(p.wlim)?p.wlim:0.3};
   const gf1=p.gf1, gf2=p.gf2;
   // degrau
@@ -559,7 +588,7 @@ function compute(p){
     xS,xT,a3,okXS,okXT,S1,S2,tracS:S1.trac,tracT:S2.trac,Ww,Wtb,Wst,Wsd,rS,rT,MaW,EaW,cfg,
     N1:DSUP,N5:DINF,N3:PAR,N2:KP,N4:KA};
 }
-if(typeof module!=='undefined') module.exports={compute,rc,cs,fiss,diag};
+if(typeof module!=='undefined') module.exports={compute,compute0,rc,cs,fiss,diag,GRUPOS};
 </script>
 <script>
 (function(){
@@ -578,11 +607,13 @@ const wkTxt=S=>!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)}`:'não fissura');
 const sugT=S=>S.R.sug?` → use φ${fphi(S.R.sug.phi)} c/ ${fmt(S.R.sug.s,1)}`:'';
 const bar=S=>S.R.err?S.R.err:`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`+sugT(S);
 const fState=S=>S.R.ok?(S.R.okS?'ok':'warn'):'bad';
-const ARMN=['N1','N5','N6','N3','N2','N4'], PHIS=[8,10,12.5,16,20,25], SPS=[5,7.5,10,12.5,15,17.5,20];
-const POS={N1:'Degrau · face superior',N5:'Degrau · face inferior',N6:'Saliência · face inferior',N3:'Parede · face do tubo',N2:'Chaveta · face do passivo',N4:'Chaveta · face do ativo'};
+const ARMG=['B','P','K'], PHIS=[8,10,12.5,16,20,25], SPS=[5,7.5,10,12.5,15,17.5,20], SPS2=[10,12.5,15,17.5,20,25,30,33];
+const GN={B:'N1',P:'N2',K:'N3',S:'N4'}, GT={B:'Estribo da base',P:'Estribo da parede',K:'Barra da chaveta (U)',S:'Armadura secundária (largura d)'};
+const TAG={N1:'N1 · face superior',N5:'N1 · face inferior',N6:'N1 · saliência',N3:'N2 · face do tubo',N2:'N3 · face do passivo',N4:'N3 · face do ativo'};
+const FDESC={N1:'degrau, face superior',N5:'degrau, face inferior',N6:'saliência, face inferior',N3:'parede, face do tubo',N2:'chaveta, face do passivo',N4:'chaveta, face do ativo'};
 
 const MHINT={simples:'Concreto simples (NBR 6118, seção 24): sem armadura, γc = 1,68. O teste é tratado como combinação excepcional de construção.',
-  armado:'Concreto armado: armaduras N1 a N5 dimensionadas pela NBR 6118. O teste é tratado como combinação excepcional de construção.'};
+  armado:'Concreto armado (NBR 6118): N1 estribo da base, N2 estribo da parede, N3 barra em U da chaveta e N4 armadura secundária. O teste é tratado como combinação excepcional de construção.'};
 function syncModo(){const m=$('v_modo').value==='simples'?'simples':'armado';
   $('m_simp').setAttribute('aria-pressed',m==='simples');$('m_arm').setAttribute('aria-pressed',m==='armado');
   $('fs_arm').hidden=m==='simples';$('m_hint').textContent=MHINT[m]}
@@ -601,7 +632,9 @@ $('v_sent').addEventListener('change',syncPlano);
 function syncInputs(){syncModo();syncPlano();const on=$('v_kon').checked;['v_hk','v_tk','v_sk'].forEach(i=>$(i).disabled=!on);$('v_rho').disabled=$('v_rmode').value!=='inf'}
 $('v_tipo').addEventListener('change',()=>{const v=$('v_tipo').value;$('v_alfa').disabled=v!=='x';if(v!=='x')$('v_alfa').value=v;calc()});
 function aplicar(d){d={...d};
-  if(!('v_aN1' in d)&&('v_fid' in d)){const m={N1:'v_fid',N5:'v_fid',N6:'v_fid',N3:'v_fip',N2:'v_fik',N4:'v_fik'};ARMN.forEach(n=>{d['v_a'+n]=d[m[n]];d['v_s'+n]=''})}
+  if(!('v_aB' in d)){
+    if('v_aN1' in d){d.v_aB=d.v_aN1;d.v_sB=d.v_sN1||'';d.v_aP=d.v_aN3;d.v_sP=d.v_sN3||'';d.v_aK=d.v_aN2;d.v_sK=d.v_sN2||''}
+    else if('v_fid' in d){d.v_aB=d.v_fid;d.v_aP=d.v_fip;d.v_aK=d.v_fik;d.v_sB=d.v_sP=d.v_sK=''}}
   FIELDS.forEach(id=>{if(!(id in d))return;const el=$(id);if(el.type==='checkbox')el.checked=!!d[id];else el.value=d[id]});$('v_alfa').disabled=$('v_tipo').value!=='x';syncInputs()}
 $('v_reset').addEventListener('click',()=>{ptManual=false;aplicar(DEF);calc();marcarSujo()});
 let ptManual=false;
@@ -645,7 +678,7 @@ function calc(){
     phi:num('v_phi'),coh:num('v_coh'),gs:num('v_gs'),del:num('v_del'),sadm:num('v_sadm'),fck:num('v_fck'),gc:num('v_gc'),
     a:num('v_a'),b:num('v_b'),j:num('v_j'),d:num('v_d'),e:num('v_e'),g:num('v_g'),
     kon:$('v_kon').checked,hk:num('v_hk'),tk:num('v_tk'),sk:num('v_sk'),
-    fyk:+$('v_fyk').value,cob:num('v_cob'),arm:Object.fromEntries(ARMN.map(n=>[n,{phi:+$('v_a'+n).value,s:parseFloat($('v_s'+n).value)}])),
+    fyk:+$('v_fyk').value,cob:num('v_cob'),arm:Object.fromEntries(ARMG.map(g=>[g,{phi:+$('v_a'+g).value,s:parseFloat($('v_s'+g).value)}])),sec:{phi:+$('v_aS').value,s:parseFloat($('v_sS').value)},
     rmode:$('v_rmode').value,rho:num('v_rho'),gf1:num('v_gf1'),gf2:num('v_gf2'),modo:$('v_modo').value,wlim:+$('v_wlim').value,plano:$('v_plano').value,sent:$('v_sent').value};
   const ptAuto=!ptManual;
   const A=p.a/100,B=p.b/100,G=p.g/100,E=p.e/100;
@@ -672,20 +705,18 @@ function calc(){
   const stabOk=allOk; $('r_chips').innerHTML=html; html='';
   const pieces=[['N1',o.N1],['N5',o.N5],...(o.J>0?[['N6',o.N6]]:[]),['N3',o.N3],...(o.kon?[['N2',o.N2],['N4',o.N4]]:[])];
   const failPos=[]; let warnS=false;
-  const group=(lab,list)=>{const st=list.map(([,S])=>fState(S));const cls=st.includes('bad')?'bad':st.includes('warn')?'warn':'ok';
-    list.forEach(([n,S])=>{if(!S.R.ok)failPos.push(n);if(S.R.ok&&!S.R.okS)warnS=true});
-    html+=chip(cls,lab,list.map(([n,S])=>`${n} ${S.R.err?'—':'φ'+fphi(S.R.phi)+'/'+fmt(S.R.s,1)}`).join(' · '),
-      list.map(([n,S])=>S.R.err?`${n}: ${S.R.err}`:`${n} Md ${fmt(S.MD)}`).join(' · ')+' kN·m')};
   const simp=o.modo==='simples';
   const SP=[['Degrau',o.SIMP.deg],...(o.J>0?[['Saliência da laje',o.SIMP.sal]]:[]),['Parede do tubo',o.SIMP.par],...(o.kon?[['Chaveta',o.SIMP.den]]:[])];
   if(simp){
     SP.forEach(([lab,S])=>{if(!S.ok)failPos.push(lab.toLowerCase());
       html+=chip(S.ok?'ok':'bad',lab+' · simples',`Md/Mrd ${fmt(S.Md/S.Mrd)}`,`Md ${fmt(S.Md)} / Mrd ${fmt(S.Mrd)} kN·m · Vd/Vrd ${fmt(S.Vd/S.Vrd)}`)});
   } else {
-    group('Degrau',pieces.filter(([n])=>n==='N1'||n==='N5'));
-    if(o.J>0) group('Saliência da laje',pieces.filter(([n])=>n==='N6'));
-    group('Parede do tubo',pieces.filter(([n])=>n==='N3'));
-    if(o.kon) group('Chaveta',pieces.filter(([n])=>n==='N2'||n==='N4'));
+    for(const g of ARMG){const A=o.ARM[g]; if(!A) continue;
+      if(!A.ok) failPos.push(GN[g]); else if(!A.okS) warnS=true;
+      html+=chip(A.ok?(A.okS?'ok':'warn'):'bad',`${GN[g]} · ${GT[g]}`,A.err?'—':`φ${fphi(A.phi)} c/ ${fmt(A.s,1)}`,
+        A.err?A.err:`rege ${FDESC[A.gov]} · Md ${fmt(A.S.MD)} kN·m`)}
+    const Sc=o.SEC; if(!Sc.ok) failPos.push('N4');
+    html+=chip(Sc.ok?'ok':'bad','N4 · secundária',`φ${fphi(Sc.phi)} c/ ${fmt(Sc.s,1)}`,`${fmt(Sc.Asef,2)} ${Sc.okAs?'≥':'<'} ${fmt(Sc.Asnec,2)} cm²/m`)
   }
   $('r_rcchips').innerHTML=html;
   const okH=o.Hs>=0.10||o.Hs<0;
@@ -798,35 +829,42 @@ function calc(){
       +SP.map(([lab,S])=>`<tr><td>${lab}</td><td class="n">${fmt(S.bw*100,0)} × ${fmt(S.h*100,0)}</td><td class="n ${st(S.okM)}">${fmt(S.Md)} / ${fmt(S.Mrd)}</td><td class="n ${st(S.okV)}">${fmt(S.Vd)} / ${fmt(S.Vrd)}</td><td class="${st(S.ok)}">${S.ok?'atende':'não atende'}</td></tr>`).join('')
       +`<tr><td colspan="5" class="muted" style="font-size:12px">Sem armadura. fctd = ${fmt(S0.fctd/1000,3)} MPa (γc = 1,68) e τwRd = ${fmt(S0.twRd/1000,3)} MPa. Esforços de cálculo iguais aos do concreto armado.</td></tr>`;
   } else {
-  $('l_t4').textContent='Balanço de comprimento b engastado no corpo · N1 face superior, N5 face inferior';
-  $('l_t7').textContent='Balanço vertical de altura f engastado no topo do degrau · N3 na face do tubo';
-  $('l_t5').textContent='Balanço de altura h engastado na base · N2 face do passivo, N4 face do ativo';
+  $('l_t4').textContent='Balanço de comprimento b engastado no corpo · estribo N1, ramos superior e inferior';
+  $('l_t7').textContent='Balanço vertical de altura f engastado no topo do degrau · estribo N2, ramo da face do tubo';
+  $('l_t5').textContent='Balanço de altura h engastado na base · barra em U N3, faces do passivo e do ativo';
   $('t6_h').textContent='Quadro de armaduras';
-  $('r_t4').innerHTML=elemTable([{lab:'N1 · superior',S:o.N1},{lab:'N5 · inferior',S:o.N5}],[
+  $('r_t4').innerHTML=elemTable([{lab:TAG.N1,S:o.N1},{lab:TAG.N5,S:o.N5}],[
     ['Cargas serviço',S=>S===o.N1?`${fmt(o.Ww+o.Wtb+o.Wst+o.Wsd)} kN`:`reação ${fmt(o.rS.V)} kN`,''],
     ['Cargas teste',S=>S===o.N1?`${fmt(o.Ww+o.Wtb+o.Wst)} kN`:`reação ${fmt(o.rT.V)} kN`,''],
   ])+`<tr><td colspan="3" class="muted" style="font-size:12px">Superior: água ${fmt(o.Ww)}, tubo ${fmt(o.Wtb)}, degrau ${fmt(o.Wst)} e solo sobre o degrau ${fmt(o.Wsd)} kN (só no serviço). Inferior: reação do solo menos o peso do degrau.${o.vert?(o.up?` Empuxo vertical V = ${fmt(o.FV1)} kN para cima, transmitido pelas cintas a ${fmt(o.aV*100,0)} cm do engaste (face inferior).`:` Empuxo vertical V = ${fmt(o.FV1)} kN para baixo, a ${fmt(o.aV*100,0)} cm do engaste (face superior).`):''}</td></tr>`;
-  $('r_t7').innerHTML=elemTable([{lab:'N3 · face do tubo',S:o.N3}],[
+  $('r_t7').innerHTML=elemTable([{lab:TAG.N3,S:o.N3}],[
     [(o.vert?'Empuxo horizontal H · braço DE/2':'Força hidráulica · braço DE/2'),()=>`${fmt(o.FH1)} / ${fmt(o.FH2)} kN · ${fmt(o.De/2,3)} m`,''],
     ['Ativo do solo sobre o degrau',()=>`${fmt(o.EaW)} kN`,''],
     ['Seção c × d',()=>`${fmt(o.C*100,0)} × ${fmt(o.D*100,0)} cm`,''],
   ]);
-  if(o.J>0) $('r_t8').innerHTML=elemTable([{lab:'N6 · face inferior',S:o.N6}],[
+  if(o.J>0) $('r_t8').innerHTML=elemTable([{lab:TAG.N6,S:o.N6}],[
     ['Comprimento j · seção d × e',()=>`${fmt(o.J*100,0)} cm · ${fmt(o.D*100,0)} × ${fmt(o.E*100,0)} cm`,''],
     ['Peso próprio da saliência',()=>`${fmt(o.Wsal)} kN`,''],
   ]);
-  $('r_t5').innerHTML=o.kon?elemTable([{lab:'N2 · passivo',S:o.N2},{lab:'N4 · ativo',S:o.N4}],[
+  $('r_t5').innerHTML=o.kon?elemTable([{lab:TAG.N2,S:o.N2},{lab:TAG.N4,S:o.N4}],[
     ['Pressão base / fundo · serviço',S=>S===o.N2?`${fmt(o.EP2/2)} / ${fmt(o.EP3/2)}`:`${fmt(o.EA2)} / ${fmt(o.EA3)}`,'kPa'],
     ['Pressão base / fundo · teste',S=>S===o.N2?`${fmt(o.EP2t)} / ${fmt(o.EP3t)}`:`${fmt(o.EA2t)} / ${fmt(o.EA3t)}`,'kPa'],
   ]):'<tr><td class="muted">Bloco sem chaveta. Ative a chaveta no painel de entradas.</td></tr>';
-  const selA=(n,S)=>{const ph=+$('v_a'+n).value, sv=$('v_s'+n).value, au='';
-    return `<span class="adot"><select data-a="${n}" aria-label="Bitola ${n}">${PHIS.map(f=>`<option value="${f}"${f===ph?' selected':''}>φ${fphi(f)}</option>`).join('')}</select> c/ <select data-s="${n}" aria-label="Espaçamento ${n}"><option value=""${sv===''?' selected':''}>auto${au}</option>${SPS.map(v=>`<option value="${v}"${String(v)===sv?' selected':''}>${fmt(v,1)}</option>`).join('')}</select></span>`};
-  const sugQ=S=>(!S.R.okAs||!S.R.okSmax||!S.R.okS)&&S.R.sug?`<div class="muted" style="font-size:11px;white-space:normal;max-width:170px;margin-left:auto">${!S.R.okAs?'As insuficiente':!S.R.okSmax?`s > ${fmt(S.R.smax,1)} cm`:'s < 7,5 cm'} · sugestão φ${fphi(S.R.sug.phi)} c/ ${fmt(S.R.sug.s,1)}</div>`:'';
-  const q=(n,S)=>S.R.err?`<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">—</td><td class="n">${selA(n,S)}</td><td class="n s-bad" colspan="3">${S.R.err}</td></tr>`:
-    `<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}</td><td class="n${S.R.okAs&&S.R.okSmax?(S.R.okS?'':' s-warn'):' s-bad'}">${selA(n,S)}<div class="muted" style="font-size:11px">${S.R.man?'':`auto = ${fmt(S.R.sAuto,1)} cm · `}${S.R.nb} barras</div>${sugQ(S)}</td><td class="n${S.R.okAs?'':' s-bad'}">${fmt(S.R.Asef,2)} ${S.R.okAs?'≥':'<'} ${fmt(S.R.Asm,2)}</td><td class="n ${S.W&&!S.W.ok?'s-bad':''}" style="white-space:normal">${wkTxt(S)}</td><td class="${S.R.ok?'s-ok':'s-bad'}">${S.R.ok?'atende':'não atende'}</td></tr>`;
-  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Elemento</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada φ mm c/ s cm</th><th class="n">As,ef / As,nec cm²/m</th><th class="n">wk mm</th><th>Situação</th></tr>'
-    +pieces.map(([n,S])=>q(n,S)).join('')
-    +`<tr><td colspan="8" class="muted" style="font-size:12px">Barras ao longo da largura d = ${fmt(p.d,0)} cm. Abertura de fissuras com o momento de serviço (caso 1), limite ${fmt(p.wlim,1)} mm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante resistido sem estribos (VRd1). Escolha a bitola e o espaçamento na coluna Adotada; "auto" usa o maior espaçamento que atende com a bitola escolhida. Cobrimento ${fmt(p.cob,1)} cm.</td></tr>`;
+  const selA=(g,ss)=>{const ph=+$('v_a'+g).value, sv=$('v_s'+g).value, L=g==='S'?SPS2:SPS;
+    return `<span class="adot"><select data-a="${g}" aria-label="Bitola ${GN[g]}">${PHIS.map(f=>`<option value="${f}"${f===ph?' selected':''}>φ${fphi(f)}</option>`).join('')}</select> c/ <select data-s="${g}" aria-label="Espaçamento ${GN[g]}">${g==='S'?'':`<option value=""${sv===''?' selected':''}>auto</option>`}${L.map(v=>`<option value="${v}"${String(v)===sv?' selected':''}>${fmt(v,1)}</option>`).join('')}</select></span>`};
+  const sm=t=>`<div class="muted" style="font-size:11px;white-space:normal">${t}</div>`;
+  const q=g=>{const A=o.ARM[g]; if(!A) return '';
+    const sub=A.faces.map(([n,S])=>`${FDESC[n]} ${fmt(S.MD)}`).join(' · ');
+    if(A.err) return `<tr><td>${GN[g]}</td><td>${GT[g]}${sm(sub+' kN·m')}</td><td class="n">${fmt(A.S.MD)} / ${fmt(A.S.VD)}</td><td class="n">—</td><td class="n">${selA(g)}</td><td class="n s-bad" colspan="3">${A.err}</td></tr>`;
+    const why=!A.okAs?'As insuficiente':!A.okSmax?`s > ${fmt(A.smax,1)} cm`:!A.okS?'s < 7,5 cm':'';
+    return `<tr><td>${GN[g]}</td><td>${GT[g]}${sm('rege: '+FDESC[A.gov])}</td><td class="n">${fmt(A.S.MD)} / ${fmt(A.S.VD)}</td><td class="n">${fmt(A.S.R.As,2)} / ${fmt(A.S.R.Asmin,2)}</td>`
+     +`<td class="n${A.okAs&&A.okSmax?(A.okS?'':' s-warn'):' s-bad'}">${selA(g)}${sm(`${A.auto?`auto = ${fmt(A.s,1)} cm · `:''}${A.nb} barras`)}${why&&A.sug?sm(`${why} · sugestão φ${fphi(A.sug.phi)} c/ ${fmt(A.sug.s,1)}`):why?sm(why):''}</td>`
+     +`<td class="n${A.okAs?'':' s-bad'}">${fmt(A.Asef,2)} ${A.okAs?'≥':'<'} ${fmt(A.Asnec,2)}</td><td class="n ${A.W&&!A.W.ok?'s-bad':''}" style="white-space:normal">${!A.W?'—':(A.W.fissura?fmt(A.W.wk,3):'não fissura')}</td><td class="${A.ok?'s-ok':'s-bad'}">${A.ok?'atende':'não atende'}</td></tr>`};
+  const Sc=o.SEC;
+  const qS=`<tr><td>N4</td><td>${GT.S}</td><td class="n">—</td><td class="n">—</td><td class="n${Sc.ok?'':' s-bad'}">${selA('S')}${sm('barras ao longo da largura d')}</td><td class="n${Sc.okAs?'':' s-bad'}">${fmt(Sc.Asef,2)} ${Sc.okAs?'≥':'<'} ${fmt(Sc.Asnec,2)}</td><td class="n">—</td><td class="${Sc.ok?'s-ok':'s-bad'}">${Sc.ok?'atende':'não atende'}</td></tr>`;
+  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Armadura</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada φ mm c/ s cm</th><th class="n">As,ef / As,nec cm²/m</th><th class="n">wk mm</th><th>Situação</th></tr>'
+    +ARMG.map(q).join('')+qS
+    +`<tr><td colspan="8" class="muted" style="font-size:12px">Cada armadura tem uma só bitola e um só espaçamento e precisa atender a todas as faces que percorre; vale a face de maior As necessária. Escolha na coluna Adotada; "auto" usa o maior espaçamento que atende a todas as faces. Abertura de fissuras com o momento de serviço (caso 1), limite ${fmt(p.wlim,1)} mm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante sem estribos (VRd1). N4: barras ao longo da largura d, nas faces de N1, N2 e N3, com As ≥ 20% da maior principal efetiva e ≥ 0,9 cm²/m e s ≤ 33 cm. Cobrimento ${fmt(p.cob,1)} cm.</td></tr>`;
   }
 
   $('r_cin').hidden=!o.up;
@@ -900,16 +938,29 @@ function draw(o){
     if(o.kon) g+=`<line x1="${xkL-4}" y1="${yb}" x2="${xkR+4}" y2="${yb}" ${SC}/>`;
     g+=`<text x="${x0+4}" y="${yb+18}" style="font-size:10px;fill:var(--muted)">seções críticas (engastes) tracejadas</text>`;
   }
-  if(arm&&o.modo!=='simples'){ const anc=Math.min(C*0.45,0.9)*s;
-    const y1=yStep+cv; g+=`<path d="M${x0+cv} ${y1+Math.min(E*s*0.4,12)}V${y1}H${xb+anc}" ${ST}/>`+tag(x0+cv+4,y1+13,lb('N1',o.N1));
-    const y5=yb-cv; g+=`<path d="M${x0+cv} ${y5-Math.min(E*s*0.4,12)}V${y5}H${xb+anc}" ${ST}/>`+tag(x0+cv+4,y5-5,lb('N5',o.N5));
-    if(J>0){ const anc6=Math.min(C*0.45,0.9)*s; g+=`<path d="M${xr-cv} ${y5-Math.min(E*s*0.4,12)}V${y5}H${xw-anc6}" ${ST}/>`+tag(xr-cv-4,y5-5,lb('N6',o.N6),'end'); }
-    const x3=xb+cv; g+=`<path d="M${x3+Math.min(C*s*0.3,12)} ${yTop+cv}H${x3}V${yStep+Math.min(E*0.8,0.9)*s}" ${ST}/>`+tag(x3+6,yTop+cv+24,lb('N3',o.N3));
-    if(o.kon){ const sobDegrau=xkL<xb-1, sobSal=J>0&&xkR>xw+1;
-      const ya=(sobDegrau||sobSal)?yStep+cv+4:yb-Math.min(G*0.55,1.0)*s, yf=yk-cv, xs2=xkR-cv, xs4=xkL+cv;
-      g+=`<path d="M${xs2} ${ya}V${yf}H${xs4}V${ya}" ${ST}/>`;
-      g+=tag(xkR+6,yk+14,lb('N2',o.N2))+tag(xkL-6,yk+14,lb('N4',o.N4),'end');
-    }
+  if(arm&&o.modo!=='simples'&&o.ARM){
+    const lbG=g=>{const A=o.ARM[g];return `${GN[g]} ${A.err?'—':'φ'+fphi(A.phi)+'/'+fmt(A.s,1)}`};
+    const hk=(x,y,dx,dy)=>`<path d="M${x} ${y}l${dx} ${dy}" ${ST}/>`, hl=Math.max(Math.min(cv*1.6,12),6);
+    const Sc=o.SEC, ds=Math.max(Sc.s/100*s,5), DOT=(x,y)=>`<circle cx="${x}" cy="${y}" r="2.1" fill="var(--steel)" fill-opacity=".75"/>`;
+    const dots=(x1,y1,x2,y2)=>{let r='';const L=Math.hypot(x2-x1,y2-y1),n=Math.max(Math.floor(L/ds),1);for(let i=0;i<=n;i++){const t=i/n;r+=DOT(x1+(x2-x1)*t,y1+(y2-y1)*t)}return r};
+    const d2=3.2;
+    /* N1: estribo fechado em toda a laje da base */
+    const bx1=x0+cv, bx2=xr-cv, by1=yStep+cv, by2=yb-cv;
+    g+=`<path d="M${bx1} ${by1}H${bx2}V${by2}H${bx1}Z" ${ST}/>`+hk(bx1,by1,hl*0.7,hl*0.7)+hk(bx1,by1,hl*0.95,hl*0.35);
+    g+=dots(bx1+d2+6,by1+d2,bx2-d2-6,by1+d2)+dots(bx1+d2+6,by2-d2,bx2-d2-6,by2-d2);
+    g+=tag(bx1+6,by1+16,lbG('B'));
+    /* N2: estribo fechado da parede, do topo até o fundo da base */
+    const px1=xb+cv, px2=xw-cv, py1=yTop+cv, py2=yb-cv-3;
+    g+=`<path d="M${px1} ${py1}H${px2}V${py2}H${px1}Z" ${ST}/>`+hk(px1,py1,hl*0.7,hl*0.7)+hk(px1,py1,hl*0.35,hl*0.95);
+    g+=dots(px1+d2,py1+d2+8,px1+d2,yStep-4)+dots(px2-d2,py1+d2+8,px2-d2,yStep-4);
+    g+=tag(px2+6,py1+14,lbG('P'));
+    /* N3: barra em U pelo fundo da chaveta, pernas até o topo da base, dobradas na horizontal */
+    if(o.kon&&o.ARM.K){const kx1=xkL+cv, kx2=xkR-cv, ky1=yStep+cv+7, ky2=yk-cv, dob=Math.min(Math.max(0.45*s,20),120), dir=(xr-cv-kx2)>=dob?1:-1;
+      const hkc=Math.min(0.15*s,(kx2-kx1)*0.4);
+      g+=dir>0?`<path d="M${kx1+hkc} ${ky1}H${kx1}V${ky2}H${kx2}V${ky1}h${dob}" ${ST}/>`:`<path d="M${kx2-hkc} ${ky1}H${kx2}V${ky2}H${kx1}V${ky1}h${-dob}" ${ST}/>`;
+      g+=dots(kx1+d2,yb+6,kx1+d2,ky2-d2)+dots(kx2-d2,yb+6,kx2-d2,ky2-d2);
+      g+=tag(xkR+6,yk+14,lbG('K'));}
+    g+=tag(xr-cv-6,yb+18,`N4 φ${fphi(Sc.s?Sc.phi:8)}/${fmt(Sc.s,1)} (pontos)`,'end');
   }
   if(!arm){
   // ativo na face do tubo
@@ -1018,10 +1069,10 @@ let DIAGP=[];
 function diagSvg(o,interativo){
   const simp=o.modo==='simples', NN=(n,t)=>simp?t:`${n} · ${t}`;
   const rws=[
-    {nm:'Degrau',L:o.B,info:`balanço b = ${fmt(o.B*100,0)} cm`,s:[{d:o.DG.deg.a,lab:NN('N1','tração em cima'),c:'d1'},{d:o.DG.deg.b,lab:NN('N5','tração embaixo'),c:'d2'}]},
-    ...(o.J>0?[{nm:'Saliência da laje',L:o.J,info:`balanço j = ${fmt(o.J*100,0)} cm`,s:[{d:o.DG.sal.a,lab:NN('N6','tração embaixo'),c:'d2'}]}]:[]),
-    {nm:'Parede de apoio do tubo',L:o.F,info:`balanço f = ${fmt(o.F*100,0)} cm`,s:[{d:o.DG.par.a,lab:NN('N3','face do tubo'),c:'d1'}]},
-    ...(o.kon?[{nm:'Chaveta',L:o.HK,info:`balanço h = ${fmt(o.HK*100,0)} cm`,s:[{d:o.DG.den.a,lab:NN('N2','face do passivo'),c:'d1'},{d:o.DG.den.b,lab:NN('N4','face do ativo'),c:'d2'}]}]:[])];
+    {nm:'Degrau',L:o.B,info:`balanço b = ${fmt(o.B*100,0)} cm`,s:[{d:o.DG.deg.a,lab:NN('N1','face superior'),c:'d1'},{d:o.DG.deg.b,lab:NN('N1','face inferior'),c:'d2'}]},
+    ...(o.J>0?[{nm:'Saliência da laje',L:o.J,info:`balanço j = ${fmt(o.J*100,0)} cm`,s:[{d:o.DG.sal.a,lab:NN('N1','saliência'),c:'d2'}]}]:[]),
+    {nm:'Parede de apoio do tubo',L:o.F,info:`balanço f = ${fmt(o.F*100,0)} cm`,s:[{d:o.DG.par.a,lab:NN('N2','face do tubo'),c:'d1'}]},
+    ...(o.kon?[{nm:'Chaveta',L:o.HK,info:`balanço h = ${fmt(o.HK*100,0)} cm`,s:[{d:o.DG.den.a,lab:NN('N3','face do passivo'),c:'d1'},{d:o.DG.den.b,lab:NN('N3','face do ativo'),c:'d2'}]}]:[])];
   const W=780, RH=196, H=rws.length*RH+6, PW=(W-16*3)/2, PH=118;
   let g=''; DIAGP=[];
   rws.forEach((r,ri)=>{
@@ -1156,12 +1207,14 @@ async function buildDocx(){
     [{t:'Tensões na base σ1 / σ2',left:1,bold:1},B(tens(o.S1)),B(tens(o.S2)),(o.vOnly?`σ = N/(a·d) ≤ ${fmt(p.sadm,0)} kPa`:`σmáx ≤ ${fmt(p.sadm,0)} kPa`+(o.tracT?' (teste: ACI)':'')),sit(R.okTens1&&R.okTens2)],
     [{t:'ACI · resultante x = (Me − Mt)/ΣV',left:1,bold:1},B(aciSt),B(aciTt),aciCrit,(o.tracS||o.tracT)?sit(R.aciS&&R.aciT):'—'],
   ],{head:1,shade:[0]});
-  const POS={N1:'Degrau, face superior',N5:'Degrau, face inferior',N6:'Saliência, face inferior',N3:'Parede, face do tubo',N2:'Chaveta, face do passivo',N4:'Chaveta, face do ativo'};
-  const armRow=(n,S)=>S.R.err?[L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,{t:S.R.err,span:4},sit(false)]:
-    [L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)} · ${fmt(S.R.Asef,2)} ${S.R.okAs?'≥':'<'} ${fmt(S.R.Asm,2)} cm²/m`,`${fmt(S.R.VRd1)} kN`,!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)} mm`:'não fissura'),sit(S.R.ok)];
-  const arm=table([2250,1250,800,1250,1238,1000,950,900],[
-    ['Posição','Md kN·m / Vd kN','Rege','As / As,mín cm²','Adotada','VRd1',`wk (≤ ${fmt(p.wlim,1)})`,'Situação'],
-    ...R.pieces.map(([n,S])=>armRow(n,S)),
+  const armRow=g=>{const A=o.ARM[g]; if(!A) return null; const desc=A.faces.map(([n,S])=>`${FDESC[n]} ${fmt(S.MD)}`).join('; ');
+    return A.err?[L(`${GN[g]} · ${GT[g]}`),desc,`${fmt(A.S.MD)} / ${fmt(A.S.VD)}`,{t:A.err,span:3},sit(false)]:
+    [L(`${GN[g]} · ${GT[g]}`),desc,`${fmt(A.S.MD)} / ${fmt(A.S.VD)} (${A.S.gov})`,`φ${fphi(A.phi)} c/ ${fmt(A.s,1)}`,`${fmt(A.Asef,2)} ${A.okAs?'≥':'<'} ${fmt(A.Asnec,2)}`,!A.W?'—':(A.W.fissura?`${fmt(A.W.wk,3)} mm`:'não fissura'),sit(A.ok)]};
+  const Sc=o.SEC||{};
+  const arm=R.simp?null:table([1900,2300,1300,1050,1250,950,888],[
+    ['Armadura','Md por face (kN·m)','Md / Vd rege','Adotada','As,ef / As,nec cm²/m',`wk (≤ ${fmt(p.wlim,1)})`,'Situação'],
+    ...ARMG.map(armRow).filter(Boolean),
+    [L(`N4 · ${GT.S}`),'≥ 20% da maior principal e ≥ 0,9 cm²/m','—',`φ${fphi(Sc.phi)} c/ ${fmt(Sc.s,1)}`,`${fmt(Sc.Asef,2)} ${Sc.okAs?'≥':'<'} ${fmt(Sc.Asnec,2)}`,'—',sit(Sc.ok)],
   ],{head:1,shade:[0]});
   const csTab=table([2600,1500,2100,2100,1338],[
     ['Peça','Seção bw × h cm','Md / Mrd kN·m','Vd / Vrd kN','Situação'],
@@ -1169,7 +1222,7 @@ async function buildDocx(){
   ],{head:1,shade:[0]});
   const cinTxt=o.up?` Cintas de ancoragem do tubo: Td = ${fmt(o.Tcin)} kN, As total ≥ ${fmt(o.AsCin,2)} cm² (CA-${p.fyk/10}), ancoradas no degrau.`:'';
   const csTxt=`Sem armadura. fctd = 0,7·0,3·fck^(2/3)/1,68 = ${fmt(R.SP[0][1].fctd/1000,3)} MPa; Mrd = 0,85·fctd·bw·h²/6; Vrd = 2/3·τwRd·bw·h, com τwRd = 0,3·0,85·fctd = ${fmt(R.SP[0][1].twRd/1000,3)} MPa. Em cada peça vale o maior momento entre as duas faces.`+cinTxt;
-  const distTxt=`Bitola e espaçamento adotados pelo projetista em cada posição, com As,ef ≥ As,nec (cm²/m), espaçamento ≤ 20 cm e ≤ 2h; cobrimento ${fmt(p.cob,1)} cm. `+'Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1). Abertura de fissuras (ELS-W) com o momento de serviço do caso 1.'+cinTxt;
+  const distTxt=`Armaduras: N1 estribo fechado em toda a laje da base (degrau, trecho sob a parede e saliência); N2 estribo fechado da parede, do topo até o fundo da base; N3 barra em U pelo fundo da chaveta, com as pernas até o topo da base dobradas na horizontal; N4 armadura secundária ao longo da largura d. Cada armadura tem uma só bitola e espaçamento e atende a todas as faces que percorre (vale a de maior As necessária), com espaçamento ≤ 20 cm e ≤ 2h; cobrimento ${fmt(p.cob,1)} cm. Cortante resistido sem estribos (VRd1). Abertura de fissuras (ELS-W) com o momento de serviço do caso 1.`+cinTxt;
   const DGs=diagSvgLight(o);
   const [pA,pD]=await Promise.all([svgToPng(svgFor('serv','arm')),svgToPng(DGs.svg,DGs.W*3,DGs.H*3)]);
   const ihD=Math.round(8.3*DGs.H/DGs.W/2.54*96);
@@ -1177,7 +1230,7 @@ async function buildDocx(){
     new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:0},children:[new ImageRun({type:'png',data:png,transformation:{width:iw,height:h}})]}),
     new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:0,after:20},children:[t(cap,{size:14,it:true})]})]});
   const figs5=new Table({width:{size:9638,type:WidthType.DXA},columnWidths:[4819,4819],layout:TableLayoutType.FIXED,
-    rows:[new TableRow({children:[figCell2(pA,ih,R.simp?'Figura 3 – Seções críticas (concreto simples, sem armadura)':'Figura 3 – Disposição das armaduras N1 a N5'),figCell2(pD,ihD,'Figura 4 – Momento fletor e cortante de cálculo (envoltória serviço e teste)')]})]});
+    rows:[new TableRow({children:[figCell2(pA,ih,R.simp?'Figura 3 – Seções críticas (concreto simples, sem armadura)':'Figura 3 – Disposição das armaduras N1 a N4'),figCell2(pD,ihD,'Figura 4 – Momento fletor e cortante de cálculo (envoltória serviço e teste)')]})]});
   let concl=`O bloco de ${fmt(p.a,0)} × ${fmt(p.d,0)} × ${fmt(p.g,0)} cm`+(o.kon?`, com chaveta de ${fmt(p.hk,0)} × ${fmt(p.tk,0)} cm`:'')+` (${fmt(o.V,2)} m³ de concreto, fck ${fmt(p.fck,0)} MPa) `;
   if(R.allOk){concl+='atende às verificações de estabilidade nos casos de serviço e de teste e às verificações de flexão e cortante'+(R.simp?', em concreto simples,':', em concreto armado,')+' do degrau, da parede de apoio do tubo'+(o.kon?' e da chaveta.':'.');
     if(o.tracT) concl+=` No teste ocorre tração na base, com a resultante dentro da base (x = ${fmt(o.xT)} m), aceita por ser condição excepcional.`;
@@ -1269,7 +1322,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V2.8',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V2.9',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -1335,7 +1388,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.8',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.9',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });

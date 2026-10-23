@@ -32,20 +32,18 @@ No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90
 
 No painel **Concreto**, escolha o tipo de dimensionamento:
 
-- **Concreto armado:** dimensiona as armaduras N1 a N5 da tabela abaixo.
+- **Concreto armado:** dimensiona as armaduras N1 a N4 da tabela abaixo.
 - **Concreto simples:** verifica as mesmas peças sem armadura (NBR 6118, seção 24, γc = 1,68), com Mrd = 0,85·fctd·W e Vrd = 2/3·τwRd·bw·h. Os esforços são os mesmos nos dois casos, e a estabilidade não muda.
 
 
-| Posição | Peça | Esforço principal |
+| Posição | Armadura | Dimensionada por |
 |---|---|---|
-| N1 | Degrau, face superior | Peso do tubo, água, solo sobre o degrau e peso próprio |
-| N5 | Degrau, face inferior | Reação do solo sob o degrau |
-| N6 | Saliência da laje, face inferior (se j > 0) | Reação do solo sob a saliência |
-| N3 | Parede de apoio do tubo | Força hidráulica e empuxo ativo |
-| N2 | Chaveta, face do passivo | Empuxo passivo |
-| N4 | Chaveta, face do ativo | Empuxo ativo |
+| N1 | Estribo fechado em toda a laje da base (degrau, trecho sob a parede e saliência) | Maior As entre o degrau (face superior: tubo, água, solo; face inferior: reação do solo) e a saliência (reação do solo) |
+| N2 | Estribo fechado da parede, do topo até o fundo da base | Empuxo do tubo na face da parede, mais o ativo do solo |
+| N3 | Barra em U pelo fundo da chaveta, pernas até o topo da base dobradas na horizontal | Maior As entre a face do passivo e a do ativo |
+| N4 | Armadura secundária, ao longo da largura d | ≥ 20% da maior armadura principal e ≥ 0,9 cm²/m, s ≤ 33 cm |
 
-No concreto armado, a bitola e o espaçamento de cada posição são escolhidos no **Quadro de armaduras**, na coluna Adotada ("auto" usa o maior espaçamento que atende com a bitola escolhida). Para cada posição o app verifica: As efetiva ≥ As necessária (calculada e mínima), espaçamento ≤ 20 cm e ≤ 2h (alerta abaixo de 7,5 cm), armadura de distribuição, cortante sem estribos (VRd1) e abertura de fissuras (ELS-W, item 17.3.3) com o momento de serviço, contra o limite wk,lim escolhido (0,3 mm por padrão).
+No concreto armado, a bitola e o espaçamento de N1, N2, N3 e N4 são escolhidos no **Quadro de armaduras**, na coluna Adotada. Cada armadura tem uma só bitola e um só espaçamento e precisa atender a todas as faces que percorre; "auto" usa o maior espaçamento que atende a todas elas. O app verifica As efetiva ≥ As necessária (calculada e mínima), espaçamento ≤ 20 cm e ≤ 2h (alerta abaixo de 7,5 cm), cortante sem estribos (VRd1) e abertura de fissuras (ELS-W, item 17.3.3) com o momento de serviço, contra o limite wk,lim escolhido (0,3 mm por padrão).
 
 A formulação completa está no próprio aplicativo, na seção **Memória de cálculo**, no fim da página.
 
@@ -70,4 +68,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.8 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.9 · outubro de 2026 · Eng. Rafael J. R. Alves
