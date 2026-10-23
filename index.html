@@ -131,7 +131,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem</h1>
     <p class="sub">Curvas horizontais e verticais com junta elástica · bloco em L com chaveta de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V2.6 · out/2026</span>
+  <span class="pill neu">Versão V2.7 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -263,7 +263,7 @@ fieldset.unit{border-color:var(--ink)}
       <div class="card tbl"><h2>Chaveta</h2><p class="lead" id="l_t5">Balanço de altura h engastado na base · N2 face do passivo, N4 face do ativo</p><table id="r_t5"></table></div>
       <div class="card tbl"><h2>Empuxos e pesos</h2><table id="r_t3"></table></div>
     </div>
-    <div class="card tbl" id="w_sal" hidden><h2>Saliência da laje</h2><p class="lead" id="l_t8">Balanço de comprimento j engastado na face da parede, do lado do terreno · reação do solo menos o peso próprio · solo sobre a saliência desprezado</p><table id="r_t8"></table></div>
+    <div class="card tbl" id="w_sal" hidden><h2>Saliência da laje</h2><p class="lead" id="l_t8">Balanço de comprimento j engastado na face da parede, do lado do terreno · reação do solo menos o peso próprio e o solo sobre a saliência</p><table id="r_t8"></table></div>
   </div>
 </div>
 
@@ -277,18 +277,18 @@ fieldset.unit{border-color:var(--ink)}
     <li><b>Bloco acima do solo (H solo &lt; 0):</b> o terreno fica abaixo do topo do bloco. Não há solo sobre o bloco, e o solo sobre o degrau só existe se hT &gt; e. O ativo na face do tubo e o passivo na face oposta atuam só na altura enterrada hT, com pressão nula no nível do terreno. Com o terreno no nível da base (hT = 0), sobram o atrito na base e os empuxos na chaveta. A cota do terreno não pode ficar abaixo da base.</li>
     <li><b>Peso do tubo:</b> o peso próprio do tubo na largura d entra na normal da base e no momento estabilizante, aplicado no centro do tubo. A água no tubo não é considerada na estabilidade.</li>
     <li><b>Empuxos de Rankine:</b> σa = γ·z·Ka − 2c√Ka e σp = γ·z·Kp + 2c√Kp, com Kp = (1 + sen φ)/(1 − sen φ) e Ka = 1/Kp. No serviço z parte do terreno; no teste, do topo do bloco.</li>
-    <li><b>Serviço:</b> ativo na face do tubo, na altura g, e na face da chaveta voltada para o tubo, de H solo + g até H solo + g + h. Passivo do terreno sobre H solo + g e na face oposta da chaveta até o seu fundo, com metade mobilizada. Força deslizante = FH + Ea + Ea,chaveta. Resistente = 0,9·P·tan δ + ½·(Ep + Ep,chaveta).</li>
-    <li><b>Teste:</b> vala aberta acima do bloco, sem solo por cima e sem ativo na altura do bloco. O passivo atua na altura do bloco abaixo do terreno, min(g, hT). Abaixo da base o solo é natural: ativo e passivo atuam na chaveta, de g até g + h. Força deslizante = FH + Ea,chaveta. Resistente = Pconcreto·tan φ + Ep + Ep,chaveta + 2/3·c·a·d.</li>
+    <li><b>Serviço:</b> ativo na face do tubo, na altura g, e na face da chaveta voltada para o tubo, de H solo + g até H solo + g + h. Passivo só na face do bloco, do topo à base, começando com Kp·γ·H solo no topo (o solo acima do bloco entra como sobrecarga), e na face oposta da chaveta até o seu fundo, com metade mobilizada. Força deslizante = FH + Ea + Ea,chaveta. Resistente = 0,9·P·tan δ + ½·(Ep + Ep,chaveta).</li>
+    <li><b>Teste:</b> vala aberta acima do bloco, sem solo por cima e sem ativo na altura do bloco. O passivo atua na altura do bloco abaixo do terreno, min(g, hT). Com o terreno abaixo do topo do bloco, o solo natural também empurra a face do tubo: entra o ativo nessa altura. Abaixo da base o solo é natural: ativo e passivo atuam na chaveta, de g até g + h. Força deslizante = FH + Ea,chaveta. Resistente = Pconcreto·tan φ + Ep + Ep,chaveta + 2/3·c·a·d.</li>
     <li><b>Chaveta no tombamento e nas tensões:</b> o peso da chaveta entra no momento estabilizante e na normal da base, aplicado em s + t/2 do ponto de tombamento. Os empuxos abaixo da base não entram no tombamento e a área de contato continua a·d, a favor da segurança.</li>
     <li><b>Tombamento:</b> em torno da aresta posterior da base (lado do passivo). FS = momento estabilizante / momento de tombamento.</li>
-    <li><b>Tensões na base:</b> σ = N/(a·d) ± M·(a/2)/I, com M em relação ao centro da base; σ1 na aresta do passivo e σ2 na aresta do tubo. Com tração, σmáx = 2N/(x·d), x = 3(a/2 − M/N).</li>
+    <li><b>Tensões na base:</b> σ = N/(a·d) ± M·(a/2)/I, com M em relação ao centro da base; σ1 na aresta do passivo e σ2 na aresta do tubo. O sinal de M define o lado mais comprimido, que pode ser o do passivo ou o do tubo (curva vertical com V para baixo). Com tração, σmáx = 2N/(x·d), x = 3(a/2 − |M|/N), medida a partir da aresta mais comprimida.</li>
     <li><b>Posição da resultante (critério ACI):</b> só quando há tração na base. x = (Me − Mt)/ΣV. Serviço: terço médio. Teste: dentro da base.</li>
   </ol>
   <h4>Saliência da laje (j)</h4>
   <ol>
     <li><b>Geometria:</b> a laje da base, de espessura e, avança j além da face da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. Com j = 0, o bloco volta ao L original.</li>
-    <li><b>Estabilidade:</b> o ponto de tombamento fica na ponta da saliência, e o passivo atua no plano vertical que passa por ela. O peso da saliência entra no peso do bloco e no CG. O solo sobre a saliência é desprezado, a favor da segurança, como é usual em muros de arrimo.</li>
-    <li><b>Flexão (N6):</b> balanço de comprimento j engastado na face da parede, carregado pela reação do solo sob a saliência, integrada do diagrama de tensões da base de cada caso, menos o peso próprio. A tração fica na face inferior. Usa a bitola do degrau.</li>
+    <li><b>Estabilidade:</b> o ponto de tombamento fica na ponta da saliência, e o passivo atua no plano vertical que passa por ela. O peso da saliência e o solo sobre ela (altura H solo + g − e, no serviço) entram no peso resistente e no momento estabilizante. No teste, com a vala aberta, o solo sobre a saliência não entra.</li>
+    <li><b>Flexão (N6):</b> balanço de comprimento j engastado na face da parede, carregado pela reação do solo sob a saliência, integrada do diagrama de tensões da base de cada caso, menos o peso próprio e o solo sobre a saliência. A tração fica na face inferior. Usa a bitola do degrau.</li>
   </ol>
   <h4>Curva vertical</h4>
   <ol>
@@ -297,12 +297,12 @@ fieldset.unit{border-color:var(--ink)}
     <li><b>Empuxo para cima:</b> V entra no momento de tombamento e é subtraído da normal na base (atrito e tensões). O tubo fica preso por cintas ancoradas no degrau, que levam V ao degrau (face inferior, N5) e são dimensionadas por As = γf·V/fyd. Verifica-se o levantamento: FS = peso do bloco (com o solo, no serviço) / V.</li>
     <li><b>Parede de apoio do tubo:</b> recebe só a componente horizontal H, no mesmo braço DE/2.</li>
     <li><b>Para baixo, sem componente horizontal:</b> descida vertical que segue para os lados. O empuxo F = 2·p·A·sen(α/2) é tomado todo na vertical, para baixo (V = F, H = 0). Entra como carga no degrau, no momento estabilizante e na normal da base. Sem H, nada empurra o bloco na horizontal: os empuxos de terra dos dois lados se equilibram e ficam fora do deslizamento, do tombamento e das tensões, e os FS aparecem como "sem esforço". A tensão na base é a média σ = N/(a·d), com N = peso do bloco + solo sobre o bloco + solo sobre o degrau + tubo + água + V (no teste, sem solo).</li>
-    <li><b>Cargas favoráveis nas curvas verticais:</b> o solo sobre o degrau, entre o topo do degrau e o topo do bloco, descontado o tubo, e a água no tubo entram na normal da base e no momento estabilizante. No teste, com a vala aberta, entra só a água. Na curva horizontal, continuam fora, como na planilha mãe.</li>
+    <li><b>Cargas favoráveis (todas as curvas):</b> o solo sobre o degrau, entre o topo do degrau e o topo do bloco, descontado o tubo, e a água no tubo entram na normal da base e no momento estabilizante. No teste, com a vala aberta, entra só a água.</li>
   </ol>
   <h4>Esforços nas peças</h4>
   <ol>
     <li><b>Degrau, face superior (N1):</b> balanço de comprimento b. Cargas para baixo: peso próprio, peso do tubo, água no tubo (π·DE²/4·10·d) e, no serviço, o solo sobre o degrau, [(H solo + f)·b − π·DE²/4]·d·γs. Todas aplicadas em b/2, como na planilha mãe. A reação do solo é desprezada.</li>
-    <li><b>Degrau, face inferior (N5):</b> reação do solo sob o degrau, integrada do diagrama de tensões da base de cada caso, menos o peso próprio do degrau. Tubo, água e solo são desprezados, a favor da segurança.</li>
+    <li><b>Degrau, face inferior (N5):</b> reação do solo sob o degrau, integrada do diagrama de tensões da base de cada caso, menos o peso próprio do degrau, o solo sobre ele e, quando apoiados no degrau, o tubo e a água.</li>
     <li><b>Parede de apoio do tubo (N3):</b> trecho do corpo acima do degrau, balanço vertical de altura f engastado no topo do degrau, seção c × d. Cargas: FH a DE/2 do engaste e, no serviço, o ativo do solo sobre o degrau, de H solo até H solo + f. O passivo e o peso não aliviam o momento.</li>
     <li><b>Chaveta, face do passivo (N2):</b> passivo de σp(base) a σp(fundo), com ½ no serviço e inteiro no teste. Seção d × t.</li>
     <li><b>Chaveta, face do ativo (N4):</b> ativo de σa(base) a σa(fundo), sem desconto do passivo. Arma a reversão de esforço antes de o passivo ser mobilizado.</li>
@@ -312,7 +312,7 @@ fieldset.unit{border-color:var(--ink)}
   <ol>
     <li><b>Uso:</b> opção "Concreto simples" no painel Concreto. Os esforços de cada peça são os mesmos do concreto armado; a seção resiste só com o concreto, sem armadura.</li>
     <li><b>Resistência:</b> fctd = 0,7·0,3·fck^(2/3)/1,68, com γc = 1,4 × 1,2 = 1,68 para concreto simples, como na planilha mãe.</li>
-    <li><b>Flexão:</b> Mrd = fctd·W, com W = bw·h²/6. Como a seção é simétrica e sem armadura, cada peça é verificada para o maior momento entre as suas duas faces.</li>
+    <li><b>Flexão:</b> Mrd = 0,85·fctd·W, com W = bw·h²/6 (NBR 6118, 24.5.2.1). Como a seção é simétrica e sem armadura, cada peça é verificada para o maior momento entre as suas duas faces.</li>
     <li><b>Cortante:</b> Vrd = 2/3·τwRd·bw·h, com τwRd = 0,3·0,85·fctd.</li>
     <li><b>Seções:</b> degrau d × e, saliência d × e, parede d × c e chaveta d × t.</li>
   </ol>
@@ -385,7 +385,7 @@ function diag(L,w,pts){
 /* Seção de concreto simples (NBR 6118, seção 24), largura bw e altura h em m */
 function cs(Md,Vd,bw,h,fck){
   const fctm=0.3*Math.pow(fck,2/3)*1000, fctd=0.7*fctm/1.68, twRd=0.3*0.85*fctd;
-  const W=bw*h*h/6, Mrd=R2(fctd*W), Vrd=R2((2/3)*twRd*bw*h);
+  const W=bw*h*h/6, Mrd=R2(0.85*fctd*W), Vrd=R2((2/3)*twRd*bw*h);   /* NBR 6118, 24.5.2.1: σct,Rd = 0,85·fctd */
   const okM=Md<=Mrd+1e-9, okV=Vd<=Vrd+1e-9;
   return {Md,Vd,bw,h,W,fctd,twRd,Mrd,Vrd,okM,okV,ok:okM&&okV};
 }
@@ -434,22 +434,24 @@ function compute(p){
   /* curvas verticais: solo sobre o degrau entre e e g (descontado o tubo) e água no tubo entram na estabilidade como cargas favoráveis */
   const hb=Math.max(Math.min(hTc,G)-E,0), rr_=De/2, hbc=Math.min(hb,De);
   const Ab=hbc>=De?Math.PI*rr_*rr_:(hbc<=0?0:rr_*rr_*Math.acos((rr_-hbc)/rr_)-(rr_-hbc)*Math.sqrt(2*rr_*hbc-hbc*hbc));
-  const Wse=vert?Math.max(hb*B-Ab,0)*D*gs:0, xse=A-B/2, Wag=vert?De*De*Math.PI*0.25*D*10:0;
-  const Wt=R2(Wb+Wk), W=R2(Wb+Wk+Ws+Wtu+Wse+Wag), WtT=R2(Wb+Wk+Wtu+Wag);
-  const Ht=hTc;
-  const PAS_S=EP1*Ht*Ht*0.5*D+(EP2-EP1)*Ht*0.5*Ht/3*D, RP_S=(EP1+EP2)*0.5*Ht*D;
+  const Wse=Math.max(hb*B-Ab,0)*D*gs, xse=A-B/2, Wag=De*De*Math.PI*0.25*D*10;
+  const Wss=J>0?hb*J*D*gs:0, xss=J/2;   /* solo sobre a saliência, entre e e g (ou até o terreno) */
+  const Wt=R2(Wb+Wk), W=R2(Wb+Wk+Ws+Wtu+Wse+Wag+Wss), WtT=R2(Wb+Wk+Wtu+Wag);
+  const Ht=Hs>=0?G:hTc, EPa=Hs>=0?spv(Hs):EP1;   /* passivo só na face do bloco */
+  const PAS_S=EPa*Ht*Ht*0.5*D+(EP2-EPa)*Ht*0.5*Ht/3*D, RP_S=(EPa+EP2)*0.5*Ht*D;
   const PAS_T=EP1t*Gt*Gt*0.5*D+(EP2t-EP1t)*Gt*0.5*Gt/3*D, RP_T=(EP1t+EP2t)*0.5*Gt*D;
   const RPk_S=(EP2+EP3)*0.5*HK*D, RPk_T=(EP2t+EP3t)*0.5*HK*D;
   const RAk_S=(EA2+EA3)*0.5*HK*D, RAk_T=(EA2t+EA3t)*0.5*HK*D;
   /* ativo na face do tubo: trapézio na altura g com o terreno acima do bloco; triângulo na altura hT com o terreno abaixo do topo */
   const RA=Hs>=0?(EA1+EA2)*0.5*G*D:EA2*hTc*0.5*D, MAb=Hs>=0?EA1*G*G*0.5*D+(EA2-EA1)*G*0.5*G/3*D:RA*hTc/3, yEcm=E*100+Y6;
   /* descida vertical (só V): empuxos de terra equilibrados, fora da estabilidade */
-  const MT1h=vOnly?0:R2(yEcm*FH1*0.01+MAb), MT2h=vOnly?0:R2(yEcm*FH2*0.01);
+  const RA_T=Hs<0?EA2t*Gt*0.5*D:0, MA_T=RA_T*Gt/3;   /* teste: ativo do solo natural junto ao bloco (terreno abaixo do topo) */
+  const MT1h=vOnly?0:R2(yEcm*FH1*0.01+MAb), MT2h=vOnly?0:R2(yEcm*FH2*0.01+MA_T);
   const MT1=R2(MT1h+(up?FV1*xV:0)), MT2=R2(MT2h+(up?FV2*xV:0));
-  const Me1=R2(Wb*CGm+Wk*xk+Ws*A*0.5+Wtu*xV+Wse*xse+Wag*xV+(vOnly?0:PAS_S/2)+(sgn>0?FV1*xV:0));
+  const Me1=R2(Wb*CGm+Wk*xk+Ws*A*0.5+Wtu*xV+Wse*xse+Wag*xV+Wss*xss+(vOnly?0:PAS_S/2)+(sgn>0?FV1*xV:0));
   const Me2=R2(R2(Wb)*CGm+Wk*xk+Wtu*xV+Wag*xV+(vOnly?0:PAS_T)+(sgn>0?FV2*xV:0));
   const NB1=R2(W+sgn*FV1), NB2=R2(WtT+sgn*FV2);   /* normal na base */
-  const FD1=vOnly?0:R2(RA+FH1+RAk_S), FD2=vOnly?0:R2(FH2+RAk_T);
+  const FD1=vOnly?0:R2(RA+FH1+RAk_S), FD2=vOnly?0:R2(FH2+RAk_T+RA_T);
   const FDe1=R2(0.9*Math.max(NB1,0)*Math.tan(rad(del))+(vOnly?0:(RP_S+RPk_S)/2));
   const FDe2=R2(Math.max(NB2,0)*Math.tan(rad(phi))+(vOnly?0:RP_T+RPk_T)+0.6667*D*A*coh);
   const FDe1_0=R2(0.9*Math.max(NB1,0)*Math.tan(rad(del))+RP_S/2), FD1_0=R2(RA+FH1);
@@ -459,25 +461,29 @@ function compute(p){
   const xS=(Me1-MT1)/NB1, xT=(Me2-MT2)/NB2, a3=A/3;
   const okXS=xS>=a3&&xS<=2*a3, okXT=xT>0&&xT<=A;
   const I=A**3*D/12, Mpp=Wb*(A*0.5-CGm)+Wk*(A*0.5-xk)+Wtu*(A*0.5-xV);
+  /* momento no centro da base com sinal: positivo comprime a aresta do passivo (σ1), negativo a aresta do tubo (σ2) */
   function base(MT,Mpas,N,Mv){
-    const M0=MT-Mpas+Mpp+Mv, M=Math.abs(M0<0?Mpp+MT+Mv:M0);
-    const s1=M*(A/2)/I+N/(A*D), s2b=-M*(A/2)/I+N/(A*D);
-    let x=null, smax=s1, fora=false;
+    const M0=MT-Mpas+Mpp+Mv, Ms=M0<0?Mpp+MT+Mv:M0, M=Math.abs(Ms), lado=Ms>=0?'pas':'tubo';
+    const s1=N/(A*D)+Ms*(A/2)/I, s2b=N/(A*D)-Ms*(A/2)/I, smin=Math.min(s1,s2b);
+    let x=null, smax=Math.max(s1,s2b), fora=false;
     if(N<=0){x=0;fora=true;smax=Infinity}
-    else if(s2b<0){x=3*(A*0.5-M/N); if(x>0) smax=2*N/(x*D); else {fora=true; smax=Infinity}}
-    return {M,s1,s2:s2b,x,smax,fora};
+    else if(smin<0){x=3*(A*0.5-M/N); if(x>0) smax=2*N/(x*D); else {fora=true; smax=Infinity}}
+    return {M,Ms,lado,s1,s2:s2b,x,smax,fora,trac:smin<0};
   }
   /* V no centro do tubo: momento em relação ao centro da base, no mesmo sentido do tombamento */
   /* descida vertical (só V): tensão média simples σ = N/(a·d), sem excentricidade */
-  const media=N=>{const sg=N/(A*D);return {M:0,s1:sg,s2:sg,x:null,smax:N>0?sg:Infinity,fora:N<=0,media:true}};
-  const S1=vOnly?media(NB1):base(MT1h,PAS_S/2,NB1,sgn*FV1*(A*0.5-xV)+Wse*(A*0.5-xse)+Wag*(A*0.5-xV)),
+  const media=N=>{const sg=N/(A*D);return {M:0,Ms:0,lado:'pas',s1:sg,s2:sg,x:null,smax:N>0?sg:Infinity,fora:N<=0,media:true,trac:false}};
+  const S1=vOnly?media(NB1):base(MT1h,PAS_S/2,NB1,sgn*FV1*(A*0.5-xV)+Wse*(A*0.5-xse)+Wag*(A*0.5-xV)+Wss*(A*0.5-xss)),
         S2=vOnly?media(NB2):base(MT2h,PAS_T,NB2,sgn*FV2*(A*0.5-xV)+Wag*(A*0.5-xV));
+  /* tensão na base no ponto x (a partir da aresta do passivo), com a zona comprimida do lado certo */
+  function sigB(S,x){ if(S.fora) return 0; if(!S.trac) return S.s1+(S.s2-S.s1)*x/A;
+    const xx=S.lado==='pas'?x:A-x; return xx<S.x?S.smax*(1-xx/S.x):0; }
   /* reação do solo sob o degrau (u medido do engaste para a ponta) */
   function reac(S){
     if(S.fora) return {M:0,V:0,fora:true};
     const n=400, du=B/n; let M=0,Vr=0;
     for(let i=0;i<n;i++){const u=(i+0.5)*du, x=A-B+u;      // x a partir da aresta do passivo
-      const sg=S.x===null?S.s1+(S.s2-S.s1)*x/A:(x<S.x?S.smax*(1-x/S.x):0);
+      const sg=sigB(S,x);
       M+=sg*u*D*du; Vr+=sg*D*du;}
     return {M,V:Vr,fora:false};
   }
@@ -486,7 +492,7 @@ function compute(p){
     if(S.fora||J<=0) return {M:0,V:0};
     const n=200, du=J/n; let M=0,Vr=0;
     for(let i=0;i<n;i++){const u=(i+0.5)*du, x=J-u;
-      const sg=S.x===null?S.s1+(S.s2-S.s1)*x/A:(x<S.x?S.smax*(1-x/S.x):0);
+      const sg=sigB(S,x);
       M+=sg*u*D*du; Vr+=sg*D*du;}
     return {M,V:Vr};
   }
@@ -502,10 +508,12 @@ function compute(p){
   const Vb1=sgn>0?FV1:0, Vb2=sgn>0?FV2:0, Vc1=up?FV1:0, Vc2=up?FV2:0;
   const DSUP=face(qS*B/2+Vb1*aV,qS+Vb1,qT*B/2+Vb2*aV,qT+Vb2,gf1,gf2,D,E,cfg,p.fid);
   const rS=reac(S1), rT=reac(S2);
-  const DINF=face(Math.max(rS.M-Wst*B/2+Vc1*aV,0),Math.max(rS.V-Wst+Vc1,0),Math.max(rT.M-Wst*B/2+Vc2*aV,0),Math.max(rT.V-Wst+Vc2,0),gf1,gf2,D,E,cfg,p.fid);
-  /* saliência da laje: balanço de comprimento j, tração embaixo pela reação do solo menos o peso próprio (solo sobre ela desprezado) */
+  /* face inferior do degrau: reação do solo menos o que está sobre o degrau (peso próprio, solo entre e e g, tubo e água) */
+  const Pd1M=Wst*B/2+Wse*B/2+(Wtb+Ww)*aV, Pd1V=Wst+Wse+Wtb+Ww, Pd2M=Wst*B/2+(Wtb+Ww)*aV, Pd2V=Wst+Wtb+Ww;
+  const DINF=face(Math.max(rS.M-Pd1M+Vc1*aV,0),Math.max(rS.V-Pd1V+Vc1,0),Math.max(rT.M-Pd2M+Vc2*aV,0),Math.max(rT.V-Pd2V+Vc2,0),gf1,gf2,D,E,cfg,p.fid);
+  /* saliência da laje: balanço de comprimento j, tração embaixo pela reação do solo menos o peso próprio e o solo sobre ela (só no serviço) */
   const Wsal=J*D*E*gc, rTS=reacT(S1), rTT=reacT(S2);
-  const SAL=J>0?face(Math.max(rTS.M-Wsal*J/2,0),Math.max(rTS.V-Wsal,0),Math.max(rTT.M-Wsal*J/2,0),Math.max(rTT.V-Wsal,0),gf1,gf2,D,E,cfg,p.fid):null;
+  const SAL=J>0?face(Math.max(rTS.M-(Wsal+Wss)*J/2,0),Math.max(rTS.V-Wsal-Wss,0),Math.max(rTT.M-Wsal*J/2,0),Math.max(rTT.V-Wsal,0),gf1,gf2,D,E,cfg,p.fid):null;
   /* cintas de ancoragem do tubo (empuxo para cima): tração de cálculo e área de aço */
   const Tcin=up?Math.max(gf1*FV1,gf2*FV2):0, AsCin=up?Tcin/(p.fyk/1.15*1000)*1e4:0;
   // parede de apoio do tubo
@@ -521,16 +529,16 @@ function compute(p){
     KA=face(mom(EA2,EA3),cor(EA2,EA3),mom(EA2t,EA3t),cor(EA2t,EA3t),gf1,gf2,D,TK,cfg,p.fik);
   }
   // diagramas de cálculo (caso que rege em cada face)
-  const sig=(S,x)=>S.fora?0:(S.x===null?S.s1+(S.s2-S.s1)*x/A:(x<S.x?S.smax*(1-x/S.x):0));
+  const sig=sigB;
   const zFH=Math.max(F-De/2,0);
   /* envoltória ponto a ponto entre serviço (γf1) e teste (γf2) */
   const env=(a,b)=>({x:a.x,M:a.M.map((v,i)=>Math.max(v,b.M[i])),V:a.V.map((v,i)=>Math.max(v,b.V[i]))});
   const DG={
     deg:{L:B,
       a:env(diag(B,()=>gf1*qS/B,[[B-aV,gf1*Vb1]]),diag(B,()=>gf2*qT/B,[[B-aV,gf2*Vb2]])),
-      b:env(diag(B,t=>gf1*(sig(S1,A-t)*D-gc*E*D),[[B-aV,gf1*Vc1]]),diag(B,t=>gf2*(sig(S2,A-t)*D-gc*E*D),[[B-aV,gf2*Vc2]]))},
+      b:env(diag(B,t=>gf1*(sig(S1,A-t)*D-gc*E*D-Wse/B),[[B-aV,gf1*(Vc1-Wtb-Ww)]]),diag(B,t=>gf2*(sig(S2,A-t)*D-gc*E*D),[[B-aV,gf2*(Vc2-Wtb-Ww)]]))},
     par:{L:F, a:env(diag(F,t=>gf1*D*(Hs>=0?EA1+(EAf-EA1)*t/F:(hw>0?EAf*Math.max(t-(F-hw),0)/hw:0)),[[zFH,gf1*FH1]]),diag(F,()=>0,[[zFH,gf2*FH2]]))},
-    sal:J>0?{L:J,a:env(diag(J,t=>gf1*(sig(S1,t)*D-gc*E*D)),diag(J,t=>gf2*(sig(S2,t)*D-gc*E*D)))}:null,
+    sal:J>0?{L:J,a:env(diag(J,t=>gf1*(sig(S1,t)*D-gc*E*D-Wss/J)),diag(J,t=>gf2*(sig(S2,t)*D-gc*E*D)))}:null,
     den:kon?{L:HK,
       a:env(diag(HK,t=>gf1*D*(EP3/2+(EP2/2-EP3/2)*t/HK)),diag(HK,t=>gf2*D*(EP3t+(EP2t-EP3t)*t/HK))),
       b:env(diag(HK,t=>gf1*D*(EA3+(EA2-EA3)*t/HK)),diag(HK,t=>gf2*D*(EA3t+(EA2t-EA3t)*t/HK)))}:null};
@@ -539,10 +547,10 @@ function compute(p){
     par:cs(PAR.MD,PAR.VD,D,C,fck),
     sal:J>0?cs(SAL.MD,SAL.VD,D,E,fck):null,
     den:kon?cs(Math.max(KP.MD,KA.MD),Math.max(KP.VD,KA.VD),D,TK,fck):null, denFace:kon?(KP.MD>=KA.MD?'face do passivo':'face do ativo'):''};
-  return {Wse,Wag,J,Wsal,N6:SAL,hT,hTc,Gt,Wtu,WtT,hsd,hw,MAb,modo:p.modo==='simples'?'simples':'armado',SIMP,DG,A,B,C,D,E,F,G,HK,TK,SK,kon,De,Hs,Kp,Ka,EA1,EA2,EA3,EAf,EA2t,EA3t,EP1,EP2,EP3,EP1t,EP2t,EP3t,cgcm,CGm,V0,VK,V,Wb,Wk,xk,Ws,Wt,W,
+  return {Wss,EPa,RA_T,Wse,Wag,J,Wsal,N6:SAL,hT,hTc,Gt,Wtu,WtT,hsd,hw,MAb,modo:p.modo==='simples'?'simples':'armado',SIMP,DG,A,B,C,D,E,F,G,HK,TK,SK,kon,De,Hs,Kp,Ka,EA1,EA2,EA3,EAf,EA2t,EA3t,EP1,EP2,EP3,EP1t,EP2t,EP3t,cgcm,CGm,V0,VK,V,Wb,Wk,xk,Ws,Wt,W,
     alfa,vert,up,vOnly,sgn,FT1,FT2,FV1,FV2,xV,aV,NB1,NB2,MT1h,MT2h,FSL1,FSL2,Tcin,AsCin,
     PAS_S,RP_S,PAS_T,RP_T,RPk_S,RPk_T,RAk_S,RAk_T,RA,yEcm,FH1,FH2,MT1,MT2,Me1,Me2,FD1,FD2,FDe1,FDe2,FDe1_0,FD1_0,FST1,FSD1,FST2,FSD2,
-    xS,xT,a3,okXS,okXT,S1,S2,tracS:S1.s2<0,tracT:S2.s2<0,Ww,Wtb,Wst,Wsd,rS,rT,MaW,EaW,cfg,
+    xS,xT,a3,okXS,okXT,S1,S2,tracS:S1.trac,tracT:S2.trac,Ww,Wtb,Wst,Wsd,rS,rT,MaW,EaW,cfg,
     N1:DSUP,N5:DINF,N3:PAR,N2:KP,N4:KA};
 }
 if(typeof module!=='undefined') module.exports={compute,rc,cs,fiss,diag};
@@ -695,14 +703,15 @@ function calc(){
             :[['Força hidráulica FH1',fmt(o.FH1),'kN']]),
     ['Ativo na altura g'+(o.vOnly?' (equilibrado, fora da estabilidade)':''),fmt(o.RA),'kN'],
     ...(o.kon?[['Ativo na chaveta',fmt(o.RAk_S),'kN']]:[]),
-    ['Passivo até a base · H solo + g'+(o.vOnly?' (equilibrado, fora da estabilidade)':''),fmt(o.RP_S),'kN'],
+    ['Passivo na face do bloco, até a base'+(o.vOnly?' (equilibrado, fora da estabilidade)':''),fmt(o.RP_S),'kN'],
     ...(o.kon?[['Passivo na chaveta',fmt(o.RPk_S),'kN']]:[]),
     ['Momento de tombamento',fmt(o.MT1),'kN·m'],
     ['Momento estabilizante',fmt(o.Me1),'kN·m'],
     ['Força deslizante',fmt(o.FD1),'kN'],
     ['Força resistente',fmt(o.FDe1),'kN'],
-    ...(o.vert?[['Solo sobre o degrau, entre e e g',fmt(o.Wse),'kN'],['Água no tubo',fmt(o.Wag),'kN']]:[]),
-    ['Peso resistente (bloco + solo + tubo'+(o.vert?' + água':'')+')',fmt(o.W),'kN'],
+    ['Solo sobre o degrau, entre e e g',fmt(o.Wse),'kN'],['Água no tubo',fmt(o.Wag),'kN'],
+    ...(o.J>0?[['Solo sobre a saliência',fmt(o.Wss),'kN']]:[]),
+    ['Peso resistente (bloco + solo + tubo + água)',fmt(o.W),'kN'],
     ...(o.vert?[['Normal na base N = P '+(o.up?'− V':'+ V'),fmt(o.NB1),'kN']]:[]),
     ...(o.up?[['Levantamento P / V',`${fmt(o.FSL1)} · mín. ${fmt(lim[4])}`,'',o.FSL1>=lim[4]?'s-ok':'s-bad']]:[]),
     ['Momento no centro da base',fmt(S1.M),'kN·m'],
@@ -715,6 +724,7 @@ function calc(){
     ['Pressão de teste'+(ptAuto?' (1,5 × serviço)':' (informada)'),fmt(p.pt),'m.c.a.'],
     ...(o.vert?[['Empuxo total F (curva vertical)',fmt(o.FT2),'kN'],['Componente horizontal H',fmt(o.FH2),'kN'],['Componente vertical V · '+(o.up?'para cima':'para baixo'),fmt(o.FV2),'kN']]
             :[['Força hidráulica FH2',fmt(o.FH2),'kN']]),
+    ...(o.RA_T>0.005?[['Ativo na altura enterrada (terreno abaixo do topo)',fmt(o.RA_T),'kN']]:[]),
     ...(o.kon?[['Ativo na chaveta',fmt(o.RAk_T),'kN']]:[]),
     ['Passivo na altura g'+(o.vOnly?' (equilibrado, fora da estabilidade)':''),fmt(o.RP_T),'kN'],
     ...(o.kon?[['Passivo na chaveta',fmt(o.RPk_T),'kN']]:[]),
@@ -722,8 +732,8 @@ function calc(){
     ['Momento estabilizante',fmt(o.Me2),'kN·m'],
     ['Força deslizante',fmt(o.FD2),'kN'],
     ['Força resistente',fmt(o.FDe2),'kN'],
-    ...(o.vert?[['Água no tubo',fmt(o.Wag),'kN']]:[]),
-    ['Peso resistente (concreto + tubo'+(o.vert?' + água':'')+')',fmt(o.WtT),'kN'],
+    ['Água no tubo',fmt(o.Wag),'kN'],
+    ['Peso resistente (concreto + tubo + água)',fmt(o.WtT),'kN'],
     ...(o.vert?[['Normal na base N = P '+(o.up?'− V':'+ V'),fmt(o.NB2),'kN']]:[]),
     ...(o.up?[['Levantamento P / V',`${fmt(o.FSL2)} · mín. ${fmt(lim[5])}`,'',o.FSL2>=lim[5]?'s-ok':'s-bad']]:[]),
     ['Momento no centro da base',fmt(S2.M),'kN·m'],
@@ -736,7 +746,7 @@ function calc(){
     ['Coef. passivo / ativo',`${fmt(o.Kp,3)} / ${fmt(o.Ka,3)}`,''],
     ['Ativo serviço topo / base'+(o.kon?' / fundo da chaveta':''),`${fmt(o.EA1)} / ${fmt(o.EA2)}`+(o.kon?` / ${fmt(o.EA3)}`:''),'kPa'],
     ...(o.kon?[['Ativo teste base / fundo da chaveta',`${fmt(o.EA2t)} / ${fmt(o.EA3t)}`,'kPa']]:[]),
-    ['Passivo serviço topo / base'+(o.kon?' / fundo da chaveta':''),`${fmt(o.EP1)} / ${fmt(o.EP2)}`+(o.kon?` / ${fmt(o.EP3)}`:''),'kPa'],
+    ['Passivo serviço topo / base'+(o.kon?' / fundo da chaveta':''),`${fmt(o.EPa)} / ${fmt(o.EP2)}`+(o.kon?` / ${fmt(o.EP3)}`:''),'kPa'],
     ['Passivo teste topo / base'+(o.kon?' / fundo da chaveta':''),`${fmt(o.EP1t)} / ${fmt(o.EP2t)}`+(o.kon?` / ${fmt(o.EP3t)}`:''),'kPa'],
     ['Altura de solo sobre o bloco',o.Hs<0?`${fmt(o.Hs)} · bloco acima do solo`:fmt(o.Hs),'m'],
     ['Terreno acima da base hT',fmt(Math.max(o.hT,0)),'m'],
@@ -752,7 +762,7 @@ function calc(){
     const sRows=(S,extra)=>rows([...extra,
       ['Md de cálculo',fmt(S.Md),'kN·m'],['Vd de cálculo',fmt(S.Vd),'kN'],
       ['Seção bw × h',`${fmt(S.bw*100,0)} × ${fmt(S.h*100,0)}`,'cm'],['Módulo W = bw·h²/6',fmt(S.W,4),'m³'],
-      ['Mrd = fctd·W',fmt(S.Mrd),'kN·m'],['Vrd = 2/3·τwRd·bw·h',fmt(S.Vrd),'kN'],
+      ['Mrd = 0,85·fctd·W',fmt(S.Mrd),'kN·m'],['Vrd = 2/3·τwRd·bw·h',fmt(S.Vrd),'kN'],
       ['Flexão Md / Mrd',`${fmt(S.Md)} / ${fmt(S.Mrd)} · ${sitTxt(S.okM)}`,'',st(S.okM)],
       ['Cortante Vd / Vrd',`${fmt(S.Vd)} / ${fmt(S.Vrd)} · ${sitTxt(S.okV)}`,'',st(S.okV)]]);
     $('l_t4').textContent='Balanço de comprimento b engastado no corpo · concreto simples, maior momento entre as duas faces';
@@ -905,7 +915,7 @@ function draw(o){
     g+=`<text x="${xf-w3-6}" y="${yk+14}" text-anchor="end" style="fill:var(--act)">${fmt(a3)} kPa · Ea,chaveta ${fmt(R_)} kN</text>`;
   }
   // passivo
-  { const yt=serv?ySoil:Math.max(yTop,yTer), p1=serv?o.EP1:o.EP1t, p2=serv?o.EP2:o.EP2t, p3=serv?o.EP3:o.EP3t;
+  { const yt=serv?(o.Hs>=0?yTop:ySoil):Math.max(yTop,yTer), p1=serv?o.EPa:o.EP1t, p2=serv?o.EP2:o.EP2t, p3=serv?o.EP3:o.EP3t;
     const Rp=serv?o.RP_S:o.RP_T, Rk=serv?o.RPk_S:o.RPk_T;
     const w1=p1*k,w2=p2*k,w3=p3*k,xp=xr;
     const temP=Rp>0.005;
@@ -1107,7 +1117,7 @@ async function buildDocx(){
     ['Parâmetro','Valor','Parâmetro','Valor'],
     [L('H solo = Ct − (Cgi + f) · hT'),`${fmt(o.Hs)} · ${fmt(Math.max(o.hT,0))} m`,L('Kp / Ka (Rankine)'),`${fmt(o.Kp,3)} / ${fmt(o.Ka,3)}`],
     [L('Volume de concreto'),fmt(o.V,3)+' m³',L('Ativo serviço topo / base / chaveta'),`${fmt(o.EA1)} / ${fmt(o.EA2)} / ${o.kon?fmt(o.EA3):'—'} kPa`],
-    [L('Peso do corpo / chaveta / tubo'),`${fmt(o.Wb)} / ${fmt(o.Wk)} / ${fmt(o.Wtu)} kN`,L('Passivo serviço topo / base / chaveta'),`${fmt(o.EP1)} / ${fmt(o.EP2)} / ${o.kon?fmt(o.EP3):'—'} kPa`],
+    [L('Peso do corpo / chaveta / tubo'),`${fmt(o.Wb)} / ${fmt(o.Wk)} / ${fmt(o.Wtu)} kN`,L('Passivo serviço topo / base / chaveta'),`${fmt(o.EPa)} / ${fmt(o.EP2)} / ${o.kon?fmt(o.EP3):'—'} kPa`],
     [L('Peso do solo sobre o bloco Ps'),fmt(o.Ws)+' kN',L('Passivo teste topo / base / chaveta'),`${fmt(o.EP1t)} / ${fmt(o.EP2t)} / ${o.kon?fmt(o.EP3t):'—'} kPa`],
     [L('CG do corpo (ponto de tomb.)'),fmt(o.cgcm,0)+' cm',L('Altura de FH (e + DE/2)'),fmt(o.yEcm,1)+' cm'],
   ],{head:1,shade:[0,2]});
@@ -1121,7 +1131,8 @@ async function buildDocx(){
                 [L('Componente horizontal H / vertical V'),`${fmt(o.FH1)} / ${fmt(o.FV1)} kN`,`${fmt(o.FH2)} / ${fmt(o.FV2)} kN`,(o.vOnly?'H = 0 · V = F ↓':`H = F·sen(α/2) · V = F·cos(α/2) ${o.up?'↑':'↓'}`),'—']]
               :[[L('Força hidráulica FH'),fmt(o.FH1)+' kN',fmt(o.FH2)+' kN','2·p·γw·π·DE²/4·sen(α/2)','—']]),
     [L('Ativo Ea / passivo Ep'),`${fmt(o.RA)} / ${fmt(o.RP_S)} kN`,`— / ${fmt(o.RP_T)} kN`,o.vOnly?'equilibrados, fora da estabilidade':'serviço: ½ Ep','—'],
-    ...(o.vert?[[L('Solo sobre o degrau (e a g) / água no tubo'),`${fmt(o.Wse)} / ${fmt(o.Wag)} kN`,`— / ${fmt(o.Wag)} kN`,'cargas favoráveis','—']]:[]),
+    [L('Solo sobre o degrau (e a g) / água no tubo'),`${fmt(o.Wse)} / ${fmt(o.Wag)} kN`,`— / ${fmt(o.Wag)} kN`,'cargas favoráveis','—'],
+    ...(o.J>0?[[L('Solo sobre a saliência'),fmt(o.Wss)+' kN','—','carga favorável','—']]:[]),
     ...(o.kon?[[L('Chaveta · ativo / passivo'),`${fmt(o.RAk_S)} / ${fmt(o.RPk_S)} kN`,`${fmt(o.RAk_T)} / ${fmt(o.RPk_T)} kN`,'só no deslizamento','—']]:[]),
     [L('Momento tombamento / estabilizante'),`${fmt(o.MT1)} / ${fmt(o.Me1)}`,`${fmt(o.MT2)} / ${fmt(o.Me2)}`,'kN·m','—'],
     [{t:'FS tombamento',left:1,bold:1},B(fsT(o.FST1)),B(fsT(o.FST2)),`≥ ${fmt(lim[0])} / ≥ ${fmt(lim[2])}`,sit(o.FST1>=lim[0]&&o.FST2>=lim[2])],
@@ -1144,7 +1155,7 @@ async function buildDocx(){
     ...R.SP.map(([lab,S])=>[L(lab),`${fmt(S.bw*100,0)} × ${fmt(S.h*100,0)}`,`${fmt(S.Md)} / ${fmt(S.Mrd)}`,`${fmt(S.Vd)} / ${fmt(S.Vrd)}`,sit(S.ok)]),
   ],{head:1,shade:[0]});
   const cinTxt=o.up?` Cintas de ancoragem do tubo: Td = ${fmt(o.Tcin)} kN, As total ≥ ${fmt(o.AsCin,2)} cm² (CA-${p.fyk/10}), ancoradas no degrau.`:'';
-  const csTxt=`Sem armadura. fctd = 0,7·0,3·fck^(2/3)/1,68 = ${fmt(R.SP[0][1].fctd/1000,3)} MPa; Mrd = fctd·bw·h²/6; Vrd = 2/3·τwRd·bw·h, com τwRd = 0,3·0,85·fctd = ${fmt(R.SP[0][1].twRd/1000,3)} MPa. Em cada peça vale o maior momento entre as duas faces.`+cinTxt;
+  const csTxt=`Sem armadura. fctd = 0,7·0,3·fck^(2/3)/1,68 = ${fmt(R.SP[0][1].fctd/1000,3)} MPa; Mrd = 0,85·fctd·bw·h²/6; Vrd = 2/3·τwRd·bw·h, com τwRd = 0,3·0,85·fctd = ${fmt(R.SP[0][1].twRd/1000,3)} MPa. Em cada peça vale o maior momento entre as duas faces.`+cinTxt;
   const distTxt='Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1). Abertura de fissuras (ELS-W) com o momento de serviço do caso 1.'+cinTxt;
   const DGs=diagSvgLight(o);
   const [pA,pD]=await Promise.all([svgToPng(svgFor('serv','arm')),svgToPng(DGs.svg,DGs.W*3,DGs.H*3)]);
@@ -1245,7 +1256,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V2.6',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V2.7',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -1311,7 +1322,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.6',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.7',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });

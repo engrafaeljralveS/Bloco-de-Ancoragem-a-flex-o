@@ -17,22 +17,23 @@ No painel da tubulação, escolha **Curva horizontal** ou **Curva vertical** (90
   - **Para baixo** (curva em ponto baixo): V soma ao peso, ajuda no tombamento e no atrito e carrega o degrau.
   - **Para cima** (curva em ponto alto): V tende a levantar e tombar o bloco. O app verifica o levantamento (peso / V) e dimensiona as cintas que prendem o tubo ao degrau.
   - **Para baixo, sem componente horizontal** (descida vertical que segue para os lados): o empuxo F é todo vertical, para baixo (V = F, H = 0). Sem nada empurrando o bloco na horizontal, os empuxos de terra se equilibram e ficam fora da estabilidade: tombamento e deslizamento aparecem como "sem esforço", e a tensão na base é a média σ = N/(a·d).
-  - Em todas as curvas verticais, o solo sobre o degrau (entre e e g) e a água no tubo entram na estabilidade como cargas favoráveis. No teste, entra só a água.
 
 **Estabilidade, nos casos de serviço e de teste**
 - Tombamento e deslizamento, com os fatores de segurança mínimos informados.
 - Tensões na base e posição da resultante (critério ACI quando há tração na base).
 - Empuxos de Rankine: ativo e passivo acompanham a chaveta até o seu fundo.
 - **Bloco acima do solo:** a cota do terreno pode ficar abaixo do topo do bloco, até o nível da base. Nesse caso não há solo sobre o bloco, e os empuxos atuam só na altura enterrada e na chaveta. Com a base no nível do terreno, o deslizamento é resistido pelo atrito na base (peso do bloco e do tubo) somado ao passivo da chaveta.
-- O peso próprio do tubo entra na normal da base e no momento estabilizante.
-- **Saliência da laje (j):** a laje da base pode avançar além da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. O ponto de tombamento e o passivo ficam na ponta da saliência, e o solo sobre ela é desprezado. Com j = 0, o bloco é o L original.
+- O peso próprio do tubo, a água no tubo e o solo sobre o degrau (entre e e g) entram na normal da base e no momento estabilizante, em curvas horizontais e verticais. No teste, com a vala aberta, entram só o tubo e a água.
+- No serviço, o passivo atua só na face do bloco, do topo à base, com o solo acima do bloco como sobrecarga. No teste, se o terreno estiver abaixo do topo do bloco, entra também o ativo do solo natural na face do tubo.
+- O lado mais comprimido da base pode ser o do passivo ou o do tubo; o app identifica qual e usa o diagrama correto nas peças.
+- **Saliência da laje (j):** a laje da base pode avançar além da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. O ponto de tombamento e o passivo ficam na ponta da saliência, e o solo sobre ela entra como carga favorável no serviço. Com j = 0, o bloco é o L original.
 
 **Flexão e cortante nas peças (NBR 6118)**
 
 No painel **Concreto**, escolha o tipo de dimensionamento:
 
 - **Concreto armado:** dimensiona as armaduras N1 a N5 da tabela abaixo.
-- **Concreto simples:** verifica as mesmas peças sem armadura (NBR 6118, seção 24, γc = 1,68), com Mrd = fctd·W e Vrd = 2/3·τwRd·bw·h. Os esforços são os mesmos nos dois casos, e a estabilidade não muda.
+- **Concreto simples:** verifica as mesmas peças sem armadura (NBR 6118, seção 24, γc = 1,68), com Mrd = 0,85·fctd·W e Vrd = 2/3·τwRd·bw·h. Os esforços são os mesmos nos dois casos, e a estabilidade não muda.
 
 
 | Posição | Peça | Esforço principal |
@@ -69,4 +70,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.6 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.7 · outubro de 2026 · Eng. Rafael J. R. Alves
