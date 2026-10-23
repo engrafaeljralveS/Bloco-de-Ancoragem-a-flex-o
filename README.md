@@ -45,13 +45,13 @@ No painel **Concreto**, escolha o tipo de dimensionamento:
 | N2 | Chaveta, face do passivo | Empuxo passivo |
 | N4 | Chaveta, face do ativo | Empuxo ativo |
 
-No concreto armado, para cada posição: armadura calculada e mínima, bitola e espaçamento adotados, armadura de distribuição, cortante sem estribos (VRd1) e abertura de fissuras (ELS-W, item 17.3.3) com o momento de serviço, contra o limite wk,lim escolhido (0,3 mm por padrão).
+No concreto armado, a bitola e o espaçamento de cada posição são escolhidos no **Quadro de armaduras**, na coluna Adotada ("auto" usa o maior espaçamento que atende com a bitola escolhida). Para cada posição o app verifica: As efetiva ≥ As necessária (calculada e mínima), espaçamento ≤ 20 cm e ≤ 2h (alerta abaixo de 7,5 cm), armadura de distribuição, cortante sem estribos (VRd1) e abertura de fissuras (ELS-W, item 17.3.3) com o momento de serviço, contra o limite wk,lim escolhido (0,3 mm por padrão).
 
 A formulação completa está no próprio aplicativo, na seção **Memória de cálculo**, no fim da página.
 
 ## Como usar
 
-1. Preencha os dados da tubulação, cotas, solo, bloco, chaveta e concreto, e escolha concreto simples ou armado. Os resultados atualizam a cada alteração.
+1. Preencha os dados da tubulação, cotas, solo, bloco, chaveta e concreto, e escolha concreto simples ou armado. O cobrimento padrão é 5 cm. Os resultados atualizam a cada alteração.
 2. No topo, confira a estabilidade (tombamento, deslizamento e tensões na base). No corte A-A, a aba **Geometria e cargas** mostra os esforços de serviço e de teste, e a aba **Armaduras e esforços** mostra a disposição das armaduras e os diagramas de momento fletor e cortante de cada peça. Mais abaixo, o **Quadro de armaduras** traz o resultado das peças e as verificações de flexão e cortante.
 3. Clique em **Gerar memorial** para baixar a memória de cálculo em Word.
 
@@ -70,4 +70,4 @@ A formulação completa está no próprio aplicativo, na seção **Memória de c
 
 Ferramenta de apoio ao projeto. Os resultados devem ser conferidos pelo engenheiro responsável, com parâmetros geotécnicos obtidos em ensaio. A flexão da parede no plano horizontal sob a carga localizada do tubo, a ancoragem e o detalhamento das barras não são verificados.
 
-Versão V2.7 · outubro de 2026 · Eng. Rafael J. R. Alves
+Versão V2.8 · outubro de 2026 · Eng. Rafael J. R. Alves

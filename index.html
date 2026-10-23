@@ -43,6 +43,7 @@ legend{font:600 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em
 .f.full{grid-column:1/-1}
 .f label{font-size:12px;color:var(--muted);line-height:1.25}
 .in{display:flex;align-items:center;border:1px solid var(--line);border-radius:5px;background:var(--bg);overflow:hidden}
+.adot{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.adot select{width:auto!important;min-width:0;font:500 12px var(--f-mono);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 4px}
 .in input,.in select{border:0;background:transparent;color:var(--ink);font:500 14px var(--f-mono);padding:6px 8px;width:100%;min-width:0;font-variant-numeric:tabular-nums}
 .in input:disabled,.in select:disabled{opacity:.5}
 .in span{font:12px var(--f-mono);color:var(--muted);padding:0 8px;white-space:nowrap}
@@ -131,7 +132,7 @@ fieldset.unit{border-color:var(--ink)}
     <h1>Bloco de Ancoragem</h1>
     <p class="sub">Curvas horizontais e verticais com junta elástica · bloco em L com chaveta de cisalhamento · concreto simples ou armado (NBR 6118) · casos de serviço e de teste</p>
   </div>
-  <span class="pill neu">Versão V2.7 · out/2026</span>
+  <span class="pill neu">Versão V2.8 · out/2026</span>
 </header>
 
 <div class="grid">
@@ -194,14 +195,12 @@ fieldset.unit{border-color:var(--ink)}
     </fieldset>
     <fieldset class="new" id="fs_arm"><legend>Armadura</legend>
       <div class="f"><label for="v_fyk">Aço</label><div class="in"><select id="v_fyk"><option value="500" selected>CA-50</option><option value="600">CA-60</option></select></div></div>
-      <div class="f"><label for="v_cob">Cobrimento</label><div class="in"><input id="v_cob" type="number" step="0.5" value="4"><span>cm</span></div></div>
-      <div class="f"><label for="v_fid">φ degrau · N1, N5</label><div class="in"><select id="v_fid"><option>8</option><option selected>10</option><option>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
-      <div class="f"><label for="v_fip">φ parede · N3</label><div class="in"><select id="v_fip"><option>8</option><option>10</option><option selected>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
-      <div class="f"><label for="v_fik">φ chaveta · N2, N4</label><div class="in"><select id="v_fik"><option>8</option><option selected>10</option><option>12.5</option><option>16</option><option>20</option><option>25</option></select><span>mm</span></div></div>
+      <div class="f"><label for="v_cob">Cobrimento</label><div class="in"><input id="v_cob" type="number" step="0.5" value="5"><span>cm</span></div></div>
+      <input type="hidden" id="v_aN1" value="10"><input type="hidden" id="v_sN1" value=""><input type="hidden" id="v_aN5" value="10"><input type="hidden" id="v_sN5" value=""><input type="hidden" id="v_aN6" value="10"><input type="hidden" id="v_sN6" value=""><input type="hidden" id="v_aN3" value="12.5"><input type="hidden" id="v_sN3" value=""><input type="hidden" id="v_aN2" value="10"><input type="hidden" id="v_sN2" value=""><input type="hidden" id="v_aN4" value="10"><input type="hidden" id="v_sN4" value="">
       <div class="f"><label for="v_rmode">Armadura mínima</label><div class="in"><select id="v_rmode"><option value="nbr" selected>NBR Tab. 17.3</option><option value="inf">Taxa informada</option></select></div></div>
       <div class="f"><label for="v_rho">Taxa mínima informada</label><div class="in"><input id="v_rho" type="number" step="0.01" value="0.10" disabled><span>%</span></div></div>
       <div class="f full"><label for="v_wlim">Abertura máxima de fissura wk,lim</label><div class="in"><select id="v_wlim"><option value="0.1">0,1</option><option value="0.2">0,2</option><option value="0.3" selected>0,3 · NBR 6118, CAA II e III</option><option value="0.4">0,4 · CAA I</option></select><span>mm</span></div></div>
-      <p class="hint">γc = 1,4 e γs = 1,15. A taxa informada vale para todas as peças e serve para seções maciças, como a parede.</p>
+      <p class="hint">γc = 1,4 e γs = 1,15. Bitola e espaçamento de cada posição são escolhidos no Quadro de armaduras. A taxa informada vale para todas as peças e serve para seções maciças, como a parede.</p>
     </fieldset>
     <fieldset><legend>Fatores de segurança mínimos</legend>
       <div class="f"><label for="v_fst1">Tombamento · serviço</label><div class="in"><input id="v_fst1" type="number" step="0.05" value="1.5"></div></div>
@@ -288,7 +287,7 @@ fieldset.unit{border-color:var(--ink)}
   <ol>
     <li><b>Geometria:</b> a laje da base, de espessura e, avança j além da face da parede, do lado do terreno. A parede, de largura c = a − b − j, fica sobre a laje. Com j = 0, o bloco volta ao L original.</li>
     <li><b>Estabilidade:</b> o ponto de tombamento fica na ponta da saliência, e o passivo atua no plano vertical que passa por ela. O peso da saliência e o solo sobre ela (altura H solo + g − e, no serviço) entram no peso resistente e no momento estabilizante. No teste, com a vala aberta, o solo sobre a saliência não entra.</li>
-    <li><b>Flexão (N6):</b> balanço de comprimento j engastado na face da parede, carregado pela reação do solo sob a saliência, integrada do diagrama de tensões da base de cada caso, menos o peso próprio e o solo sobre a saliência. A tração fica na face inferior. Usa a bitola do degrau.</li>
+    <li><b>Flexão (N6):</b> balanço de comprimento j engastado na face da parede, carregado pela reação do solo sob a saliência, integrada do diagrama de tensões da base de cada caso, menos o peso próprio e o solo sobre a saliência. A tração fica na face inferior.</li>
   </ol>
   <h4>Curva vertical</h4>
   <ol>
@@ -319,7 +318,7 @@ fieldset.unit{border-color:var(--ink)}
   <h4>Concreto armado (NBR 6118)</h4>
   <ol>
     <li><b>Flexão:</b> λ = 0,8 e αc = 0,85. x = 1,25·d'·[1 − √(1 − Md/(0,425·fcd·bw·d'²))], As = Md/[fyd·(d' − 0,4x)], com d' = h − cobrimento − φ/2 e x/d' ≤ 0,45.</li>
-    <li><b>Armadura mínima:</b> ρmín da Tabela 17.3 (0,150% até C30) ou taxa informada. Espaçamento em múltiplos de 2,5 cm, limitado a 20 cm e a 2h. Distribuição ≥ 20% da principal e ≥ 0,9 cm²/m.</li>
+    <li><b>Armadura mínima:</b> ρmín da Tabela 17.3 (0,150% até C30) ou taxa informada. Bitola e espaçamento escolhidos pelo usuário em cada posição (ou automático: maior espaçamento, múltiplo de 2,5 cm, que atende). Verifica-se As,ef ≥ max(As, As,mín), espaçamento ≤ 20 cm e ≤ 2h, com alerta abaixo de 7,5 cm. Distribuição ≥ 20% da principal e ≥ 0,9 cm²/m.</li>
     <li><b>Abertura de fissuras (ELS-W, item 17.3.3):</b> com o momento de serviço Mk do caso 1 (γf = 1). Se Mk &lt; Mr = 1,5·fctm·bw·h²/6, a seção não fissura. Caso contrário, σs no estádio II (αe = Es/Ecs, Ecs = αi·5600√fck) e wk = menor de φ/(12,5·η1)·σs/Es·3σs/fctm e φ/(12,5·η1)·σs/Es·(4/ρr + 45), com η1 = 2,25 e ρr na área de envolvimento de cada barra (até 7,5φ). Limite wk,lim informado (0,3 mm para CAA II e III).</li>
     <li><b>Cortante sem estribos:</b> VRd1 = τRd·k·(1,2 + 40ρ1)·bw·d', com τRd = 0,25·fctd, fctd = 0,7·0,3·fck^(2/3)/1,4, k = 1,6 − d' ≥ 1 e ρ1 ≤ 0,02.</li>
   </ol>
@@ -335,7 +334,7 @@ const R2=x=>Math.round(x*100)/100;
 const RHOMIN=[[20,.150],[25,.150],[30,.150],[35,.164],[40,.179],[45,.194],[50,.208],[55,.211],[60,.219],[70,.226],[80,.233],[90,.239]];
 function rhoMin(fck){if(fck<=20)return .150/100;for(let i=1;i<RHOMIN.length;i++){const[a,ra]=RHOMIN[i-1],[b,rb]=RHOMIN[i];if(fck<=b)return(ra+(rb-ra)*(fck-a)/(b-a))/100}return .239/100}
 /* Seção retangular de largura bw (m) e altura h (m), Md em kN·m, Vd em kN */
-function rc(Md,Vd,bw,h,cfg,phi){
+function rc(Md,Vd,bw,h,cfg,phi,sAd){
   const {cob,fck,fyk,rmin}=cfg;
   const fcd=fck/1.4*1000, fyd=fyk/1.15*1000;
   const dd=h-cob/100-phi/2000;
@@ -349,15 +348,20 @@ function rc(Md,Vd,bw,h,cfg,phi){
   o.rmin=rmin??rhoMin(fck); o.Asmin=o.rmin*bw*h*1e4;
   o.Asd=Math.max(o.As,o.Asmin); o.Asm=o.Asd/bw;
   const Aphi=Math.PI*(phi/10)**2/4, smax=Math.min(20,2*h*100);
-  const s=Math.min(smax,Math.floor(100*Aphi/o.Asm/2.5+1e-9)*2.5);
-  o.s=s; o.okS=s>=7.5; o.Asef=s>0?100*Aphi/s:NaN;
+  const sAuto=Math.min(smax,Math.floor(100*Aphi/o.Asm/2.5+1e-9)*2.5);   /* maior espaçamento que atende com esta bitola */
+  const man=Number.isFinite(sAd)&&sAd>0, s=man?sAd:sAuto;
+  o.s=s; o.sAuto=sAuto; o.man=man; o.smax=smax;
+  o.okS=s>=7.5; o.Asef=s>0?100*Aphi/s:NaN;
+  o.okAs=o.Asef>=o.Asm-1e-6; o.okSmax=s<=smax+1e-9;
   o.nb=s>0?Math.floor((bw*100-2*cob)/s)+1:NaN;
-  if(!o.okS){for(const f of [8,10,12.5,16,20,25,32]){if(f<=phi)continue;const af=Math.PI*(f/10)**2/4,sf=Math.min(smax,Math.floor(100*af/o.Asm/2.5+1e-9)*2.5);if(sf>=10){o.sug={phi:f,s:sf};break}}}
+  if(!o.okAs||!o.okSmax||!o.okS){
+    if(sAuto>=7.5) o.sug={phi,s:sAuto};
+    else for(const f of [8,10,12.5,16,20,25,32]){if(f<=phi)continue;const af=Math.PI*(f/10)**2/4,sf=Math.min(smax,Math.floor(100*af/o.Asm/2.5+1e-9)*2.5);if(sf>=10){o.sug={phi:f,s:sf};break}}}
   o.Asdist=Math.max(0.2*o.Asef,0.9);
   const fctd=0.7*0.3*Math.pow(fck,2/3)/1.4*1000, tRd=0.25*fctd;
   const r1=Math.min(o.Asef*1e-4/dd,0.02), kk=Math.max(1.6-dd,1);
   o.VRd1=tRd*kk*(1.2+40*r1)*bw*dd;
-  o.okV=Vd<=o.VRd1+1e-9; o.okM=o.okDuct; o.ok=o.okM&&o.okV&&s>0;
+  o.okV=Vd<=o.VRd1+1e-9; o.okM=o.okDuct; o.ok=o.okM&&o.okV&&s>0&&o.okAs&&o.okSmax;
   return o;
 }
 /* Abertura de fissuras (NBR 6118, 17.3.3) com Mk de serviço; R = resultado de rc() */
@@ -390,11 +394,11 @@ function cs(Md,Vd,bw,h,fck){
   return {Md,Vd,bw,h,W,fctd,twRd,Mrd,Vrd,okM,okV,ok:okM&&okV};
 }
 /* esforço governante entre serviço e teste para uma face */
-function face(MkS,VkS,MkT,VkT,gf1,gf2,bw,h,cfg,phi){
+function face(MkS,VkS,MkT,VkT,gf1,gf2,bw,h,cfg,phi,sAd){
   const MdS=gf1*MkS, MdT=gf2*MkT, VdS=gf1*VkS, VdT=gf2*VkT;
   const MD=R2(Math.max(MdS,MdT,0)), VD=R2(Math.max(VdS,VdT,0));
   const gov=(MdS<=0&&MdT<=0)?'mínima':(MdT>MdS?'teste':'serviço');
-  const Rr=rc(MD,VD,bw,h,cfg,phi), Wf=fiss(Math.max(MkS,0),Rr,bw,h,cfg,phi);
+  const Rr=rc(MD,VD,bw,h,cfg,phi,sAd), Wf=fiss(Math.max(MkS,0),Rr,bw,h,cfg,phi);
   if(Wf&&!Wf.ok) Rr.ok=false;
   return {MkS,VkS,MkT,VkT,MdS,MdT,VdS,VdT,MD,VD,gov,R:Rr,W:Wf};
 }
@@ -496,6 +500,8 @@ function compute(p){
       M+=sg*u*D*du; Vr+=sg*D*du;}
     return {M,V:Vr};
   }
+  const ARMD={N1:10,N5:10,N6:10,N3:12.5,N2:10,N4:10}, ARMO={N1:p.fid,N5:p.fid,N6:p.fid,N3:p.fip,N2:p.fik,N4:p.fik};
+  const bf=n=>{const a=(p.arm||{})[n]||{};return [Number.isFinite(a.phi)&&a.phi>0?a.phi:(Number.isFinite(ARMO[n])&&ARMO[n]>0?ARMO[n]:ARMD[n]),a.s]};
   const cfg={cob:p.cob,fck,fyk:p.fyk,rmin:p.rmode==='inf'?p.rho/100:null,wlim:Number.isFinite(p.wlim)?p.wlim:0.3};
   const gf1=p.gf1, gf2=p.gf2;
   // degrau
@@ -506,27 +512,27 @@ function compute(p){
   const Wsd=Math.max(hsd*B-Aseg,0)*D*gs;
   const qS=Ww+Wtb+Wst+Wsd, qT=Ww+Wtb+Wst;
   const Vb1=sgn>0?FV1:0, Vb2=sgn>0?FV2:0, Vc1=up?FV1:0, Vc2=up?FV2:0;
-  const DSUP=face(qS*B/2+Vb1*aV,qS+Vb1,qT*B/2+Vb2*aV,qT+Vb2,gf1,gf2,D,E,cfg,p.fid);
+  const DSUP=face(qS*B/2+Vb1*aV,qS+Vb1,qT*B/2+Vb2*aV,qT+Vb2,gf1,gf2,D,E,cfg,...bf('N1'));
   const rS=reac(S1), rT=reac(S2);
   /* face inferior do degrau: reação do solo menos o que está sobre o degrau (peso próprio, solo entre e e g, tubo e água) */
   const Pd1M=Wst*B/2+Wse*B/2+(Wtb+Ww)*aV, Pd1V=Wst+Wse+Wtb+Ww, Pd2M=Wst*B/2+(Wtb+Ww)*aV, Pd2V=Wst+Wtb+Ww;
-  const DINF=face(Math.max(rS.M-Pd1M+Vc1*aV,0),Math.max(rS.V-Pd1V+Vc1,0),Math.max(rT.M-Pd2M+Vc2*aV,0),Math.max(rT.V-Pd2V+Vc2,0),gf1,gf2,D,E,cfg,p.fid);
+  const DINF=face(Math.max(rS.M-Pd1M+Vc1*aV,0),Math.max(rS.V-Pd1V+Vc1,0),Math.max(rT.M-Pd2M+Vc2*aV,0),Math.max(rT.V-Pd2V+Vc2,0),gf1,gf2,D,E,cfg,...bf('N5'));
   /* saliência da laje: balanço de comprimento j, tração embaixo pela reação do solo menos o peso próprio e o solo sobre ela (só no serviço) */
   const Wsal=J*D*E*gc, rTS=reacT(S1), rTT=reacT(S2);
-  const SAL=J>0?face(Math.max(rTS.M-(Wsal+Wss)*J/2,0),Math.max(rTS.V-Wsal-Wss,0),Math.max(rTT.M-Wsal*J/2,0),Math.max(rTT.V-Wsal,0),gf1,gf2,D,E,cfg,p.fid):null;
+  const SAL=J>0?face(Math.max(rTS.M-(Wsal+Wss)*J/2,0),Math.max(rTS.V-Wsal-Wss,0),Math.max(rTT.M-Wsal*J/2,0),Math.max(rTT.V-Wsal,0),gf1,gf2,D,E,cfg,...bf('N6')):null;
   /* cintas de ancoragem do tubo (empuxo para cima): tração de cálculo e área de aço */
   const Tcin=up?Math.max(gf1*FV1,gf2*FV2):0, AsCin=up?Tcin/(p.fyk/1.15*1000)*1e4:0;
   // parede de apoio do tubo
   /* ativo do solo sobre o degrau na parede: trapézio na altura f, ou triângulo na altura hw = hT − e com o terreno abaixo do topo */
   const hw=Hs>=0?F:Math.max(hT-E,0);
   const MaW=Hs>=0?D*(EA1*F*F/2+(EAf-EA1)*F*F/6):D*EAf*hw*hw/6, EaW=Hs>=0?D*(EA1+EAf)/2*F:D*EAf*hw/2;
-  const PAR=face(FH1*De/2+MaW,FH1+EaW,FH2*De/2,FH2,gf1,gf2,D,C,cfg,p.fip);
+  const PAR=face(FH1*De/2+MaW,FH1+EaW,FH2*De/2,FH2,gf1,gf2,D,C,cfg,...bf('N3'));
   // chaveta
   let KP=null, KA=null;
   if(kon){
     const mom=(p1,p2)=>D*(p1*HK*HK/2+(p2-p1)*HK*HK/3), cor=(p1,p2)=>D*(p1+p2)/2*HK;
-    KP=face(mom(EP2/2,EP3/2),cor(EP2/2,EP3/2),mom(EP2t,EP3t),cor(EP2t,EP3t),gf1,gf2,D,TK,cfg,p.fik);
-    KA=face(mom(EA2,EA3),cor(EA2,EA3),mom(EA2t,EA3t),cor(EA2t,EA3t),gf1,gf2,D,TK,cfg,p.fik);
+    KP=face(mom(EP2/2,EP3/2),cor(EP2/2,EP3/2),mom(EP2t,EP3t),cor(EP2t,EP3t),gf1,gf2,D,TK,cfg,...bf('N2'));
+    KA=face(mom(EA2,EA3),cor(EA2,EA3),mom(EA2t,EA3t),cor(EA2t,EA3t),gf1,gf2,D,TK,cfg,...bf('N4'));
   }
   // diagramas de cálculo (caso que rege em cada face)
   const sig=sigB;
@@ -572,6 +578,7 @@ const wkTxt=S=>!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)}`:'não fissura');
 const sugT=S=>S.R.sug?` → use φ${fphi(S.R.sug.phi)} c/ ${fmt(S.R.sug.s,1)}`:'';
 const bar=S=>S.R.err?S.R.err:`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`+sugT(S);
 const fState=S=>S.R.ok?(S.R.okS?'ok':'warn'):'bad';
+const ARMN=['N1','N5','N6','N3','N2','N4'], PHIS=[8,10,12.5,16,20,25], SPS=[5,7.5,10,12.5,15,17.5,20];
 const POS={N1:'Degrau · face superior',N5:'Degrau · face inferior',N6:'Saliência · face inferior',N3:'Parede · face do tubo',N2:'Chaveta · face do passivo',N4:'Chaveta · face do ativo'};
 
 const MHINT={simples:'Concreto simples (NBR 6118, seção 24): sem armadura, γc = 1,68. O teste é tratado como combinação excepcional de construção.',
@@ -591,9 +598,11 @@ function syncPlano(){const v=$('v_plano').value==='v', up=v&&$('v_sent').value==
 function setPlano(v){if($('v_plano').value===v)return;$('v_plano').value=v;syncPlano();calc();marcarSujo()}
 $('pl_h').addEventListener('click',()=>setPlano('h'));$('pl_v').addEventListener('click',()=>setPlano('v'));
 $('v_sent').addEventListener('change',syncPlano);
-function syncInputs(){syncModo();syncPlano();const on=$('v_kon').checked;['v_hk','v_tk','v_sk','v_fik'].forEach(i=>$(i).disabled=!on);$('v_rho').disabled=$('v_rmode').value!=='inf'}
+function syncInputs(){syncModo();syncPlano();const on=$('v_kon').checked;['v_hk','v_tk','v_sk'].forEach(i=>$(i).disabled=!on);$('v_rho').disabled=$('v_rmode').value!=='inf'}
 $('v_tipo').addEventListener('change',()=>{const v=$('v_tipo').value;$('v_alfa').disabled=v!=='x';if(v!=='x')$('v_alfa').value=v;calc()});
-function aplicar(d){FIELDS.forEach(id=>{if(!(id in d))return;const el=$(id);if(el.type==='checkbox')el.checked=!!d[id];else el.value=d[id]});$('v_alfa').disabled=$('v_tipo').value!=='x';syncInputs()}
+function aplicar(d){d={...d};
+  if(!('v_aN1' in d)&&('v_fid' in d)){const m={N1:'v_fid',N5:'v_fid',N6:'v_fid',N3:'v_fip',N2:'v_fik',N4:'v_fik'};ARMN.forEach(n=>{d['v_a'+n]=d[m[n]];d['v_s'+n]=''})}
+  FIELDS.forEach(id=>{if(!(id in d))return;const el=$(id);if(el.type==='checkbox')el.checked=!!d[id];else el.value=d[id]});$('v_alfa').disabled=$('v_tipo').value!=='x';syncInputs()}
 $('v_reset').addEventListener('click',()=>{ptManual=false;aplicar(DEF);calc();marcarSujo()});
 let ptManual=false;
 $('v_pt').addEventListener('input',()=>{ptManual=$('v_pt').value!==''});
@@ -605,6 +614,7 @@ function setCaso(c){caso=c;$('c_serv').setAttribute('aria-pressed',c==='serv');$
 function setVista(v){vista=v;$('t_cargas').setAttribute('aria-pressed',v==='cargas');$('t_arm').setAttribute('aria-pressed',v==='arm');
   $('c_seg').hidden=v==='arm';$('r_diagw').hidden=v!=='arm';if(last){draw(last);if(v==='arm')renderDiag(last)}}
 $('t_cargas').addEventListener('click',()=>setVista('cargas'));$('t_arm').addEventListener('click',()=>setVista('arm'));
+$('r_t6').addEventListener('change',e=>{const t=e.target,n=t.dataset.a||t.dataset.s;if(!n)return;$((t.dataset.a?'v_a':'v_s')+n).value=t.value;calc();marcarSujo()});
 $('c_serv').addEventListener('click',()=>setCaso('serv'));$('c_test').addEventListener('click',()=>setCaso('test'));
 
 /* tabela de peça com duas faces ou uma face */
@@ -620,7 +630,7 @@ function elemTable(cols,pre){
   h+=line("x / d'",S=>S.R.err?{v:S.R.err,c:'s-bad'}:{v:fmt(S.R.xd,3),c:S.R.okDuct?'':'s-bad'},'');
   h+=line('As calculada / mínima',S=>S.R.err?'—':`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,'cm²');
   h+=line('Armadura adotada',S=>({v:bar(S),c:S.R.err?'s-bad':(S.R.okS?'':'s-warn')}),'');
-  h+=line('As efetiva',S=>S.R.err?'—':fmt(S.R.Asef,2),'cm²/m');
+  h+=line('As necessária / efetiva',S=>S.R.err?'—':{v:`${fmt(S.R.Asm,2)} / ${fmt(S.R.Asef,2)}`,c:S.R.okAs?'':'s-bad'},'cm²/m');
   h+=line('Distribuição',S=>S.R.err?'—':fmt(S.R.Asdist,2),'cm²/m');
   h+=line('Cortante Vd / VRd1',S=>S.R.err?'—':{v:`${fmt(S.VD)} / ${fmt(S.R.VRd1)}`,c:sitCls(S.R.okV)},'kN');
   h+=line('Fissuração · Mk serviço / Mr',S=>S.W?`${fmt(S.W.Mk)} / ${fmt(S.W.Mr)}`:'—','kN·m');
@@ -635,7 +645,7 @@ function calc(){
     phi:num('v_phi'),coh:num('v_coh'),gs:num('v_gs'),del:num('v_del'),sadm:num('v_sadm'),fck:num('v_fck'),gc:num('v_gc'),
     a:num('v_a'),b:num('v_b'),j:num('v_j'),d:num('v_d'),e:num('v_e'),g:num('v_g'),
     kon:$('v_kon').checked,hk:num('v_hk'),tk:num('v_tk'),sk:num('v_sk'),
-    fyk:+$('v_fyk').value,cob:num('v_cob'),fid:+$('v_fid').value,fip:+$('v_fip').value,fik:+$('v_fik').value,
+    fyk:+$('v_fyk').value,cob:num('v_cob'),arm:Object.fromEntries(ARMN.map(n=>[n,{phi:+$('v_a'+n).value,s:parseFloat($('v_s'+n).value)}])),
     rmode:$('v_rmode').value,rho:num('v_rho'),gf1:num('v_gf1'),gf2:num('v_gf2'),modo:$('v_modo').value,wlim:+$('v_wlim').value,plano:$('v_plano').value,sent:$('v_sent').value};
   const ptAuto=!ptManual;
   const A=p.a/100,B=p.b/100,G=p.g/100,E=p.e/100;
@@ -695,7 +705,7 @@ function calc(){
   if(simp) warnS=false;
   $('rc_h').textContent=simp?'Verificações por peça':'Verificações das armaduras';
   $('r_rcpill').className='pill '+(okRC?(warnS?'warn':'ok'):'bad');
-  $('r_rcpill').textContent=okRC?(warnS?'atende · espaçamento < 7,5 cm: troque a bitola sugerida':'flexão e cortante ok'):'não atende: '+failPos.join(', ');
+  $('r_rcpill').textContent=okRC?(warnS?'atende · espaçamento < 7,5 cm: prefira uma bitola maior':'flexão e cortante ok'):'não atende: '+failPos.join(', ');
 
   const xrow=S=>S.x!==null?[['Base comprimida',S.fora?'resultante fora da base':fmt(S.x),S.fora?'':'m']]:[];
   $('r_t1').innerHTML=rows([
@@ -809,11 +819,14 @@ function calc(){
     ['Pressão base / fundo · serviço',S=>S===o.N2?`${fmt(o.EP2/2)} / ${fmt(o.EP3/2)}`:`${fmt(o.EA2)} / ${fmt(o.EA3)}`,'kPa'],
     ['Pressão base / fundo · teste',S=>S===o.N2?`${fmt(o.EP2t)} / ${fmt(o.EP3t)}`:`${fmt(o.EA2t)} / ${fmt(o.EA3t)}`,'kPa'],
   ]):'<tr><td class="muted">Bloco sem chaveta. Ative a chaveta no painel de entradas.</td></tr>';
-  const q=(n,S)=>S.R.err?`<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n s-bad" colspan="6">${S.R.err}</td></tr>`:
-    `<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}</td><td class="n${S.R.okS?'':' s-warn'}">φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}${sugT(S)}</td><td class="n">${fmt(S.R.Asef,2)}</td><td class="n">${S.R.nb}</td><td class="n ${S.W&&!S.W.ok?'s-bad':''}">${wkTxt(S)}</td><td class="${S.R.ok?'s-ok':'s-bad'}">${S.R.ok?'atende':'não atende'}</td></tr>`;
-  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Elemento</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada</th><th class="n">cm²/m</th><th class="n">Barras</th><th class="n">wk mm</th><th>Situação</th></tr>'
+  const selA=(n,S)=>{const ph=+$('v_a'+n).value, sv=$('v_s'+n).value, au='';
+    return `<span class="adot"><select data-a="${n}" aria-label="Bitola ${n}">${PHIS.map(f=>`<option value="${f}"${f===ph?' selected':''}>φ${fphi(f)}</option>`).join('')}</select> c/ <select data-s="${n}" aria-label="Espaçamento ${n}"><option value=""${sv===''?' selected':''}>auto${au}</option>${SPS.map(v=>`<option value="${v}"${String(v)===sv?' selected':''}>${fmt(v,1)}</option>`).join('')}</select></span>`};
+  const sugQ=S=>(!S.R.okAs||!S.R.okSmax||!S.R.okS)&&S.R.sug?`<div class="muted" style="font-size:11px;white-space:normal;max-width:170px;margin-left:auto">${!S.R.okAs?'As insuficiente':!S.R.okSmax?`s > ${fmt(S.R.smax,1)} cm`:'s < 7,5 cm'} · sugestão φ${fphi(S.R.sug.phi)} c/ ${fmt(S.R.sug.s,1)}</div>`:'';
+  const q=(n,S)=>S.R.err?`<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">—</td><td class="n">${selA(n,S)}</td><td class="n s-bad" colspan="3">${S.R.err}</td></tr>`:
+    `<tr><td>${n}</td><td>${POS[n]}</td><td class="n">${fmt(S.MD)} / ${fmt(S.VD)}</td><td class="n">${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}</td><td class="n${S.R.okAs&&S.R.okSmax?(S.R.okS?'':' s-warn'):' s-bad'}">${selA(n,S)}<div class="muted" style="font-size:11px">${S.R.man?'':`auto = ${fmt(S.R.sAuto,1)} cm · `}${S.R.nb} barras</div>${sugQ(S)}</td><td class="n${S.R.okAs?'':' s-bad'}">${fmt(S.R.Asef,2)} ${S.R.okAs?'≥':'<'} ${fmt(S.R.Asm,2)}</td><td class="n ${S.W&&!S.W.ok?'s-bad':''}" style="white-space:normal">${wkTxt(S)}</td><td class="${S.R.ok?'s-ok':'s-bad'}">${S.R.ok?'atende':'não atende'}</td></tr>`;
+  $('r_t6').innerHTML='<tr><th>Pos.</th><th>Elemento</th><th class="n">Md kN·m / Vd kN</th><th class="n">As / As,mín cm²</th><th class="n">Adotada φ mm c/ s cm</th><th class="n">As,ef / As,nec cm²/m</th><th class="n">wk mm</th><th>Situação</th></tr>'
     +pieces.map(([n,S])=>q(n,S)).join('')
-    +`<tr><td colspan="9" class="muted" style="font-size:12px">Barras ao longo da largura d = ${fmt(p.d,0)} cm. Abertura de fissuras com o momento de serviço (caso 1), limite ${fmt(p.wlim,1)} mm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante resistido sem estribos (VRd1).</td></tr>`;
+    +`<tr><td colspan="8" class="muted" style="font-size:12px">Barras ao longo da largura d = ${fmt(p.d,0)} cm. Abertura de fissuras com o momento de serviço (caso 1), limite ${fmt(p.wlim,1)} mm. Armadura mínima: ${p.rmode==='inf'?`taxa informada de ${fmt(p.rho,2)}%`:'NBR 6118, Tabela 17.3'}. Cortante resistido sem estribos (VRd1). Escolha a bitola e o espaçamento na coluna Adotada; "auto" usa o maior espaçamento que atende com a bitola escolhida. Cobrimento ${fmt(p.cob,1)} cm.</td></tr>`;
   }
 
   $('r_cin').hidden=!o.up;
@@ -991,7 +1004,7 @@ function draw(o){
   if(!arm&&Hs<0) g+=`<text class="dl" x="${W-18}" y="${yTer-8}" text-anchor="end">${serv?`terreno · ${o.hT<0.005?'base no nível do terreno':`base enterrada ${fmt(o.hT*100,0)} cm`}`:'terreno natural'}</text>`;
   $('r_svg').innerHTML=g; fundoCotas($('r_svg'));
   $('c_note').textContent=arm
-    ?(o.modo==='simples'?'Bloco em concreto simples, sem armadura. As linhas tracejadas marcam as seções críticas onde os momentos e cortantes são máximos.':'Disposição das armaduras N1 a N5, com bitola e espaçamento adotados. As linhas tracejadas marcam as seções críticas (engastes).')
+    ?(o.modo==='simples'?'Bloco em concreto simples, sem armadura. As linhas tracejadas marcam as seções críticas onde os momentos e cortantes são máximos.':'Disposição das armaduras, com bitola e espaçamento adotados no Quadro de armaduras. As linhas tracejadas marcam as seções críticas (engastes).')
       +' Abaixo, os diagramas de momento fletor e cortante de cálculo de cada peça: envoltória dos casos de serviço e de teste, já majorados por γf.'
     :(o.vOnly?`Descida vertical: empuxo F = V = ${fmt(serv?o.FT1:o.FT2)} kN, todo para baixo. Os empuxos de terra dos dois lados se equilibram e não entram na estabilidade. `:o.vert?`Curva vertical: empuxo F = ${fmt(serv?o.FT1:o.FT2)} kN decomposto em H (horizontal) e V (${o.up?'para cima, contido pelas cintas':'para baixo, sobre o degrau'}). `:'')+(serv
     ?'Serviço: ativo na face do tubo (laranja) e passivo do terreno até a base (azul).'
@@ -1145,7 +1158,7 @@ async function buildDocx(){
   ],{head:1,shade:[0]});
   const POS={N1:'Degrau, face superior',N5:'Degrau, face inferior',N6:'Saliência, face inferior',N3:'Parede, face do tubo',N2:'Chaveta, face do passivo',N4:'Chaveta, face do ativo'};
   const armRow=(n,S)=>S.R.err?[L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,{t:S.R.err,span:4},sit(false)]:
-    [L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)}`,`${fmt(S.R.VRd1)} kN`,!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)} mm`:'não fissura'),sit(S.R.ok)];
+    [L(`${n} · ${POS[n]}`),`${fmt(S.MD)} / ${fmt(S.VD)}`,S.gov,`${fmt(S.R.As,2)} / ${fmt(S.R.Asmin,2)}`,`φ${fphi(S.R.phi)} c/ ${fmt(S.R.s,1)} · ${fmt(S.R.Asef,2)} ${S.R.okAs?'≥':'<'} ${fmt(S.R.Asm,2)} cm²/m`,`${fmt(S.R.VRd1)} kN`,!S.W?'—':(S.W.fissura?`${fmt(S.W.wk,3)} mm`:'não fissura'),sit(S.R.ok)];
   const arm=table([2250,1250,800,1250,1238,1000,950,900],[
     ['Posição','Md kN·m / Vd kN','Rege','As / As,mín cm²','Adotada','VRd1',`wk (≤ ${fmt(p.wlim,1)})`,'Situação'],
     ...R.pieces.map(([n,S])=>armRow(n,S)),
@@ -1156,7 +1169,7 @@ async function buildDocx(){
   ],{head:1,shade:[0]});
   const cinTxt=o.up?` Cintas de ancoragem do tubo: Td = ${fmt(o.Tcin)} kN, As total ≥ ${fmt(o.AsCin,2)} cm² (CA-${p.fyk/10}), ancoradas no degrau.`:'';
   const csTxt=`Sem armadura. fctd = 0,7·0,3·fck^(2/3)/1,68 = ${fmt(R.SP[0][1].fctd/1000,3)} MPa; Mrd = 0,85·fctd·bw·h²/6; Vrd = 2/3·τwRd·bw·h, com τwRd = 0,3·0,85·fctd = ${fmt(R.SP[0][1].twRd/1000,3)} MPa. Em cada peça vale o maior momento entre as duas faces.`+cinTxt;
-  const distTxt='Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1). Abertura de fissuras (ELS-W) com o momento de serviço do caso 1.'+cinTxt;
+  const distTxt=`Bitola e espaçamento adotados pelo projetista em cada posição, com As,ef ≥ As,nec (cm²/m), espaçamento ≤ 20 cm e ≤ 2h; cobrimento ${fmt(p.cob,1)} cm. `+'Armadura de distribuição ≥ 20% da principal e ≥ 0,9 cm²/m: '+R.pieces.filter(([,S])=>!S.R.err).map(([n,S])=>`${n} ${fmt(S.R.Asdist,2)}`).join('; ')+' cm²/m. Cortante resistido sem estribos (VRd1). Abertura de fissuras (ELS-W) com o momento de serviço do caso 1.'+cinTxt;
   const DGs=diagSvgLight(o);
   const [pA,pD]=await Promise.all([svgToPng(svgFor('serv','arm')),svgToPng(DGs.svg,DGs.W*3,DGs.H*3)]);
   const ihD=Math.round(8.3*DGs.H/DGs.W/2.54*96);
@@ -1256,7 +1269,7 @@ async function gravar(nova){
   const col=db.collection('unidades'), ref=(nova||!atualId)?col.doc():col.doc(atualId);
   const agora=new Date().toISOString(), prev=unidades.find(u=>u.id===ref.id);
   const body={nome,dados:Object.fromEntries(FIELDS.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])),
-    ptManual,versao:'V2.7',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
+    ptManual,versao:'V2.8',resumo:resumo(),criado:prev?.criado||agora,atualizado:agora};
   ocupado=true; statusLine(); msg('Salvando a unidade…');
   const tentar=async()=>{try{await ref.set(body)}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,400+Math.random()*600));await ref.set(body)}else throw e}};
   try{await tentar();atualId=ref.id;sujo=false;salvoEm=agora;pendente=null;$('u_new').textContent='Nova unidade';
@@ -1322,7 +1335,7 @@ $('u_exp').addEventListener('click',()=>{
   if(!db?.local){msg('A exportação funciona na versão do navegador.','s-warn');return}
   const m=db.lerTudo(), n=Object.keys(m).length;
   if(!n){msg('Não há unidades salvas para exportar.','s-warn');return}
-  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.7',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'bloco-ancoragem-dente',versao:'V2.8',exportado:new Date().toISOString(),unidades:m},null,1)],{type:'application/json'});
   try{baixar(blob,`unidades_bloco_ancoragem_${new Date().toISOString().slice(0,10)}.json`);msg(`${n} ${n===1?'unidade exportada':'unidades exportadas'}.`,'s-ok')}
   catch(e){msg('O navegador bloqueou o download do arquivo.','s-bad')}
 });
